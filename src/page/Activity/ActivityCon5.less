@@ -1,0 +1,62 @@
+#ActivityCon5 {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  position: relative;
+  & > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: block;
+  }
+  .main {
+    position: relative;
+    padding-top: 5.85rem;
+  }
+  .btn {
+    width: 6.23rem;
+    margin: 0 auto;
+    display: block;
+  }
+  ul {
+    width: 4.73rem;
+    margin: 0 auto;
+    border: 1px solid rgba(86, 66, 34, 1);
+    li {
+      border-bottom: 1px solid rgba(86, 66, 34, 1);
+      overflow: hidden;
+      &:nth-last-child(1) {
+        border: none;
+      }
+      display: flex;
+      span {
+        flex: 1;
+        text-align: center;
+        color: #564222;
+        font-size: 0.24rem;
+        line-height: 0.6rem;
+        &:nth-child(1) {
+          border-right: 1px solid rgba(86, 66, 34, 1);
+        }
+      }
+    }
+  }
+  .info {
+    margin: 0 0.3rem;
+    margin-top: 0.58rem;
+    padding: 0.3rem;
+    background-color: rgba(244, 240, 234, 1);
+    box-shadow: 0px 0px 0.17rem 0px rgba(179, 147, 96, 0.24);
+    p {
+      font-size: 0.24rem;
+      color: #564222;
+      line-height: 0.5rem;
+      &:nth-child(1) {
+        font-size: 0.26rem;
+        color: #000;
+      }
+    }
+  }
+}

@@ -1,0 +1,128 @@
+// reset
+body,
+div,
+span,
+header,
+footer,
+section,
+aside,
+article,
+ul,
+dl,
+dt,
+dd,
+li,
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+i,
+b,
+em,
+textarea,
+button,
+input,
+select {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  font-family: 'Microsoft Yahei', sans-serif;
+  &:focus {
+    outline: none;
+  }
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+  background-color: #111;
+}
+body {
+  font-size: 12px;
+  height: 100%;
+  overflow: auto;
+}
+
+input[type='button'],
+input[type='submit'],
+input[type='search'],
+input[type='reset'] {
+  -webkit-appearance: none;
+}
+
+textarea {
+  -webkit-appearance: none;
+}
+
+#app {
+  height: 100%;
+}
+
+// reset vux
+.vux-header {
+  background-color: #292929 !important;
+  position: fixed !important;
+  width: 7.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  z-index: 3;
+}
+.weui-toast.weui-toast_success,
+.weui-toast.weui-toast_cancel,
+.weui-toast.weui-toast_forbidden {
+  min-width: 3rem !important;
+}
+
+// common
+.page {
+  padding-bottom: 2rem;
+  padding-top: 46px;
+}
+.big-btn {
+  margin: 0.5333rem 0.4rem;
+  .weui-btn_primary {
+    background-color: #d6a23e;
+  }
+  .weui-btn_primary:not(.weui-btn_disabled):active {
+    background-color: #d6a23e;
+  }
+  .weui-btn_loading.weui-btn_primary {
+    background-color: #d6a23e;
+  }
+}
+
+.weui-cell__hd > img {
+  width: 0.453rem;
+  vertical-align: middle;
+  margin-right: 0.36rem;
+}
+
+.weui-cells {
+  margin-top: 0.2rem !important;
+  background-color: #292929 !important;
+  .vux-label {
+    color: #fff;
+  }
+}
+
+.weui-cells:before,
+.weui-cells:after {
+  border: none !important;
+}
+
+.weui-cell:before {
+  border-top: 1px solid #6c563f !important;
+}
+.vux-tap-active:active {
+  background-color: #191919 !important;
+}

@@ -1,0 +1,135 @@
+#Join {
+  padding-top: 88px;
+  .fx40 {
+    position: fixed;
+    top: 0;
+    z-index: 5000;
+    width: 7.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .weui-search-bar {
+    background-color: #292929;
+    &:before,
+    &:after {
+      border: none;
+    }
+    .weui-search-bar__form {
+      background-color: #292929;
+      &:after {
+        background: #333;
+        border: none;
+      }
+    }
+    .weui-search-bar__box {
+      background-color: #333;
+    }
+    .weui-search-bar__label {
+      background-color: #333;
+    }
+    .weui-search-bar__box .weui-search-bar__input {
+      color: #fff;
+    }
+    .weui-search-bar__cancel-btn {
+      color: #ffc65a;
+    }
+    .weui-search-bar__label .weui-icon-search,
+    .weui-search-bar__label span {
+      vertical-align: -webkit-baseline-middle;
+    }
+  }
+  .vux-tab {
+    background-color: #292929;
+    .vux-tab-item.vux-tab-selected {
+      color: #ffe48c;
+    }
+    .vux-tab-item {
+      background: none;
+    }
+    .vux-tab-bar-inner {
+      background-color: #ffe48c;
+      border-radius: 3px;
+    }
+  }
+  .main {
+    li {
+      position: relative;
+      background-color: #1c1c1c;
+      height: 2rem;
+      margin-top: 0.2rem;
+      position: relative;
+      padding-left: 1.9rem;
+      padding-top: 0.31rem;
+      box-sizing: border-box;
+      .plan {
+        position: absolute;
+        left: 0.3rem;
+        top: 0.3rem;
+        width: 1.4rem;
+        height: 1.4rem;
+        background-color: #1c1c1c;
+        border-radius: 100%;
+        .vux-circle-content {
+          & > span {
+            display: block;
+            width: 1.2rem;
+            height: 1.2rem;
+            margin: 0.1rem 0 0 0.1rem;
+            border-radius: 100%;
+            background-color: #1c1c1c;
+            text-align: center;
+            p:nth-child(1) {
+              color: #dca74f;
+              font-size: 0.21rem;
+              padding-top: 0.26rem;
+            }
+            p:nth-child(2) {
+              color: #ffe48c;
+              font-size: 0.25rem;
+            }
+          }
+        }
+      }
+      .title {
+        color: #ffe48c;
+        font-size: 0.32rem;
+        text-indent: 0.2rem;
+        margin-bottom: 0.15rem;
+        span {
+          color: #888888;
+          font-size: 0.26rem;
+          margin-left: 0.3rem;
+        }
+      }
+      .line {
+        width: 4.6rem;
+        height: 0.02rem;
+        background-color: #6c563f;
+        border-radius: 2px;
+        display: block;
+      }
+      .con {
+        width: 4.6rem;
+        display: flex;
+        margin-left: 0.18rem;
+        p {
+          margin-top: 0.16rem;
+          flex: 1;
+          font-size: 0.29rem;
+          color: #d3a04c;
+          span {
+            display: block;
+            font-size: 0.2rem;
+            color: #888;
+          }
+        }
+      }
+      & > img {
+        position: absolute;
+        top: 0.88rem;
+        right: 0.3rem;
+        width: 0.13rem;
+      }
+    }
+  }
+}

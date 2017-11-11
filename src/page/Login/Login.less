@@ -1,0 +1,86 @@
+#Login {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  height: 100%;
+  background-color: #292929;
+  .header {
+    height: 3.7rem;
+    background-image: url('../../assets/img/loginbg.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: relative;
+    & > img {
+      width: 0.35rem;
+      position: absolute;
+      left: 0.39rem;
+      top: 0.35rem;
+    }
+    & > div {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      span {
+        width: 50%;
+        float: left;
+        display: inline-block;
+        text-align: center;
+        color: #bbb;
+        line-height: 0.58rem;
+        box-sizing: border-box;
+        position: relative;
+        font-size: 0.32rem;
+        &.active {
+          color: #ffe48c;
+        }
+        &:nth-child(1) {
+          &:before {
+            content: '';
+            position: absolute;
+            height: 0.4rem;
+            width: 1px;
+            background-color: rgba(108, 86, 63, 1);
+            right: 0;
+            top: 0.07rem;
+          }
+        }
+      }
+    }
+  }
+  .vux-x-input {
+    color: #fff;
+  }
+  .weui-label {
+    color: #fff;
+    font-size: 0.32rem;
+  }
+  .weui-btn_primary {
+    background-color: rgba(108, 86, 63, 1);
+  }
+  .weui-cells {
+    .weui-cell:nth-last-child(1):after {
+      content: ' ';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 1px;
+      border-top: 1px solid #6c563f;
+      color: #d9d9d9;
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+      left: 15px;
+    }
+  }
+
+  .btn {
+    margin: 0.5rem 0.3rem;
+  }
+  .weui-btn_default {
+    background-color: rgba(213, 183, 127, 1);
+    color: #333;
+    font-size: 0.32rem;
+  }
+}

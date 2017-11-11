@@ -1,0 +1,72 @@
+#BetHeader {
+  .vux-header-title {
+    img {
+      width: 0.23rem;
+    }
+  }
+  .vux-header-right {
+    img {
+      width: 0.36rem;
+      vertical-align: middle;
+      &:nth-last-child(1) {
+        margin-left: 0.4rem;
+      }
+    }
+  }
+  .menu {
+    top: 46px;
+    ul {
+      overflow: hidden;
+      background-color: rgba(51, 51, 51, 1);
+      margin-bottom: -1px;
+      li {
+        float: left;
+        width: 33.3333%;
+        line-height: 1.05rem;
+        height: 1.05rem;
+        font-size: 0.26rem;
+        color: #eee;
+        text-align: center;
+        box-sizing: border-box;
+        border-right: rgba(108, 86, 63, 1) 1px solid;
+        border-bottom: rgba(108, 86, 63, 1) 1px solid;
+        &:nth-child(3n) {
+          border-right: 0;
+        }
+      }
+    }
+  }
+  .lhc {
+    .menu {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.2rem;
+        padding-bottom: 0;
+        li {
+          float: none;
+          width: auto;
+          flex: 1 0 30%;
+          border: solid 1px rgba(213, 183, 127, 1);
+          border-radius: 0.1rem;
+          font-size: 0.28rem;
+          color: #fff;
+          line-height: 0.6rem;
+          height: 0.6rem;
+          margin-right: 0.2rem;
+          margin-bottom: 0.3rem;
+          &:nth-child(3n) {
+            margin-right: 0;
+          }
+          &.active {
+            color: #333;
+            background-color: rgba(213, 183, 127, 1);
+          }
+        }
+        &:nth-child(1) {
+          border-bottom: 2px solid rgba(108, 86, 63, 1);
+        }
+      }
+    }
+  }
+}

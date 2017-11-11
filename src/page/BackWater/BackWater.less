@@ -1,0 +1,50 @@
+#BackWater {
+  background-color: #222;
+  .tab {
+    overflow: hidden;
+    margin: 0.3rem 0.32rem;
+    width: 6.86rem;
+    display: flex;
+    box-sizing: border-box;
+    border-radius: 0.2rem;
+    border: 2px solid #d5b77f;
+    font-weight: 100;
+    span {
+      flex: 1;
+      height: 0.56rem;
+      line-height: 0.56rem;
+      text-align: center;
+      color: #d5b77f;
+      font-size: 0.3rem;
+      &.active {
+        color: #fff;
+        background-color: #d5b77f;
+      }
+    }
+  }
+  ul {
+    background-color: #292929;
+    li {
+      line-height: 0.8rem;
+      height: 0.8rem;
+      color: #fff;
+      font-size: 0.26rem;
+      display: flex;
+      border-bottom: 1px solid rgba(108, 86, 63, 1);
+      span {
+        flex: 1;
+        text-align: center;
+        &.red {
+          color: #ff6969;
+        }
+      }
+      &.title {
+        background-color: #333;
+        border-bottom: none;
+        span {
+          font-size: 0.3rem;
+        }
+      }
+    }
+  }
+}
