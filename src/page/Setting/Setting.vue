@@ -3,7 +3,7 @@
     <XHeader :left-options="{backText: ''}">设置</XHeader>
     <group>
       <cell title="修改登录密码" is-link link="/password"></cell>
-      <cell title="修改提现密码" is-link link="/moneyPassword"></cell>
+      <!-- <cell title="修改提现密码" is-link link="/moneyPassword"></cell> -->
     </group>
     <group>
       <cell title="帮助中心" is-link link="/help"></cell>

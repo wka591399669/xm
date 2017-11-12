@@ -255,9 +255,6 @@ export default {
       });
       let playMethods = {};
       res.returnList.map(x => {
-        // if (['LHCLM'].indexOf(x.proType) < 0) {
-        //   playMethods[x.proType] = x;
-        // }
         playMethods[x.proType] = x;
       });
       // 组合六合彩的玩法

@@ -3,8 +3,8 @@
     <XHeader :left-options="{backText: ''}">修改提现密码</XHeader>
     <Group labelWidth="2.3rem">
       <x-input type="password" v-model="old" title="旧的提现密码" placeholder="默认密码就是登录密码"></x-input>
-      <x-input type="password" v-model="password" title="新的提现密码" placeholder="请输入新的提现密码"></x-input>
-      <x-input type="password" v-model="repassword" title="确认提现密码" placeholder="再次输入新的提现密码"></x-input>
+      <x-input :max="4" type="number" v-model="password" title="新的提现密码" placeholder="请输入四位数字"></x-input>
+      <x-input :max="4" type="number" v-model="repassword" title="确认提现密码" placeholder="再次输入四位数字"></x-input>
     </Group>
     <div class="btn">
       <x-button @click.native="sub">确认修改</x-button>
@@ -30,7 +30,13 @@ export default {
   },
   methods: {
     async sub() {
-      if (!this.old || !this.password || !this.repassword) {
+      if (
+        !this.old ||
+        !this.password ||
+        !this.repassword ||
+        this.password.length != 4 ||
+        this.repassword.length != 4
+      ) {
         this.$vux.toast.show({
           type: 'text',
           text: '请正确填写信息',

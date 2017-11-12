@@ -54,10 +54,10 @@ new Vue({
       this.$router.push('/login');
     };
     Fetch.cbTokenOut = () => {
-      this.$vux.alert.show({
-        title: '警告',
-        content: 'token过期，请重新登录'
-      });
+      // this.$vux.alert.show({
+      //   title: '警告',
+      //   content: 'token过期，请重新登录'
+      // });
       window.localStorage.clear();
       this.$router.push('/login');
     };

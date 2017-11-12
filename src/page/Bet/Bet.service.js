@@ -739,15 +739,18 @@ export default {
           if (['二连肖', '三连肖', '四连肖', '五连肖', '合肖'].indexOf(y.proTypeName) >= 0) {
             let temp = {
               itemID: y.itemInfoList[0].itemID,
-              rate: y.itemInfoList[0].rate
+              rate: y.itemInfoList[0].rate,
+              itemValue: y.itemInfoList[0].itemValue,
+              rateList: y.itemInfoList[0].rateList
             };
             y.itemInfoList = [];
-
             for (var i = 0; i < sxarr.length; i++) {
               y.itemInfoList.push({
                 itemName: sxarr[i],
                 itemID: temp.itemID,
-                rate: temp.rate
+                rate: temp.rate,
+                itemValue: temp.itemValue.split(';')[i],
+                rateList: temp.rateList
               });
             }
           }
@@ -918,18 +921,33 @@ export default {
         res[x.split(',')[0]] = [];
       }
       let ball = x.split(',')[1];
-      // 大小单双
-      if (ball == '大') {
-        ball = '2';
-      }
-      if (ball == '小') {
-        ball = '1';
-      }
-      if (ball == '单') {
-        ball = '3';
-      }
-      if (ball == '双') {
-        ball = '4';
+      // 快三大小单双
+      if (typeDetId == 'K3DXDS') {
+        if (ball == '大') {
+          ball = '0';
+        }
+        if (ball == '小') {
+          ball = '1';
+        }
+        if (ball == '单') {
+          ball = '2';
+        }
+        if (ball == '双') {
+          ball = '3';
+        }
+      } else {
+        if (ball == '大') {
+          ball = '2';
+        }
+        if (ball == '小') {
+          ball = '1';
+        }
+        if (ball == '单') {
+          ball = '3';
+        }
+        if (ball == '双') {
+          ball = '4';
+        }
       }
       if (typeDetId == 'K3STHTX' || typeDetId == 'K3SLHTX') {
         ball = '0';
