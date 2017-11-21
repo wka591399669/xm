@@ -72,6 +72,67 @@ const lhcBallPos = {
       ball: '13'
     }
   },
+  LHCTMA: {
+    LHCTMAXM: {
+      ballPos: '7'
+    },
+    LHCTMA0: {
+      ballPos: '7',
+      ball: '0'
+    },
+    LHCTMA1: {
+      ballPos: '7',
+      ball: '1'
+    },
+    LHCTMA2: {
+      ballPos: '7',
+      ball: '2'
+    },
+    LHCTMA3: {
+      ballPos: '7',
+      ball: '3'
+    },
+    LHCTMA4: {
+      ballPos: '7',
+      ball: '4'
+    },
+    LHCTMA5: {
+      ballPos: '7',
+      ball: '5'
+    },
+    LHCTMA6: {
+      ballPos: '7',
+      ball: '6'
+    },
+    LHCTMA7: {
+      ballPos: '7',
+      ball: '7'
+    },
+    LHCTMA8: {
+      ballPos: '7',
+      ball: '8'
+    },
+    LHCTMA9: {
+      ballPos: '7',
+      ball: '9'
+    },
+    LHCTMA10: {
+      ballPos: '7',
+      ball: '10'
+    },
+    LHCTMA11: {
+      ballPos: '7',
+      ball: '11'
+    },
+    LHCTMA12: {
+      ballPos: '7',
+      ball: '12'
+    },
+    LHCTMA13: {
+      ballPos: '7',
+      ball: '13'
+    }
+  },
   LHCZM: {
     LHCZMXM: {
       ballPos: '1,2,3,4,5,6'
@@ -695,6 +756,7 @@ export default {
         [
           'LHCDXZMT',
           'LHCTM',
+          'LHCTMA',
           'LHCZM',
           'LHCZXBZ',
           'LHCLM',
@@ -725,14 +787,18 @@ export default {
           ) {
             let temp = {
               itemID: y.itemInfoList[0].itemID,
-              rate: y.itemInfoList[0].rate
+              rate: y.itemInfoList[0].rate,
+              itemValue: y.itemInfoList[0].itemValue,
+              rateList: y.itemInfoList[0].rateList
             };
             y.itemInfoList = [];
             for (var i = 1; i <= 49; i++) {
               y.itemInfoList.push({
                 itemName: i,
                 itemID: temp.itemID,
-                rate: temp.rate
+                rate: temp.rate,
+                itemValue: temp.itemValue && temp.itemValue.split(';')[i],
+                rateList: temp.rateList
               });
             }
           }
@@ -749,7 +815,7 @@ export default {
                 itemName: sxarr[i],
                 itemID: temp.itemID,
                 rate: temp.rate,
-                itemValue: temp.itemValue.split(';')[i],
+                itemValue: temp.itemValue && temp.itemValue.split(';')[i],
                 rateList: temp.rateList
               });
             }
@@ -757,7 +823,9 @@ export default {
           if (['二连尾', '三连尾', '四连尾', '五连尾'].indexOf(y.proTypeName) >= 0) {
             let temp = {
               itemID: y.itemInfoList[0].itemID,
-              rate: y.itemInfoList[0].rate
+              rate: y.itemInfoList[0].rate,
+              itemValue: y.itemInfoList[0].itemValue,
+              rateList: y.itemInfoList[0].rateList
             };
             y.itemInfoList = [];
 
@@ -765,7 +833,9 @@ export default {
               y.itemInfoList.push({
                 itemName: i + '尾',
                 itemID: temp.itemID,
-                rate: temp.rate
+                rate: temp.rate,
+                itemValue: temp.itemValue && temp.itemValue.split(';')[i],
+                rateList: temp.rateList
               });
             }
           }
@@ -804,9 +874,9 @@ export default {
     return result;
   },
   // 机选
-  randomBallArr(decType) {
+  randomBallArr(decType, playMethod, curSecond) {
     console.log(decType);
-    let res = randomBall(decType);
+    let res = randomBall(decType, playMethod, curSecond);
     if (res instanceof Array) {
       return res;
     } else {
@@ -993,6 +1063,7 @@ export default {
     return plans
       .map(x => {
         console.log(x.playMethod, x);
+        console.log(x.playMethod.proType, x.ball[0].split(',')[2]);
         let ballPos = '';
         ballPos =
           lhcBallPos[x.playMethod.proType][x.ball[0].split(',')[2]].ballPos;

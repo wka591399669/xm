@@ -40,17 +40,22 @@
         {{playMethods[curMethod].des}}
       </p> -->
       <div class="balls" :class="playMethods[curMethod].proType">
+        <div class="rate" v-if="['LHCZXBZ','LHCHX'].indexOf(playMethods[curMethod].proType) >=0">
+          <span>{{playMethods[curMethod].proTypeName}}</span>
+          <span>赔率：{{showTwoRate}}</span>
+        </div>
         <div
         v-for="(it,i) in playMethods[curMethod].childProTypeList" 
         :key="i"
         v-if="it.proTypeName == curSecond"
         >
+          
           <span 
           class="ball"
           v-for="(is,j) in it.itemInfoList"
           :key="j"
-          :class="{'check':tempBall.ball.indexOf(`0,${is.itemName},${is.itemID},${curSecond}`) >= 0}"          
-          @click="handleBallClick(`0,${is.itemName},${is.itemID},${curSecond}`)"
+          :class="[is.itemID,{'check':tempBall.ball.indexOf(`0,${is.itemName},${is.itemID},${curSecond},${is.rate}`) >= 0}]"          
+          @click="handleBallClick(`0,${is.itemName},${is.itemID},${curSecond},${is.rate}`)"
           >
             <span>
             {{is.itemName}}
@@ -73,7 +78,7 @@
         </div>
         <!-- <span :class="{'disabel':!planBall.length}" @click="toPlanAdmin">确定</span> -->
         <span @click="toPlanAdmin">确定</span>
-        <!-- <span @click="getRandom">机选</span> -->
+        <span @click="getRandom">机选</span>
       </div>
     </div>
     <!-- 方案管理 -->
@@ -92,7 +97,7 @@
       </div>
       <div class="quick">
         <span @click="planShow=false"><img src="../../assets/img/lottery/hand.png">手选号码</span>
-        <!-- <span @click="getRandomAndAddlPlan"><img src="../../assets/img/lottery/random.png">随机一注</span> -->
+        <span @click="getRandomAndAddlPlan"><img src="../../assets/img/lottery/random.png">随机一注</span>
         <span @click="clearPlan('all')"><img src="../../assets/img/lottery/clear.png">清除列表</span>
       </div>
       <div class="operation">
@@ -109,7 +114,7 @@
                 <span>
                   {{it.playMethod.proTypeName}}-{{curSecond}}
                 </span>
-                <!-- <span>{{it.stake}}注</span> -->
+                <span>赔率：{{it.rate}}</span>
                 <!-- <span>{{it.planMoney}}元</span> -->
               </p>
             </div>
@@ -188,7 +193,7 @@ export default {
       return this.$store.state.bet.tempBall;
     },
     planBall() {
-      console.log(1)
+      console.log(1);
       return this.$store.state.bet.planBall;
     },
     showTime() {
@@ -221,7 +226,7 @@ export default {
     },
     // 统计投注区
     allMoney() {
-      console.log(this.planBall)
+      console.log(this.planBall);
       return this.planBall.reduce((a, b) => {
         return a + b.planMoney;
       }, 0);
@@ -230,6 +235,15 @@ export default {
       return this.planBall.reduce((a, b) => {
         return a + b.stake;
       }, 0);
+    },
+    // 显示合肖和自选不中的赔率
+    showTwoRate() {
+      let rateObj = this.playMethods[
+        this.curMethod
+      ].childProTypeList[0].itemInfoList[0].rateList.filter(
+        x => x.ball == this.tempBall.ball.length
+      );
+      return rateObj.length ? rateObj[0].rate : '--';
     }
   },
   created() {
@@ -253,7 +267,7 @@ export default {
      */
     // 切换玩法
     headerCheck(first, second) {
-      console.log(second)
+      console.log(second);
       this.$store.dispatch('bet/headerCheckSecond', {
         first: first.proType,
         second: second.proTypeName
@@ -261,11 +275,19 @@ export default {
     },
     // 点击选号
     handleBallClick(v) {
-      if(this.curMethod == 'LHCZXBZ' && this.tempBall.ball.length >= 11 && this.tempBall.ball.indexOf(v) < 0){
+      if (
+        this.curMethod == 'LHCZXBZ' &&
+        this.tempBall.ball.length >= 11 &&
+        this.tempBall.ball.indexOf(v) < 0
+      ) {
         this.$vux.toast.text('自选不中最多只能选择11个号码', 'bottom');
         return false;
       }
-      if(this.curMethod == 'LHCHX' && this.tempBall.ball.length >= 11 && this.tempBall.ball.indexOf(v) < 0){
+      if (
+        this.curMethod == 'LHCHX' &&
+        this.tempBall.ball.length >= 11 &&
+        this.tempBall.ball.indexOf(v) < 0
+      ) {
         this.$vux.toast.text('合肖最多只能选择11个号码', 'bottom');
         return false;
       }
@@ -294,34 +316,53 @@ export default {
       }
     },
     // 修改单个方案项的金额
-    changePlan(e){
-      this.$store.commit('bet/changePlanMoney',{
-        i:e.target.attributes.index.value,
-        money:e.target.value
+    changePlan(e) {
+      this.$store.commit('bet/changePlanMoney', {
+        i: e.target.attributes.index.value,
+        money: e.target.value
       });
     },
     // 批量修改方案金额
-    changeAllPlan(e){
-      this.$store.commit('bet/changeAllPlanMoney',e.target.value);
+    changeAllPlan(e) {
+      this.$store.commit('bet/changeAllPlanMoney', e.target.value);
     },
     // 添加到投注区
     addPlan() {
-      if(['LHCZXBZ','LHCHX','LHCLXLW','LHCLM'].indexOf(this.curMethod) >= 0){
-        console.log(this.tempBall)
+      if (
+        ['LHCZXBZ', 'LHCHX', 'LHCLXLW', 'LHCLM'].indexOf(this.curMethod) >= 0
+      ) {
+        console.log(this.tempBall);
+        let rate;
+        if (
+          ['LHCZXBZ', 'LHCHX'].indexOf(
+            this.playMethods[this.curMethod].proType
+          ) >= 0
+        ) {
+          let rateObj = this.playMethods[
+            this.curMethod
+          ].childProTypeList[0].itemInfoList[0].rateList.filter(
+            x => x.ball == this.tempBall.ball.length
+          );
+          rate = rateObj.length ? rateObj[0].rate : '--';
+        } else {
+          rate = this.tempBall.ball[0].rate;
+        }
         let plan = {
           ball: this.tempBall.ball,
           playMethod: this.playMethods[this.curMethod],
           stake: this.stake,
+          rate: rate,
           aloneMoney: this.tempBall.planMoney * this.tempBall.moneyType,
-          planMoney: this.tempBall.planMoney * this.stake * this.tempBall.moneyType
-        }
+          planMoney:
+            this.tempBall.planMoney * this.stake * this.tempBall.moneyType
+        };
         this.$store.dispatch('bet/addPlan', plan);
-      }else{
-        
+      } else {
         this.tempBall.ball.map(x => {
           let plan = {
             ball: [x],
-            curSecond:this.curSecond,
+            curSecond: this.curSecond,
+            rate: x.split(',')[4],
             playMethod: this.playMethods[this.curMethod],
             stake: this.stake / this.tempBall.ball.length,
             aloneMoney: this.tempBall.planMoney * this.tempBall.moneyType,
@@ -330,7 +371,7 @@ export default {
           this.$store.dispatch('bet/addPlan', plan);
         });
       }
-      
+
       // let plan = {
       //   ball: this.tempBall.ball,
       //   playMethod: this.playMethods[this.curMethod],
@@ -379,7 +420,7 @@ export default {
       //   res[x.split(',')[0]].push(x.split(',')[1]);
       // });
       // return res.map(x => x.join('')).join(',');
-      return arr.map(x=>x.split(',')[1]).join(',');
+      return arr.map(x => x.split(',')[1]).join(',');
     },
     // 下单
     async toOrder() {

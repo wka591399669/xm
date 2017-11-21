@@ -94,10 +94,15 @@
             margin-left: 0.4rem;
             width: 4.9rem;
             color: #fff;
+
             p:nth-child(1) {
               color: #ffe48c;
               font-size: 0.28rem;
               margin-bottom: 0.1rem;
+              width: 2.7rem;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
             p:nth-child(2) {
               font-size: 0.24rem;
@@ -305,6 +310,19 @@
         .checkArea {
           flex: 1;
           padding-right: 0.3rem;
+          .quick {
+            background-color: rgba(51, 51, 51, 1);
+            margin-bottom: 0.3rem;
+            font-size: 0.32rem;
+            color: #fff;
+            display: flex;
+            span {
+              flex: 1;
+              text-align: center;
+              height: 0.6rem;
+              line-height: 0.6rem;
+            }
+          }
           ul {
             overflow: hidden;
             li {
@@ -593,11 +611,30 @@
 }
 
 #BetLhc {
+  .planPopup .list ul li > div p:nth-child(2) span:nth-child(2) {
+    display: block;
+    color: #888;
+  }
   .balls {
+    .rate {
+      display: block;
+      text-align: center;
+      span {
+        &:nth-child(1) {
+          color: #ffe48c;
+          font-size: 0.32rem;
+        }
+        &::nth-child(2) {
+          color: #888;
+          font-size: 0.26rem;
+        }
+      }
+    }
     & > div {
       padding: 0.3rem;
       display: flex;
       flex-wrap: wrap;
+
       .ball {
         flex: 1 0 20%;
         margin-left: 0.3rem;
@@ -605,6 +642,101 @@
         text-align: center;
         font-size: 0.28rem;
         color: #fff;
+        overflow: hidden;
+        &.LHCSB0,
+        &.LHCSB1,
+        &.LHCSB2,
+        &.LHCWX0,
+        &.LHCWX1,
+        &.LHCWX2,
+        &.LHCWX3,
+        &.LHCWX4 {
+          overflow: hidden;
+          span {
+            background-color: #292929;
+            box-sizing: border-box;
+            padding: 0.2rem;
+            height: 2.8rem;
+            border-style: solid;
+            border-width: 2px;
+            border-image-slice: 1;
+          }
+          i {
+            word-wrap: break-word;
+            line-height: 0.5rem;
+          }
+        }
+        &.LHCSB0 {
+          span {
+            border-image-source: linear-gradient(
+              0deg,
+              rgba(228, 76, 76, 1) 0%,
+              rgba(255, 147, 147, 1) 100%
+            );
+          }
+          &.check span {
+            background-image: linear-gradient(
+                0deg,
+                rgba(228, 76, 76, 1) 0%,
+                rgba(255, 147, 147, 1) 100%
+              ),
+              linear-gradient(rgba(90, 238, 170, 1), rgba(90, 238, 170, 1));
+          }
+        }
+        &.LHCSB1 {
+          span {
+            border-image-source: linear-gradient(
+              0deg,
+              rgba(75, 101, 177, 1) 0%,
+              rgba(120, 155, 255, 1) 100%
+            );
+          }
+          &.check span {
+            background-image: linear-gradient(
+              0deg,
+              rgba(75, 101, 177, 1) 0%,
+              rgba(120, 155, 255, 1) 100%
+            );
+          }
+        }
+        &.LHCSB2 {
+          span {
+            border-image-source: linear-gradient(
+              0deg,
+              rgba(66, 199, 138, 1) 0%,
+              rgba(113, 229, 176, 1) 100%
+            );
+          }
+          &.check span {
+            background-image: linear-gradient(
+                0deg,
+                rgba(66, 199, 138, 1) 0%,
+                rgba(113, 229, 176, 1) 100%
+              ),
+              linear-gradient(rgba(255, 52, 52, 1), rgba(255, 52, 52, 1));
+          }
+        }
+        &.LHCWX0,
+        &.LHCWX1,
+        &.LHCWX2,
+        &.LHCWX3,
+        &.LHCWX4 {
+          span {
+            border-image-source: linear-gradient(
+              0deg,
+              rgba(210, 179, 122, 1) 0%,
+              rgba(238, 218, 165, 1) 100%
+            );
+          }
+          &.check span {
+            background-image: linear-gradient(
+                0deg,
+                rgba(210, 179, 122, 1) 0%,
+                rgba(238, 218, 165, 1) 100%
+              ),
+              linear-gradient(rgba(213, 183, 127, 1), rgba(213, 183, 127, 1));
+          }
+        }
         & > span {
           display: block;
           width: 100%;

@@ -96,9 +96,19 @@ export default {
       } else {
         window.localStorage.setItem('token', res.returnMap.token);
         window.localStorage.setItem('userId', this.login.username);
-        window.localStorage.setItem('thirdToken', res.returnMap.userInfo.thirdToken);
-        window.localStorage.setItem('thirdAccId', res.returnMap.userInfo.thirdAccId);
-        window.localStorage.setItem('thirdUserName', res.returnMap.userInfo.thirdUserName);
+        window.localStorage.setItem(
+          'thirdToken',
+          res.returnMap.userInfo.thirdToken
+        );
+        window.localStorage.setItem(
+          'thirdAccId',
+          res.returnMap.userInfo.thirdAccId
+        );
+        window.localStorage.setItem(
+          'thirdUserName',
+          res.returnMap.userInfo.thirdUserName
+        );
+        this.connectNim();
         this.$router.go(-1);
       }
     },
@@ -121,18 +131,26 @@ export default {
         }
       });
       if (res.returnCode == '0000') {
-        // this.check(1);
         this.$vux.toast.show({
           text: '注册成功',
           type: 'success'
         });
         window.localStorage.setItem('token', res.returnMap.token);
         window.localStorage.setItem('userId', this.register.username);
-        window.localStorage.setItem('thirdToken', res.returnMap.userInfo.thirdToken);
-        window.localStorage.setItem('thirdAccId', res.returnMap.userInfo.thirdAccId);
-        window.localStorage.setItem('thirdUserName', res.returnMap.userInfo.thirdUserName);
+        window.localStorage.setItem(
+          'thirdToken',
+          res.returnMap.userInfo.thirdToken
+        );
+        window.localStorage.setItem(
+          'thirdAccId',
+          res.returnMap.userInfo.thirdAccId
+        );
+        window.localStorage.setItem(
+          'thirdUserName',
+          res.returnMap.userInfo.thirdUserName
+        );
+        this.connectNim();
         this.$router.go(-1);
-
       } else {
         this.$vux.toast.show({
           text: res.returnMessage,

@@ -7,6 +7,7 @@ let timeDown = null; // 倒计时
 
 export default {
   state: {
+    roomInfo: {}, // pc28房间信息
     time: 0, // 倒计时时间
     isStop: {
       state: false, // 是否停盘
@@ -93,6 +94,9 @@ export default {
     'bet/time'(state, res) {
       state.time = res;
     },
+    'bet/roomInfo'(state, res) {
+      state.roomInfo = Object.assign({}, res);
+    },
     /**
      * play
      */
@@ -114,6 +118,7 @@ export default {
       } else {
         state.tempBall.ball.push(v);
       }
+      state.tempBall.ball.sort((a, b) => a.split(',')[1] - b.split(',')[1]);
     },
     'bet/handleRateDrag'(state, v) {
       // 返利
@@ -350,12 +355,18 @@ export default {
     // 机选
     async 'bet/getRandom'(context) {
       await context.dispatch('bet/clearPick');
-      let res = service.randomBallArr(context.state.curMethod);
+      // 六合彩需要玩法和二级玩法
+      let res = service.randomBallArr(
+        context.state.curMethod,
+        context.state.playMethods[context.state.curMethod],
+        context.state.curSecond
+      );
       console.log(res);
       context.state.tempBall.ball = res;
     },
     // 添加到投注区
     async 'bet/addPlan'(context, plan) {
+      console.log(plan);
       context.state.planBall.unshift(plan);
     }
   },

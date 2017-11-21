@@ -42,13 +42,13 @@ let Fetch = async (url, option = {}) => {
       success(e) {
         // token 失效
         if (JSON.parse(e).returnCode == 'QUERY_012') {
-          Fetch.cbTokenOut && Fetch.cbTokenOut();
+          Fetch.cbTokenOut && Fetch.cbTokenOut(JSON.parse(e));
         }
         resolve(JSON.parse(e));
       },
       error(e) {
-        Fetch.cbError && Fetch.cbError(e);
-        reject(e);
+        Fetch.cbError && Fetch.cbError(JSON.parse(e));
+        reject(JSON.parse(e));
       }
     });
   });

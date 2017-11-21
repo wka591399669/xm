@@ -58,9 +58,10 @@ export default {
     },
     // 进入游戏
     async toGame(it, is) {
-      console.log(is)
+      this.$store.commit('bet/roomInfo', is);
       this.$router.push(
-        `/bet28/${this.$route.params.type}/${this.$route.params.gameType}/${is.roomId}`
+        `/bet28/${this.$route.params.type}/${this.$route.params
+          .gameType}/${is.roomId}`
       );
     }
   }

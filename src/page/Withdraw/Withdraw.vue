@@ -143,7 +143,7 @@ export default {
       let res = await this.$http('/queryAccOutCondition');
       console.log(res);
       // 没修改提现密码
-      if (res.returnMap.isPasswordEquals) {
+      if (!res.returnMap.isPassword) {
         this.$vux.toast.show({
           text: '请先修改提现密码'
         });

@@ -193,15 +193,15 @@
         </group>
       </div>
       <div class="betBtn">
-        <div @click="toOrder(10)">最小投注</div>
-        <div @click="toOrder('two')">双倍投注</div>
+        <div @click="money=10">最小投注</div>
+        <div @click="money=money*2">双倍投注</div>
         <div @click="toOrder()">确认投注</div>
       </div>
     </popup>
   </div>
 </template>
 <script>
-import { Popup, Range, XHeader ,Swiper,SwiperItem,XInput,Group} from 'vux';
+import { Popup, Range, XHeader, Swiper, SwiperItem, XInput, Group } from 'vux';
 import BetHeader from './component/BetHeader';
 import service from './Bet.service';
 import playMethod from './playMethodDoc.json';
@@ -224,13 +224,16 @@ export default {
     return {
       drag: 0, // 反水拖动距离
       showHis: false, // 打开历史
-      betIndex:0, // 当前投注界面Index
-      showBet:false, // 显示投注界面
-      money:'',//投注金额
-      talk:[] // 聊天信息
+      betIndex: 0, // 当前投注界面Index
+      showBet: false, // 显示投注界面
+      money: '', //投注金额
+      talk: [] // 聊天信息
     };
   },
   computed: {
+    roomInfo() {
+      return this.$store.state.bet.roomInfo;
+    },
     his() {
       return this.$store.state.bet.his;
     },
@@ -294,9 +297,36 @@ export default {
     }
   },
   created() {
+    this.initRoom();
     this.init();
   },
   methods: {
+    //
+    async initRoom() {
+      if (!Object.keys(this.roomInfo).length) {
+        this.$router.go(-1);
+      }
+      console.log(nim);
+      nim.getChatroomAddress({
+        chatroomId: this.roomInfo.thirdRoomId,
+        done: (err, obj) => {
+          console.log(obj);
+          Chatroom.getInstance({
+            appKey: SETTING.wyKey,
+            account: window.localStorage.getItem('thirdAccId'),
+            token: window.localStorage.getItem('thirdToken'),
+            chatroomId: this.roomInfo.thirdRoomId,
+            chatroomAddresses: obj.address,
+            onconnect: () => {
+              console.log('进入房间成功');
+            },
+            onmsgs: msg => {
+              console.log(msg);
+            }
+          });
+        }
+      });
+    },
     /**
      * init
      */
@@ -342,14 +372,13 @@ export default {
     },
     // 添加到投注区
     addPlan() {
-      
       this.tempBall.ball.map(x => {
         let plan = {
           ball: [x],
           playMethod: this.playMethods[this.curMethod],
           stake: 1,
           aloneMoney: this.money,
-          planMoney:this.money
+          planMoney: this.money
         };
         this.$store.dispatch('bet/addPlan', plan);
       });
@@ -408,10 +437,10 @@ export default {
         this.$vux.toast.text('合法选球，否则无法购买', 'bottom');
         return;
       }
-      if(type == 10){
+      if (type == 10) {
         this.money = 10;
       }
-      if(type == 'two'){
+      if (type == 'two') {
         this.money = this.money * 2;
       }
 
@@ -429,7 +458,7 @@ export default {
         roomId: this.$route.params.roomId,
         rakeOff: 0
       };
-      console.log(req)
+      console.log(req);
       let res = await this.$http('/addOrder', {
         body: req
       });
@@ -438,14 +467,14 @@ export default {
           text: '下单成功',
           type: 'success'
         });
-        console.log(this.planBall)
+        console.log(this.planBall);
         this.talk.push({
-          type:1,
-          name:window.localStorage.getItem('userId'),
-          time:new Date().getHours() + ':' + new Date().getMinutes(),
-          issue:this.saleInfo.issueID,
-          money:this.money,
-          plan:this.planBall[0].ball[0].split(',')[2]
+          type: 1,
+          name: window.localStorage.getItem('userId'),
+          time: new Date().getHours() + ':' + new Date().getMinutes(),
+          issue: this.saleInfo.issueID,
+          money: this.money,
+          plan: this.planBall[0].ball[0].split(',')[2]
         });
         this.leavePlanAdmin();
         this.clearPlan('all');

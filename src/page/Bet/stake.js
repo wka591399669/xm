@@ -499,6 +499,9 @@ export default {
   LHCTM: function() {
     return arguments[0][0].length;
   },
+  LHCTMA: function() {
+    return arguments[0][0].length;
+  },
   LHCSB: function() {
     return arguments[0][0].length;
   },
@@ -557,9 +560,6 @@ export default {
   },
   LHCLXLW_3: function() {
     return Permutation(5, arguments[0][0].length);
-  },
-  LHCLM: function() {
-    return 1;
   },
   LHCLM_37: function() {
     return Permutation(4, arguments[0][0].length);

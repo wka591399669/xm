@@ -1,4 +1,4 @@
-export default decType => {
+export default (decType, playMethod, curSecond) => {
   var str = '';
   var index = null;
   var sscBallHZ = [
@@ -859,6 +859,318 @@ export default decType => {
     case 'K3EBTH':
       var i = Math.round(Math.random() * 4 + 1);
       str = i + '' + (i + 1);
+      break;
+    // 六合彩
+    case 'LHCTM':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCTMA':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCSB':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCZM':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCDXZMT':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCDXZM':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+
+    case 'LHCTTW':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCZX':
+      str = [];
+
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCTX':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCHX':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let arr = Object.assign([], x.itemInfoList);
+          [1, 2].map(y => {
+            let i = Math.round(Math.random() * (arr.length - 1));
+            str.push(
+              `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                .rate}`
+            );
+            arr.splice(i, 1);
+          });
+        }
+      });
+      str.sort((a, b) => a.split(',')[1] - b.split(',')[1]);
+      break;
+    case 'LHCQSB':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCWX':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCPTYXWS':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCZONGX':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let i = Math.round(Math.random() * (x.itemInfoList.length - 1));
+          str.push(
+            `0,${x.itemInfoList[i].itemName},${x.itemInfoList[i]
+              .itemID},${curSecond},${x.itemInfoList[i].rate}`
+          );
+        }
+      });
+      break;
+    case 'LHCZXBZ':
+      str = [];
+      playMethod.childProTypeList.map(x => {
+        if (x.proTypeName == curSecond) {
+          let arr = Object.assign([], x.itemInfoList);
+          [1, 2, 3, 4, 5, 6].map(y => {
+            let i = Math.round(Math.random() * (arr.length - 1));
+            str.push(
+              `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                .rate}`
+            );
+            arr.splice(i, 1);
+          });
+        }
+      });
+      str.sort((a, b) => a.split(',')[1] - b.split(',')[1]);
+      break;
+    case 'LHCLXLW':
+      str = [];
+      if (curSecond == '二连肖' || curSecond == '二连尾') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      if (curSecond == '三连肖' || curSecond == '三连尾') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2, 3].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      if (curSecond == '四连肖' || curSecond == '四连尾') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2, 3, 4].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      if (curSecond == '五连肖' || curSecond == '五连尾') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2, 3, 4, 5].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      str.sort((a, b) => a.split(',')[1] - b.split(',')[1]);
+      break;
+    case 'LHCLM':
+      str = [];
+      if (curSecond == '四全中') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2, 3, 4].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      if (curSecond == '三全中' || curSecond == '三中二') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2, 3].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      if (curSecond == '二全中' || curSecond == '二中特' || curSecond == '特串') {
+        playMethod.childProTypeList.map(x => {
+          if (x.proTypeName == curSecond) {
+            let arr = Object.assign([], x.itemInfoList);
+            [1, 2].map(y => {
+              let i = Math.round(Math.random() * (arr.length - 1));
+              str.push(
+                `0,${arr[i].itemName},${arr[i].itemID},${curSecond},${arr[i]
+                  .rate}`
+              );
+              arr.splice(i, 1);
+            });
+          }
+        });
+      }
+      str.sort((a, b) => a.split(',')[1] - b.split(',')[1]);
       break;
   }
   return str;

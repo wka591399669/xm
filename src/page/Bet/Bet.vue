@@ -44,7 +44,9 @@
             <p>{{it}}</p>
           </div>
           <div class="checkArea">
-            <div class="quick"></div>
+            <!-- <div class="quick" v-if="playMethods[curMethod].quick">
+              <span v-for="(is,j) in playMethods[curMethod].quick" :key="j">{{is}}</span>
+            </div> -->
             <!-- 双色球 -->
             <ul class="ssq" v-if="playMethods[curMethod].typeDetId == 'PTSSQ'">
               <li class="ssqred" v-for="(is,j) in playMethods[curMethod].ballRed" v-if="i==0" :key="j">
@@ -390,7 +392,7 @@ export default {
         });
         this.leavePlanAdmin();
         this.clearPlan('all');
-        this.$store.commit('bet/resetPlay')
+        this.$store.commit('bet/resetPlay');
       } else {
         this.$vux.toast.show({
           text: res.returnMessage,
