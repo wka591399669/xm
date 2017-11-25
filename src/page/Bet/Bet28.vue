@@ -41,17 +41,14 @@
       </div>
     </div>
     <div class="main">
-      <ul class="talk">
+      <ul class="talk" v-for="(it,i) in talk" :key="i">
         <li 
-        v-for="(it,i) in talk" 
-        :key="i"
         class="info"
         v-if="it.type == 0"
         >
-          <p>欢迎<span>133****1885</span>进入房间</p>
+          <p>欢迎<span>{{it.name}}</span>进入房间</p>
         </li>
-        <li v-for="(it,i) in talk" 
-        :key="i"
+        <li
         class="me"
         v-if="it.type == 1">
           <div class="avatar">
@@ -68,24 +65,22 @@
             </div>
           </div>
         </li>
-        <!-- <li class="info">
-          <p>欢迎<span>133****1885</span>进入房间</p>
-        </li>
-        <li class="me">
+        <li
+        v-if="it.type == 2">
           <div class="avatar">
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>123213123<span>11:53</span></p>
+            <p>{{it.name}}<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
-                <span>第21312312321</span>
-                <span>投注类型</span>
+                <span>第{{it.issue}}期</span>
+                <span>投注类型:{{it.plan}}</span>
               </p>
-              <p>132yuanbao</p>
+              <p><img src="../../assets/img/yb.png" alt="">{{it.money}}元宝</p>
             </div>
           </div>
-        </li> -->
+        </li>
       </ul>
     </div>
     <div class="pageFooter" @click="showBet=true">
@@ -227,7 +222,8 @@ export default {
       betIndex: 0, // 当前投注界面Index
       showBet: false, // 显示投注界面
       money: '', //投注金额
-      talk: [] // 聊天信息
+      talk: [], // 聊天信息
+      toDown: null //下啦倒计时
     };
   },
   computed: {
@@ -300,8 +296,22 @@ export default {
     this.initRoom();
     this.init();
   },
+  mounted() {
+    this.toDown = setInterval(() => {
+      if (
+        document.querySelector('.main').offsetHeight +
+          200 -
+          (document.documentElement.scrollTop + document.body.offsetHeight) <
+        60
+      ) {
+        window.scrollTo(0, 1000000);
+      }
+    }, 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.toDown);
+  },
   methods: {
-    //
     async initRoom() {
       if (!Object.keys(this.roomInfo).length) {
         this.$router.go(-1);
@@ -322,10 +332,58 @@ export default {
             },
             onmsgs: msg => {
               console.log(msg);
+              msg.map(x => this.sendMsg(x));
             }
           });
         }
       });
+    },
+    // 发送消息
+    sendMsg(msg) {
+      let planDes = msg.custom && JSON.parse(msg.custom);
+      let type = 0;
+      let name = msg.fromNick;
+      if (!name) return false;
+      let time =
+        (new Date(msg.time).getHours() < 10
+          ? '0' + new Date(msg.time).getHours()
+          : new Date(msg.time).getHours()) +
+        ':' +
+        (new Date().getMinutes() < 10
+          ? '0' + new Date().getMinutes()
+          : new Date().getMinutes());
+      let money;
+      let issue;
+      let plan;
+      if (msg.type == 'notification' && msg.attach.type == 'memberEnter') {
+        type = 0;
+      } else if (
+        msg.type == 'tip' &&
+        msg.tip == '投注记录' &&
+        msg.fromNick == window.localStorage.getItem('userId')
+      ) {
+        type = 1;
+        money = planDes.playMoney;
+        issue = planDes.issueID;
+        plan = planDes.betStyle;
+      } else if (msg.type == 'tip' && msg.tip == '投注记录') {
+        type = 2;
+        money = planDes.playMoney;
+        issue = planDes.issueID;
+        plan = planDes.betStyle;
+        console.log(plan);
+      }
+
+      let m = {
+        type,
+        money,
+        issue,
+        plan,
+        name,
+        time
+      };
+      this.talk.push(m);
+      this.talk.length > 40 && this.talk.shift();
     },
     /**
      * init

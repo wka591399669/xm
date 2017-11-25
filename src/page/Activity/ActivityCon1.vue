@@ -2,7 +2,7 @@
   <div id="ActivityCon1">
     <img src="../../assets/img/activity1Bg.png" alt="">
     <div class="main">
-      <img v-if="info.taskState == '0' && info.childTaskList[0].taskState == '1'" @click="getReward" class="btn" src="../../assets/img/1canget.png" alt="">
+      <img v-if="info.taskState == '0' && (info.childTaskList[0].taskState == '1'||info.childTaskList[1].taskState == '1'||info.childTaskList[2].taskState == '1')" @click="getReward" class="btn" src="../../assets/img/1canget.png" alt="">
       <img v-else-if="info.taskState == '1' && info.childTaskList[0].taskState == '2'" class="btn" src="../../assets/img/1isget.png" alt="">
       <img v-else class="btn" src="../../assets/img/1noget.png" alt="">
       <ul v-if="info.childTaskList">
