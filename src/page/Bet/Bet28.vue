@@ -317,11 +317,13 @@ export default {
         this.$router.go(-1);
       }
       console.log(nim);
+      // 获取聊天室地址
       nim.getChatroomAddress({
         chatroomId: this.roomInfo.thirdRoomId,
         done: (err, obj) => {
           console.log(obj);
-          Chatroom.getInstance({
+          // 连接聊天室
+          let room = Chatroom.getInstance({
             appKey: SETTING.wyKey,
             account: window.localStorage.getItem('thirdAccId'),
             token: window.localStorage.getItem('thirdToken'),
@@ -329,6 +331,16 @@ export default {
             chatroomAddresses: obj.address,
             onconnect: () => {
               console.log('进入房间成功');
+              // 获取历史
+              console.log(room);
+              room.getHistoryMsgs({
+                timetag: Date.parse(new Date()),
+                limit: 10,
+                done: (err, his) => {
+                  console.log(his);
+                  his.msgs.map(x => this.sendMsg(x));
+                }
+              });
             },
             onmsgs: msg => {
               console.log(msg);
