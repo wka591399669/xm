@@ -136,6 +136,12 @@ const MoneyPassword = r =>
     () => r(require('./page/Password/MoneyPassword.vue')),
     'MoneyPassword'
   );
+  const BetRuleDes = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/BetRecord/BetRuleDes.vue')),
+    'BetRuleDes'
+  );
 
 Vue.use(Router);
 
@@ -353,6 +359,14 @@ export default new Router({
       path: '/info',
       name: 'Info',
       component: Info,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/betRuleDes',
+      name: 'BetRuleDes',
+      component: BetRuleDes,
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }

@@ -25,11 +25,23 @@
           </p>
         </span>
         <ul v-if="showHis">
+          <li>
+            <span>期数</span>
+            <span>开奖号码</span>
+            <span>和值</span>
+            <span>大小</span>
+            <span>单双</span>
+          </li>
           <li v-for="(it,i) in his" :key="i">
             <span>{{it.issueId}}</span>
             <span>
               <em v-for="(is,j) in it.resultStr.split(',')" :key="j">{{is}}</em>
             </span>
+            <span>{{parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))}}</span>
+            <span v-if="parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))>=14">大</span>
+            <span v-else>小</span>
+            <span v-if="(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==1">单</span>
+            <span v-else>双</span>
           </li>
         </ul>
       </div>
