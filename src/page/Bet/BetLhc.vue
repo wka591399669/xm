@@ -25,11 +25,33 @@
           </p>
         </span>
         <ul v-if="showHis">
+         <li>
+            <span>期号</span>
+            <span style="text-align:center;">平码</span>
+            <span>特码</span>
+            <span>生肖</span>
+            <span>单双</span>
+            <span>色波</span>
+            <span>五行</span>
+            <span>特头</span>
+            <span>尾数</span>
+            <span>单双</span>
+          </li>
           <li v-for="(it,i) in his" :key="i">
-            <span>{{it.issueId}}</span>
+            <span>{{it.issueId.slice(4,7)}}</span>
             <span>
-              <em v-for="(is,j) in it.resultStr.split(',')" :key="j">{{is}}</em>
+              <em v-for="(is,j) in it.resultStr.split(',').slice(0,6)" :key="j">{{is}}</em>
             </span>
+            <span>
+              <em>{{it.resultStr.split(",").join("").slice(12,14)}}</em>
+            </span>
+            <span>{{it.resultSX}}</span>
+            <span>{{it.resultDS}}</span>
+            <span>{{it.resultSB}}</span>
+            <span>{{it.resultWX}}</span>
+            <span>{{it.resultTT}}</span>
+            <span>{{it.resultWS}}</span>
+            <span>{{it.resultHDS}}</span>
           </li>
         </ul>
       </div>

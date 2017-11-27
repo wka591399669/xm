@@ -8,7 +8,7 @@
       </div>
       <div slot="right">
         <img src="../../../assets/img/lottery/record.png" @click="$router.push('/betRecord')">
-        <img src="../../../assets/img/lottery/more.png">
+        <img src="../../../assets/img/lottery/more.png" @click="showMoreHelp">
       </div>
     </XHeader>
     <popup v-model="show" class="menu" position="top">
@@ -16,6 +16,20 @@
         <li v-for="(it,i) in method" :key="i" @click="check(it.typeDetId)">
           {{it.fname}}-{{it.name}}
         </li>
+      </ul>
+    </popup>
+    <popup v-model="moreHelpShow" class="moreHelp" position="top" >
+      <ul>
+        <a :href="serviceLink">
+          <li>
+              联系客服
+          </li>
+        </a>
+        <a :href="gameTypeDecLink">
+          <li>
+            玩法介绍
+          </li>
+        </a>
       </ul>
     </popup>
     </div>
@@ -27,7 +41,7 @@
         </div>
         <div slot="right">
           <img src="../../../assets/img/lottery/record.png" @click="$router.push('/betRecord')">
-          <img src="../../../assets/img/lottery/more.png">
+          <img src="../../../assets/img/lottery/more.png" @click="showMoreHelp">
         </div>
       </XHeader>
       <popup v-model="show" class="menu" position="top" v-if="first&&method[first]">
@@ -42,6 +56,20 @@
           </li>
         </ul>
       </popup>
+      <popup v-model="moreHelpShow" class="moreHelp" position="top" >
+      <ul>
+        <a :href="serviceLink">
+          <li>
+              联系客服
+          </li>
+        </a>
+        <a :href="gameTypeDecLink">
+          <li>
+            玩法介绍
+          </li>
+        </a>
+      </ul>
+    </popup>
     </div>
     
   </div>
@@ -62,10 +90,16 @@ export default {
       return this.$store.state.bet.gameType;
     }
   },
+  async created() { 
+    await this.service(); 
+  },
   data() {
     return {
       show: false,
-      first: 'default'
+      first: 'default',
+      serviceLink:'',
+      gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$store.state.bet.gameType+'.html',
+      moreHelpShow: false
     };
   },
   methods: {
@@ -87,6 +121,17 @@ export default {
     checkSecond(it) {
       this.$emit('checkSecond', this.method[this.first], it);
       this.show = false;
+    },
+    //点击显示更多按钮
+    showMoreHelp() {
+      console.log(1);
+      this.moreHelpShow = !this.moreHelpShow;
+    },
+     // 获取客服地址
+    async service() {
+      let res = await this.$http('/queryCustomerServiceInfo');
+      console.log(res.returnMap.customerServiceUrl);
+      this.serviceLink = res.returnMap.customerServiceUrl;
     }
   },
   watch: {

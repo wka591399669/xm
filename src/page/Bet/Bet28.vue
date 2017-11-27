@@ -33,8 +33,14 @@
         <ul v-if="showHis">
           <li v-for="(it,i) in his" :key="i">
             <span>{{it.issueId}}</span>
-            <span>
-              <em v-for="(is,j) in it.resultStr.split(',')" :key="j">{{is}}</em>
+            <span class="hisContent">
+              <em v-for="(is,j) in it.resultStr.split(',').join('+')" :key="j">{{is}}</em>=
+              <em v-if="(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))>=14" :style="{ background:red}">{{parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))}}</em>
+              <em v-else :style="{ background:blue}">{{parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))}}</em>
+              <em v-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))>=14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==1'>(大、单)</em>
+              <em v-else-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))>=14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==0'>(大、双)</em>
+              <em v-else-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))<14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==1'>(小、单)</em>
+              <em v-else>(小、双)</em>
             </span>
           </li>
         </ul>
@@ -223,7 +229,9 @@ export default {
       showBet: false, // 显示投注界面
       money: '', //投注金额
       talk: [], // 聊天信息
-      toDown: null //下啦倒计时
+      toDown: null, //下啦倒计时
+      red:"red",
+      blue:"blue"
     };
   },
   computed: {
