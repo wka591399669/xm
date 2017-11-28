@@ -14,7 +14,7 @@
         </router-link>
       </flexbox-item> -->
       <flexbox-item>
-        <router-link to="/lotteryRes">
+        <router-link to="/lotteryRes" @click.native="window.location.reload()">
           <span></span>
           <p>开奖</p>
         </router-link>
