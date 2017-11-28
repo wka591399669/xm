@@ -20,12 +20,12 @@
     </popup>
     <popup v-model="moreHelpShow" class="moreHelp" position="top" >
       <ul>
-        <a :href="serviceLink">
+        <a target="_blank" :href="serviceLink">
           <li>
               联系客服
           </li>
         </a>
-        <a :href="gameTypeDecLink">
+        <a target="_blank" :href="gameTypeDecLink">
           <li>
             玩法介绍
           </li>
@@ -90,15 +90,19 @@ export default {
       return this.$store.state.bet.gameType;
     }
   },
-  async created() { 
-    await this.service(); 
+  async created() {
+    await this.service();
   },
   data() {
     return {
       show: false,
       first: 'default',
-      serviceLink:'',
-      gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$store.state.bet.gameType+'.html',
+      serviceLink: '',
+      gameTypeDecLink:
+        SETTING.apiHost +
+        '/gameType/' +
+        this.$store.state.bet.gameType +
+        '.html',
       moreHelpShow: false
     };
   },
@@ -127,7 +131,7 @@ export default {
       console.log(1);
       this.moreHelpShow = !this.moreHelpShow;
     },
-     // 获取客服地址
+    // 获取客服地址
     async service() {
       let res = await this.$http('/queryCustomerServiceInfo');
       console.log(res.returnMap.customerServiceUrl);
