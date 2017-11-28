@@ -65,6 +65,7 @@
             <!-- <ul v-if=""></ul> -->
             <!-- 其他球 -->
             <ul v-else>
+              <p><span v-for="(qs,k) in playMethods[curMethod].quick" :key="k" @click="handleQuickClick(i,k)">{{qs}}</span></p>
               <li v-for="(is,j) in playMethods[curMethod].ball" :key="j">
                 <span 
                 :class="{'check':tempBall.ball.indexOf(`${i},${is}`) >= 0}"
@@ -287,8 +288,14 @@ export default {
     headerCheck(type) {
       this.$store.dispatch('bet/headerCheck', type);
     },
+    
+    // 点击全大小单双
+    handleQuickClick(i,k) { 
+      this.$store.dispatch('bet/handleQuickClick', {i:i,k:k});
+    },
     // 点击选号
     handleBallClick(v) {
+      
       this.$store.dispatch('bet/handleBallClick', v);
     },
     // 拖动修改赔率

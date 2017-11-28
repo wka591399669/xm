@@ -110,7 +110,54 @@ export default {
         state.planBall.splice(type, 1);
       }
     },
+    
+    'bet/handleQuickClick'(state,{i,k}) {
+      let n = state.tempBall.ball;
+      
+      var startBall=1;
+      var endBall=10;
+      var maxBall=5;
+      var minBall=6;
+
+      if(state.gameType != 'PK10'){
+        startBall--;
+        endBall--;
+        maxBall--;
+        minBall--;
+      }
+      console.log("ttt1:"+state.tempBall.ball);
+     
+      for(var x=startBall;x<=endBall;x++){
+        console.log("ttt2:"+i+","+x);
+        var index = n.indexOf(i+","+x);
+        if(index!==-1){
+          n.splice(n.indexOf(i+","+x), 1);
+        } 
+       }
+       state.tempBall.ball=n;
+       console.log("ttt3:"+state.tempBall.ball);
+
+       for(var x=startBall;x<=endBall;x++){
+         if(k==0){//全
+           state.tempBall.ball.push(i+","+x);
+         }
+         if(k==1 && x>maxBall){//大 
+           state.tempBall.ball.push(i+","+x); 
+         }
+         if(k==2 && x<minBall){//小 
+           state.tempBall.ball.push(i+","+x); 
+         }
+         if(k==3 && x%2!=0){//单 
+           state.tempBall.ball.push(i+","+x); 
+         }
+         if(k==4 && x%2==0){//双 
+           state.tempBall.ball.push(i+","+x); 
+         }
+       }  
+      console.log("ttt4:"+state.tempBall.ball);
+    },
     'bet/handleBallClick'(state, v) {
+      console.log('ball:'+state.tempBall.ball);
       if (state.tempBall.ball.indexOf(v) >= 0) {
         let n = state.tempBall.ball;
         n.splice(state.tempBall.ball.indexOf(v), 1);
@@ -343,6 +390,11 @@ export default {
     // 清空投注区方案
     async 'bet/clearPlan'(context, type) {
       await context.commit('bet/clearPlan', type);
+    },
+    // 点击选号
+    async 'bet/handleQuickClick'(context, {i,k}) {
+      
+      await context.commit('bet/handleQuickClick',{i:i,k:k});
     },
     // 点击选号
     async 'bet/handleBallClick'(context, v) {

@@ -247,7 +247,7 @@ export default {
       red:"red",
       blue:"blue",
       serviceLink:'',
-      gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$store.state.bet.gameType+'.html',
+      gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$route.params.gameType+'.html',
       moreHelpShow: false
     };
   },
