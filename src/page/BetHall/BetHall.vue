@@ -3,7 +3,7 @@
     <XHeader :left-options="{backText: ''}">{{info.gameType}}</XHeader>
     <div class="box" v-for="(it,i) in room" :key="i">
       <div class="title">
-        <img class="title" :src="require(`../../assets/img/lottery/room${i+1}.png`)" alt="">
+        <img class="title" :src="require(`../../assets/img/lottery/room${i+1}.png`)" alt=""  @click="$router.push('/betRuleDes')">
         <p>回水{{it.roomRakeOffMin}}%-{{it.roomRakeOffMax}}%</p>
       </div>
       <div class="rooms">

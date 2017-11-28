@@ -4,7 +4,7 @@
       {{saleInfo.gameType}}
       <div slot="right">
         <img src="../../assets/img/lottery/record.png" @click="$router.push('/betRecord')">
-        <img src="../../assets/img/lottery/more.png">
+        <img src="../../assets/img/lottery/more.png"  @click="showMoreHelp">
       </div>
     </XHeader>
     <div class="pageTop">
@@ -33,8 +33,14 @@
         <ul v-if="showHis">
           <li v-for="(it,i) in his" :key="i">
             <span>{{it.issueId}}</span>
-            <span>
-              <em v-for="(is,j) in it.resultStr.split(',')" :key="j">{{is}}</em>
+            <span class="hisContent">
+              <em v-for="(is,j) in it.resultStr.split(',').join('+')" :key="j">{{is}}</em>=
+              <em v-if="(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))>=14" :style="{ background:red}">{{parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))}}</em>
+              <em v-else :style="{ background:blue}">{{parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))}}</em>
+              <em v-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))>=14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==1'>(大、单)</em>
+              <em v-else-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))>=14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==0'>(大、双)</em>
+              <em v-else-if='parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5))<14&&(parseInt(it.resultStr.slice(0,1))+parseInt(it.resultStr.slice(2,3))+parseInt(it.resultStr.slice(4,5)))%2==1'>(小、单)</em>
+              <em v-else>(小、双)</em>
             </span>
           </li>
         </ul>
@@ -193,6 +199,20 @@
         <div @click="toOrder()">确认投注</div>
       </div>
     </popup>
+    <popup v-model="moreHelpShow" class="moreHelp" position="top" >
+      <ul>
+        <a :href="serviceLink">
+          <li>
+              联系客服
+          </li>
+        </a>
+        <a :href="gameTypeDecLink">
+          <li>
+            玩法介绍
+          </li>
+        </a>
+      </ul>
+    </popup>
   </div>
 </template>
 <script>
@@ -223,7 +243,12 @@ export default {
       showBet: false, // 显示投注界面
       money: '', //投注金额
       talk: [], // 聊天信息
-      toDown: null //下啦倒计时
+      toDown: null, //下啦倒计时
+      red:"red",
+      blue:"blue",
+      serviceLink:'',
+      gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$store.state.bet.gameType+'.html',
+      moreHelpShow: false
     };
   },
   computed: {
@@ -295,6 +320,7 @@ export default {
   created() {
     this.initRoom();
     this.init();
+    this.service(); 
   },
   mounted() {
     this.toDown = setInterval(() => {
@@ -555,6 +581,17 @@ export default {
           type: 'warn'
         });
       }
+    },
+    //点击显示更多按钮
+    showMoreHelp() {
+      console.log(1);
+      this.moreHelpShow = !this.moreHelpShow;
+    },
+     // 获取客服地址
+    async service() {
+      let res = await this.$http('/queryCustomerServiceInfo');
+      console.log(res.returnMap.customerServiceUrl);
+      this.serviceLink = res.returnMap.customerServiceUrl;
     }
   }
 };
