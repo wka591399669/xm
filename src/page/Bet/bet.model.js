@@ -135,7 +135,7 @@ export default {
         } 
        }
        state.tempBall.ball=n;
-       console.log("ttt3:"+state.tempBall.ball);
+       //console.log("ttt3:"+state.tempBall.ball);
 
        for(var x=startBall;x<=endBall;x++){
          if(k==0){//全

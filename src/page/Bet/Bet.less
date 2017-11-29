@@ -149,21 +149,130 @@
             font-size: 0.24rem;
           }
         }
-      }
+      } 
       & > div {
         width: 2rem;
         color: #333;
         font-size: 0.36rem;
         text-align: center;
         line-height: 0.98rem;
+        border-right: 1px solid #333;
         &:nth-child(2) {
-          background-color: rgba(149, 133, 102, 1);
+          background-color: rgba(213, 183, 127, 1);
+          &.disabel {
+            background-color: rgba(149, 133, 102, 1);
+             
+          } 
         }
         &:nth-child(3) {
           background-color: rgba(213, 183, 127, 1);
         }
       }
+
     }
+  }
+  .trackPopup {
+    overflow: hidden;
+    .vux-header {
+      position: relative !important;
+    } 
+    div {
+      & > ul {
+        z-index: 200;
+        color: #bbbbbb;
+        background-color: #292929;
+        max-height: 10.6rem;
+        margin: 0 auto;
+        overflow: scroll;
+        li {
+          display: flex;
+          border-bottom: 1px solid rgba(108, 86, 63, 1);
+          font-size: 0.3rem;
+          padding: 0.35rem 0.3rem;
+          box-sizing: border-box;
+            
+          span {
+            display: block; 
+            text-align: center;
+           
+          }
+          span:nth-child(1) {
+            width: 40%; 
+            & > input {
+              color: #1f0707;
+              background: #1f0707;
+              border: 1px solid #cf1717;
+            }
+          }
+          span:nth-child(2) {
+            width: 30%; 
+            & > input {
+              width: 40%;
+            }
+          }
+          span:nth-child(3) {
+            width: 30%; 
+            & > input {
+              width: 100%;
+            }
+          }
+           
+        }
+      }
+    }
+    .show {
+      z-index: 300;
+      background-color: #222;
+      position: fixed;
+      bottom: 0; 
+      color: #bbbbbb;
+      height: 1.58rem;
+      border-top: 0.2px solid rgba(108, 86, 63, 1);
+      box-sizing: border-box;
+      width: 100%; 
+      & > p {
+        width: 100%; 
+        text-align: center;         
+        height: 50%;
+        & > span { 
+          width: 50%;  
+          margin-top: 0.2rem;
+        }
+        & > span:nth-child(1) { 
+          float: left; 
+          width: 40%; 
+          padding-left: 0.5rem; 
+          text-align: left;  
+        }
+        
+        & > span:nth-child(2) {
+          float: right; 
+          width: 18%; 
+          color: #000000;
+          margin-right: 0.5rem;
+          padding-right: 0.2rem; 
+          text-align: right;  
+          border: 1px solid rgba(213, 183, 127, 1);
+          border-radius: 5px ;
+          background-color: rgba(213, 183, 127, 1);
+          &.disabel {
+            background-color: #222;
+            color: #FFFFFF;
+          } 
+        }
+        & > a { 
+          float: left;
+          height: 100%;
+          width: 100%;
+          padding-top: 0.2rem;
+          color: #FFFFFF;
+          background-color: rgba(213, 183, 127, 1);
+        }
+
+      }
+     
+    }  
+     
   }
   .pageTop {
     padding-top: 0.1rem;
@@ -560,6 +669,10 @@
   .planPopup {
     background-color: #222;
     z-index: 5000;
+  }
+  .trackPopup {
+    background-color: #222;
+    z-index: 5001;
   }
 }
 #BetKs {
