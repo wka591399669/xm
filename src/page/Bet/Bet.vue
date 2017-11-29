@@ -65,6 +65,7 @@
             <!-- <ul v-if=""></ul> -->
             <!-- 其他球 -->
             <ul v-else>
+              <p><span v-for="(qs,k) in playMethods[curMethod].quick" :key="k" @click="handleQuickClick(i,k)">{{qs}}</span></p>
               <li v-for="(is,j) in playMethods[curMethod].ball" :key="j">
                 <span 
                 :class="{'check':tempBall.ball.indexOf(`${i},${is}`) >= 0}"
@@ -161,11 +162,40 @@
       </div>
       <div class="show">
         <p>
-          <span>合计：{{allMoney}}元</span>
-          <span>{{allStake}}注</span>
+          <span>合计：{{trackList.length>0?allTrackIssueMoney:allMoney}}元</span>
+          <span>{{allIssueCount}}期{{allStake}}注</span>
         </p>
-        <div>计划倍投</div>
+        <div :class="{'disabel':trackList.length>0}"  @click="queryTrackList" >计划倍投</div>
         <div @click="toOrder">投注</div>
+      </div>
+    </popup>
+    <!-- 追号管理 -->
+    <popup class="trackPopup" v-model="trackShow" height="100%">
+      <XHeader @on-click-back="leaveTrackAdmin" :left-options="{backText: '',preventGoBack:true}">
+        追号
+      </XHeader>
+      <div> 
+        <ul>
+          <li>
+            <span>期数</span>
+            <span>倍数</span>
+            <span>金额</span>
+          </li>
+          <li v-for="(trackIssue,a) in trackIssueIdList " :key="a" >
+            <span><input type="checkbox" v-model="trackIssue.isCheck" @change="selectIssue" /> {{trackIssue.issueID}}</span>
+            <span><input type="text" v-model="trackIssue.multiple" v-on:input = "selectIssue" />倍 </span>
+            <span>{{trackIssue.issueMoney}}</span> 
+          </li> 
+        </ul>
+      </div>
+      <div class="show">
+        <p>
+          <span>共{{allTrackIssueCount}}期，共{{allTrackIssueMoney}}元</span>
+          <span :class="{'disabel':isWinStop===0}" @click="changeIsWinStop" >中奖撤单</span>
+        </p>
+        <p>
+          <a @click="submitTrackList">提交</a>
+        </p>
       </div>
     </popup>
   </div>
@@ -189,9 +219,18 @@ export default {
   data() {
     return {
       drag: 0, // 反水拖动距离
+      operType:1,//订单类型
       showHis: false, // 打开历史
       showSet: false, // 显示注单设置
-      planShow: false // 显示方案管理
+      planShow: false, // 显示方案管理
+      trackShow: false, //显示追号
+      trackIssueIdList:[], //追号列表
+      allIssueCount:1,    //投注期数
+      isWinStop:1,    //是否中奖撤单 1是0否
+      allTrackIssueCount:0, //追号期数
+      allTrackIssueMoney:0,  //追号总金额
+      trackList:"", //追号列表
+      totalAllAmount:0 //投注总额
     };
   },
   computed: {
@@ -253,6 +292,7 @@ export default {
     },
     // 统计投注区
     allMoney() {
+       
       return this.planBall.reduce((a, b) => {
         return a + b.planMoney;
       }, 0);
@@ -287,8 +327,14 @@ export default {
     headerCheck(type) {
       this.$store.dispatch('bet/headerCheck', type);
     },
+    
+    // 点击全大小单双
+    handleQuickClick(i,k) { 
+      this.$store.dispatch('bet/handleQuickClick', {i:i,k:k});
+    },
     // 点击选号
     handleBallClick(v) {
+      
       this.$store.dispatch('bet/handleBallClick', v);
     },
     // 拖动修改赔率
@@ -355,6 +401,11 @@ export default {
       document.body.style.overflow = 'auto';
       this.planShow = false;
     },
+    // 退出追号列表
+    leaveTrackAdmin() {
+      document.body.style.overflow = 'auto';
+      this.trackShow = false;
+    },
     // 整理显示方案号码
     showBall(arr) {
       let res = [];
@@ -368,16 +419,22 @@ export default {
     },
     // 下单
     async toOrder() {
+      var totalAllAmount = this.allMoney;
+      if(this.trackList.length>0){
+        totalAllAmount=this.allTrackIssueMoney;
+      }
       let req = {
         batchOrder: service.batchOrderFormat(
           this.planBall,
           this.$route.params.gameType
         ),
-        operType: 1,
+        operType: this.operType,
         issueId: this.saleInfo.issueID,
         gameType: this.$route.params.gameType,
         stake: 1,
-        totalAmount: this.allMoney,
+        totalAmount: totalAllAmount,
+        isWinStop:this.isWinStop,
+        trackList:this.trackList,
         roomId: 0,
         rakeOff: 0
       };
@@ -392,6 +449,8 @@ export default {
         });
         this.leavePlanAdmin();
         this.clearPlan('all');
+        this.trackList="";
+        this.trackIssueIdList=[];
         this.$store.commit('bet/resetPlay');
       } else {
         this.$vux.toast.show({
@@ -399,6 +458,71 @@ export default {
           type: 'warn'
         });
       }
+    },
+    // 获取追号列表
+    async queryTrackList() {
+      if(this.trackList.length>0){
+        return;
+      }
+      this.trackShow=true;
+      let req = {
+        gameType: this.$route.params.gameType,
+        trackCount: 20
+      };
+
+      let res = await this.$http('/queryTrackIssueIdList', {
+        body: req
+      });
+      if (res.returnCode == '0000') {
+        for(var i=0;i<res.returnList.length;i++){ 
+          this.trackIssueIdList.push({isCheck:false,issueID:res.returnList[i].issueID,multiple:1,issueMoney: this.allMoney});
+        } 
+
+      } else {
+        this.$vux.toast.show({
+          text: res.returnMessage,
+          type: 'warn'
+        });
+      }
+    },
+    //修改是否中奖撤单
+    changeIsWinStop() {
+      this.isWinStop=this.isWinStop===0?1:0;
+    },
+    //更新追号期数
+    selectIssue() {
+      this.allTrackIssueCount=0;
+      this.allTrackIssueMoney=0;
+      for(var i=0;i<this.trackIssueIdList.length;i++){
+        this.trackIssueIdList[i].issueMoney=this.allMoney*this.trackIssueIdList[i].multiple;
+        if(this.trackIssueIdList[i].isCheck){
+          this.allTrackIssueCount++;
+          this.allTrackIssueMoney=Number(this.allTrackIssueMoney)+Number(this.trackIssueIdList[i].issueMoney);
+        }
+      } 
+      
+    }, 
+    //生成追号列表
+    submitTrackList(){
+      var firstSub="";
+      for(var i=0;i<this.trackIssueIdList.length;i++){
+        
+        if(this.trackIssueIdList[i].isCheck){ 
+          this.trackList=this.trackList + firstSub + this.trackIssueIdList[i].issueID +","+ this.trackIssueIdList[i].multiple;
+          firstSub=";"; 
+        }
+      } 
+      if(this.trackList.length<=0){
+        this.$vux.toast.show({
+          text: "请选择追号期数",
+          type: 'warn'
+        });
+      }else{ 
+        
+        this.allIssueCount=this.allTrackIssueCount;
+        this.operType=2;
+        this.leaveTrackAdmin();
+      };
     }
   }
 };
