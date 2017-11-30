@@ -77,9 +77,32 @@
           </li>
         </ul>
       </div>
+    </div> 
+    <div class="box">
+      <span class="title" v-if="info.isTrackOrder==1" @click="data4=!data4">
+        追号信息
+        <img v-if="data4" src="../../assets/img/up.png" alt="">
+        <img v-else src="../../assets/img/down.png" alt="">
+      </span>
+      <div v-if="data4" class="con">
+        <ul class="tb-h">
+          <li>
+            <span>期号</span>
+            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.issueID}}</span>
+          </li>
+          <li>
+            <span>开奖号码</span>
+            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.result}}</span>
+          </li>
+          <li>
+            <span>状态</span>
+            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.stateName}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="box">
-      <span class="title" @click="data3=!data3">
+      <span class="title" v-if="info.isJoinOrder==='1'" @click="data3=!data3">
         参与用户
         <img v-if="data3" src="../../assets/img/up.png" alt="">
         <img v-else src="../../assets/img/down.png" alt="">
@@ -98,29 +121,6 @@
       </div>
     </div>
 
-    <div class="box">
-      <span class="title" v-if="!info.isTrackOrder" @click="data4=!data4">
-        追号信息
-        <img v-if="data4" src="../../assets/img/up.png" alt="">
-        <img v-else src="../../assets/img/down.png" alt="">
-      </span>
-      <div v-if="data4" class="con">
-        <ul class="tb-h">
-          <li>
-            <span>期号</span>
-            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.issueID}}</span>
-          </li>
-          <li>
-            <span>开奖号码</span>
-            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.result}}</span>
-          </li>
-          <li>
-            <span>状态</span>
-            <span v-for="(it,i) in info.trackIssueList" :key="i">{{it.state}}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -140,7 +140,7 @@ export default {
       info: {},
       data1: true,
       data2: true,
-      data3: true,
+      data3: false,
       data4: false
     };
   },
@@ -155,6 +155,13 @@ export default {
         }
       });
       this.info = Object.assign({}, res.returnMap.batchOrderInfo);
+      if(this.info.isTrackOrder==="1"){
+        this.data4=true;
+      }
+      
+      if(this.info.isJoinOrder==="1"){
+        this.data3=true;
+      }  
       this.$vux.loading.hide();
     }
   }
