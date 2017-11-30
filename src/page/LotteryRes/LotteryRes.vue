@@ -1,6 +1,6 @@
 <template>
   <div id="LotteryRes">
-    <XHeader :left-options="{showBack: false}">开奖信息</XHeader>
+    <XHeader :left-options="{showBack: false}">开奖信息 <a slot="right" @click="getList">刷新</a></XHeader>
     <!-- <img class="link" src="../../assets/img/link1.png" alt=""> -->
     <ul>
       <router-link tag="li" :to="`/lotteryResCon/${it.gameType}`" v-for="(it,i) in list" :key="i">
@@ -47,6 +47,7 @@ export default {
       this.list = res.returnList;
       this.$vux.loading.hide();
     }
+    
   }
 };
 </script>
