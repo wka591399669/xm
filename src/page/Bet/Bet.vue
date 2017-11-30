@@ -126,6 +126,10 @@
     <popup class="planPopup" v-model="planShow" height="100%">
       <XHeader @on-click-back="leavePlanAdmin" :left-options="{backText: '',preventGoBack:true}">
         投注
+        <div slot="right">
+          <!-- <span v-if="!isJoin" @click="joinShow=true">发起合买</span>
+          <span v-else>已发起合买</span> -->
+        </div>
       </XHeader>
       <div class="pageTop">
         <p v-if="isStop.state">已停盘</p>
@@ -167,6 +171,17 @@
         </p>
         <div :class="{'disabel':trackList.length>0}"  @click="queryTrackList" >计划倍投</div>
         <div @click="toOrder">投注</div>
+      </div>
+    </popup>
+    <!-- 合买管理 -->
+    <popup class="joinPopup" v-model="joinShow" height="100%">
+      <XHeader @on-click-back="leaveJoinAdmin" :left-options="{backText: '',preventGoBack:true}">
+        发起合买
+      </XHeader>
+      <div class="joinMain">
+        <div class="hd">
+          方案金额：<span>{{trackList.length>0?allTrackIssueMoney:allMoney}}</span>元
+        </div>
       </div>
     </popup>
     <!-- 追号管理 -->
@@ -219,18 +234,30 @@ export default {
   data() {
     return {
       drag: 0, // 反水拖动距离
-      operType:1,//订单类型
+      operType: 1, //订单类型
       showHis: false, // 打开历史
       showSet: false, // 显示注单设置
       planShow: false, // 显示方案管理
+      joinShow: false, // 显示合买管理
       trackShow: false, //显示追号
-      trackIssueIdList:[], //追号列表
-      allIssueCount:1,    //投注期数
-      isWinStop:1,    //是否中奖撤单 1是0否
-      allTrackIssueCount:0, //追号期数
-      allTrackIssueMoney:0,  //追号总金额
-      trackList:"", //追号列表
-      totalAllAmount:0 //投注总额
+      trackIssueIdList: [], //追号列表
+      allIssueCount: 1, //投注期数
+      isWinStop: 1, //是否中奖撤单 1是0否
+      allTrackIssueCount: 0, //追号期数
+      allTrackIssueMoney: 0, //追号总金额
+      trackList: '', //追号列表
+      totalAllAmount: 0, //投注总额
+      isJoin: false, //是否发起合买
+      // 合买数据
+      joinData: {
+        totalNum: '', // 总份数
+        openLevel: '', // 公开等级
+        amount: '', // 单份金额
+        isGuarantee: '', // 是否保底
+        guaranteeNum: '', // 保底份数
+        percentageRate: '', // 提成
+        buyNum: '' // 购买份数
+      }
     };
   },
   computed: {
@@ -292,7 +319,6 @@ export default {
     },
     // 统计投注区
     allMoney() {
-       
       return this.planBall.reduce((a, b) => {
         return a + b.planMoney;
       }, 0);
@@ -327,14 +353,13 @@ export default {
     headerCheck(type) {
       this.$store.dispatch('bet/headerCheck', type);
     },
-    
+
     // 点击全大小单双
-    handleQuickClick(i,k) { 
-      this.$store.dispatch('bet/handleQuickClick', {i:i,k:k});
+    handleQuickClick(i, k) {
+      this.$store.dispatch('bet/handleQuickClick', { i: i, k: k });
     },
     // 点击选号
     handleBallClick(v) {
-      
       this.$store.dispatch('bet/handleBallClick', v);
     },
     // 拖动修改赔率
@@ -401,6 +426,11 @@ export default {
       document.body.style.overflow = 'auto';
       this.planShow = false;
     },
+    // 退出合买管理
+    leaveJoinAdmin() {
+      document.body.style.overflow = 'auto';
+      this.joinShow = false;
+    },
     // 退出追号列表
     leaveTrackAdmin() {
       document.body.style.overflow = 'auto';
@@ -420,8 +450,8 @@ export default {
     // 下单
     async toOrder() {
       var totalAllAmount = this.allMoney;
-      if(this.trackList.length>0){
-        totalAllAmount=this.allTrackIssueMoney;
+      if (this.trackList.length > 0) {
+        totalAllAmount = this.allTrackIssueMoney;
       }
       let req = {
         batchOrder: service.batchOrderFormat(
@@ -433,12 +463,17 @@ export default {
         gameType: this.$route.params.gameType,
         stake: 1,
         totalAmount: totalAllAmount,
-        isWinStop:this.isWinStop,
-        trackList:this.trackList,
+        isWinStop: this.isWinStop,
+        trackList: this.trackList,
         roomId: 0,
         rakeOff: 0
       };
-
+      if (this.isJoin) {
+        req = {
+          ...req,
+          ...this.joinData
+        };
+      }
       let res = await this.$http('/addOrder', {
         body: req
       });
@@ -449,8 +484,8 @@ export default {
         });
         this.leavePlanAdmin();
         this.clearPlan('all');
-        this.trackList="";
-        this.trackIssueIdList=[];
+        this.trackList = '';
+        this.trackIssueIdList = [];
         this.$store.commit('bet/resetPlay');
       } else {
         this.$vux.toast.show({
@@ -461,10 +496,10 @@ export default {
     },
     // 获取追号列表
     async queryTrackList() {
-      if(this.trackList.length>0){
+      if (this.trackList.length > 0) {
         return;
       }
-      this.trackShow=true;
+      this.trackShow = true;
       let req = {
         gameType: this.$route.params.gameType,
         trackCount: 20
@@ -474,10 +509,14 @@ export default {
         body: req
       });
       if (res.returnCode == '0000') {
-        for(var i=0;i<res.returnList.length;i++){ 
-          this.trackIssueIdList.push({isCheck:false,issueID:res.returnList[i].issueID,multiple:1,issueMoney: this.allMoney});
-        } 
-
+        for (var i = 0; i < res.returnList.length; i++) {
+          this.trackIssueIdList.push({
+            isCheck: false,
+            issueID: res.returnList[i].issueID,
+            multiple: 1,
+            issueMoney: this.allMoney
+          });
+        }
       } else {
         this.$vux.toast.show({
           text: res.returnMessage,
@@ -487,42 +526,47 @@ export default {
     },
     //修改是否中奖撤单
     changeIsWinStop() {
-      this.isWinStop=this.isWinStop===0?1:0;
+      this.isWinStop = this.isWinStop === 0 ? 1 : 0;
     },
     //更新追号期数
     selectIssue() {
-      this.allTrackIssueCount=0;
-      this.allTrackIssueMoney=0;
-      for(var i=0;i<this.trackIssueIdList.length;i++){
-        this.trackIssueIdList[i].issueMoney=this.allMoney*this.trackIssueIdList[i].multiple;
-        if(this.trackIssueIdList[i].isCheck){
+      this.allTrackIssueCount = 0;
+      this.allTrackIssueMoney = 0;
+      for (var i = 0; i < this.trackIssueIdList.length; i++) {
+        this.trackIssueIdList[i].issueMoney =
+          this.allMoney * this.trackIssueIdList[i].multiple;
+        if (this.trackIssueIdList[i].isCheck) {
           this.allTrackIssueCount++;
-          this.allTrackIssueMoney=Number(this.allTrackIssueMoney)+Number(this.trackIssueIdList[i].issueMoney);
+          this.allTrackIssueMoney =
+            Number(this.allTrackIssueMoney) +
+            Number(this.trackIssueIdList[i].issueMoney);
         }
-      } 
-      
-    }, 
+      }
+    },
     //生成追号列表
-    submitTrackList(){
-      var firstSub="";
-      for(var i=0;i<this.trackIssueIdList.length;i++){
-        
-        if(this.trackIssueIdList[i].isCheck){ 
-          this.trackList=this.trackList + firstSub + this.trackIssueIdList[i].issueID +","+ this.trackIssueIdList[i].multiple;
-          firstSub=";"; 
+    submitTrackList() {
+      var firstSub = '';
+      for (var i = 0; i < this.trackIssueIdList.length; i++) {
+        if (this.trackIssueIdList[i].isCheck) {
+          this.trackList =
+            this.trackList +
+            firstSub +
+            this.trackIssueIdList[i].issueID +
+            ',' +
+            this.trackIssueIdList[i].multiple;
+          firstSub = ';';
         }
-      } 
-      if(this.trackList.length<=0){
+      }
+      if (this.trackList.length <= 0) {
         this.$vux.toast.show({
-          text: "请选择追号期数",
+          text: '请选择追号期数',
           type: 'warn'
         });
-      }else{ 
-        
-        this.allIssueCount=this.allTrackIssueCount;
-        this.operType=2;
+      } else {
+        this.allIssueCount = this.allTrackIssueCount;
+        this.operType = 2;
         this.leaveTrackAdmin();
-      };
+      }
     }
   }
 };
