@@ -61,7 +61,7 @@ export default {
       this.$store.commit('bet/roomInfo', is);
       this.$router.push(
         `/bet28/${this.$route.params.type}/${this.$route.params
-          .gameType}/${is.roomId}`
+          .gameType}/${is.roomId}/${it.roomRank}`
       );
     }
   }

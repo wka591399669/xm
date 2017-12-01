@@ -7,12 +7,12 @@
           <p>首页</p>
         </router-link>
       </flexbox-item>
-      <!-- <flexbox-item>
+      <flexbox-item>
         <router-link to="/join">
           <span></span>
           <p>合买</p>
         </router-link>
-      </flexbox-item> -->
+      </flexbox-item>
       <flexbox-item>
         <router-link to="/lotteryRes">
           <span></span>
