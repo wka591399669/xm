@@ -102,7 +102,7 @@
       </div>
     </div>
     <div class="box">
-      <span class="title" v-if="info.isJoinOrder==='1'" @click="data3=!data3">
+      <span class="title"  @click="data3=!data3">
         参与用户
         <img v-if="data3" src="../../assets/img/up.png" alt="">
         <img v-else src="../../assets/img/down.png" alt="">
@@ -140,7 +140,7 @@ export default {
       info: {},
       data1: true,
       data2: true,
-      data3: false,
+      data3: true,
       data4: false
     };
   },

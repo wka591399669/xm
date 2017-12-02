@@ -105,6 +105,12 @@ const OrderDetail = r =>
     () => r(require('./page/OrderDetail/OrderDetail.vue')),
     'OrderDetail'
   );
+const JoinOrderDetail = r =>
+    require.ensure(
+      [],
+      () => r(require('./page/Join/JoinOrderDetail.vue')),
+      'JoinOrderDetail'
+    );
 const BetRecord = r =>
   require.ensure(
     [],
@@ -191,6 +197,14 @@ export default new Router({
       }
     },
     {
+      path: '/JoinOrderDetail/:id',
+      name: 'JoinOrderDetail',
+      component: JoinOrderDetail,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
       path: '/bet/:type/:gameType',
       name: 'Bet',
       component: Bet,
@@ -207,7 +221,7 @@ export default new Router({
       }
     },
     {
-      path: '/bet28/:type/:gameType/:roomId',
+      path: '/bet28/:type/:gameType/:roomId/:roomRank',
       name: 'Bet28',
       component: Bet28,
       beforeEnter: (to, from, next) => {

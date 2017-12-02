@@ -15,9 +15,18 @@
           {{showTime[0]==='00'?'':showTime[0]+'天'}}{{showTime[1]==='00'?'':showTime[1]+'分'}}{{showTime[2]+'秒'}}
         </em>
       </p>
-      <p>
+      <p class="openResult">
         {{this.his[0].issueId}}期开奖结果：
-        <span v-for="(it,i) in this.his[0].resultStr.split(',')" :key="i">{{it}}</span>
+        <span v-for="(it,i) in this.his[0].resultStr.split(',').join('+')" :key="i">{{it}}</span>
+          =
+        <span>
+          <em v-if="(parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5)))>=14" :style="{ background:red}">{{parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5))}}</em>
+          <em v-else :style="{ background:blue}">{{parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5))}}</em>
+          <em v-if='parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5))>=14&&(parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5)))%2==1'>(大、单)</em>
+          <em v-else-if='parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5))>=14&&(parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5)))%2==0'>(大、双)</em>
+          <em v-else-if='parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5))<14&&(parseInt(this.his[0].resultStr.slice(0,1))+parseInt(this.his[0].resultStr.slice(2,3))+parseInt(this.his[0].resultStr.slice(4,5)))%2==1'>(小、单)</em>
+          <em v-else>(小、双)</em>
+        </span>
       </p>
       <div class="his">
         <span class="title" @click="showHis = !showHis">
@@ -100,97 +109,62 @@
         <img src="../../assets/img/lottery/left.png" @click="betIndex=betIndex-1" alt="">
         <img src="../../assets/img/lottery/right.png" @click="betIndex=betIndex+1" alt="">
       </div>
-      <swiper :show-dots="false" class="bet" v-model="betIndex">
-        <swiper-item>
-          <div class="betmain">
-            <p>大小单双</p>
-            <p>中奖和值：[14-27]</p>
+      <swiper :show-dots="false"  v-if="productTypeRateMap.rateList" class="bet" v-model="betIndex">
+         <swiper-item>
+          <div class="betmain" >
+            <p>{{productTypeRateMap.rateList[1].productType}}</p>
+            <p v-if="showResult">中奖和值：{{tempBall.dxdsSum[0]}}</p>
+            <p v-for="(it,i) in productTypeRateMap.rateList[1].itemList" :key="i" v-if="tempBall.ball.indexOf(`PCDXDS,${i},${it.item}`) >= 0">中奖和值：{{tempBall.dxdsSum[i]}}</p>
             <ul>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,0,大`) >= 0}"
-              @click="handleBallClick(`PCDXDS,0,大`)"
-              >大</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,1,小`) >= 0}"
-              @click="handleBallClick(`PCDXDS,1,小`)"
-              >小</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,2,单`) >= 0}"
-              @click="handleBallClick(`PCDXDS,2,单`)"
-              >单</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,3,双`) >= 0}"
-              @click="handleBallClick(`PCDXDS,3,双`)"
-              >双</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,4,大单`) >= 0}"
-              @click="handleBallClick(`PCDXDS,4,大单`)"
-              >大单</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,5,小单`) >= 0}"
-              @click="handleBallClick(`PCDXDS,5,小单`)"
-              >小单</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,6,大双`) >= 0}"
-              @click="handleBallClick(`PCDXDS,6,大双`)"
-              >大双</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,7,小双`) >= 0}"
-              @click="handleBallClick(`PCDXDS,7,小双`)"
-              >小双</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,8,极大`) >= 0}"
-              @click="handleBallClick(`PCDXDS,8,极大`)"
-              >极大</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`PCDXDS,9,极小`) >= 0}"
-              @click="handleBallClick(`PCDXDS,9,极小`)"
-              >极小</li>
+              <li v-for="(it,i) in productTypeRateMap.rateList[1].itemList" :key="i"
+              :class="{'check':tempBall.ball.indexOf(`PCDXDS,${i},${it.item}`) >= 0}"
+              @click="handleBallClick(`PCDXDS,${i},${it.item}`)" >
+                <em>{{it.item}}</em>
+                <em>{{parseInt(it.rate)}}</em>
+              </li>
             </ul>
           </div> 
         </swiper-item>
         <swiper-item>
           <div class="betmain">
-            <p>猜数字</p>
-            <p>中奖号码：[0]</p>
+            <p>{{productTypeRateMap.rateList[2].productType}}</p>
+            <p v-if="showResult">中奖号码：[0]</p>
+            <p v-for="(it,i) in productTypeRateMap.rateList[2].itemList" :key="i" v-if="tempBall.ball.indexOf(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`) >= 0">中奖号码：[{{i}}]</p>
             <ul>
               <li 
-              v-for="it in 27" 
-              :key="it"
-              :class="{'check':tempBall.ball.indexOf(`CSZ,${it},${it}`) >= 0}"
-              @click="handleBallClick(`CSZ,${it},${it}`)"
-              >{{it}}</li>
+              v-for="(it,i) in productTypeRateMap.rateList[2].itemList" :key="i"
+              :class="{'check':tempBall.ball.indexOf(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`) >= 0}"
+              @click="handleBallClick(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`)"
+              >
+              <em>{{it.item.slice(2,4)}}</em>
+              <em>{{parseInt(it.rate)}}</em>
+              </li>
             </ul>
           </div>
         </swiper-item>
         <swiper-item>
           <div class="betmain">
-            <p>特殊玩法</p>
-            <p>中奖和值:[3,6,9,12,15,18,21,24]</p>
+            <p>{{productTypeRateMap.rateList[0].productType}}</p>
+            <p v-if="showResult">中奖和值：{{tempBall.tsSum[0]}}</p>
+            <p v-for="(it,i) in productTypeRateMap.rateList[0].itemList" :key="i" v-if="tempBall.ball.indexOf(`TS,${parseInt(it.rate)},${it.item}`) >= 0">中奖和值：{{tempBall.tsSum[i]}}</p>
             <ul>
               <li 
-              :class="{'check':tempBall.ball.indexOf(`TS,0,红`) >= 0}"
-              @click="handleBallClick(`TS,0,红`)"
-              >红</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`TS,1,绿`) >= 0}"
-              @click="handleBallClick(`TS,1,绿`)"
-              >绿</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`TS,2,蓝`) >= 0}"
-              @click="handleBallClick(`TS,2,蓝`)"
-              >蓝</li>
-              <li 
-              :class="{'check':tempBall.ball.indexOf(`TS,3,豹子`) >= 0}"
-              @click="handleBallClick(`TS,3,豹子`)"
-              >豹子</li>
+              v-for="(it,i) in productTypeRateMap.rateList[0].itemList" :key="i"
+              :class="{'check':tempBall.ball.indexOf(`TS,${parseInt(it.rate)},${it.item}`) >= 0}"
+              @click="handleBallClick(`TS,${parseInt(it.rate)},${it.item}`)"
+              >
+              <em>{{it.item}}</em>
+              <em>{{parseInt(it.rate)}}</em>
+              </li>
             </ul>
           </div>          
         </swiper-item>
       </swiper>
       <div class="moneyBtn">
         <group>
-          <x-input v-model="money" placeholder="请输入投注金额" :max="7"></x-input>
+          <x-input v-model="money" placeholder="请输入投注金额" :max="7">
+            <span slot="right" style="color:#d5b77f;font-size:14px;" @click="showPlayDetail">赔率说明</span>
+          </x-input>
         </group>
       </div>
       <div class="betBtn">
@@ -213,10 +187,37 @@
         </a>
       </ul>
     </popup>
+    <!-- 赔率说明 -->
+    <popup v-model="playDetail" height="100%" style="background:#222;">
+        <XHeader :left-options="{backText:''}"> 赔率说明</XHeader>
+        <x-table border="0"  style="background-color:#222;color:#fff;margin-top:46px;border:1px solid #d5b77f;border-collapse:collapsed;">
+          <thead>
+            <tr>
+              <th>玩法</th>
+              <th>细则</th>
+              <th>倍率(倍)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(it,i) in productTypeRateMap.rateList" :key="i">
+              <td>{{it.productType}}</td>
+              <td>
+                <p v-for="(is,j) in it.itemList" :key="j" style="border-bottom:1px solid #999;">{{is.item}}</p>
+              </td>
+              <td>
+                <p v-for="(is,j) in it.itemList" :key="j" style="border-bottom:1px solid #999;">{{is.rate}}</p>
+              </td>
+            </tr>
+          </tbody>
+        </x-table>
+        
+        <div style="color:#fff;padding:.2rem .8rem;" v-html="productTypeRateMap.content"></div>
+      
+    </popup>
   </div>
 </template>
 <script>
-import { Popup, Range, XHeader, Swiper, SwiperItem, XInput, Group } from 'vux';
+import { Popup, Range, XHeader, Swiper, SwiperItem, XInput, Group,XTable } from 'vux';
 import BetHeader from './component/BetHeader';
 import service from './Bet.service';
 import playMethod from './playMethodDoc.json';
@@ -230,7 +231,8 @@ export default {
     Swiper,
     SwiperItem,
     XInput,
-    Group
+    Group,
+    XTable
   },
   beforeDestroy() {
     this.$store.dispatch('bet/timeDownEnd');
@@ -248,7 +250,10 @@ export default {
       blue:"blue",
       serviceLink:'',
       gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$route.params.gameType+'.html',
-      moreHelpShow: false
+      moreHelpShow: false,
+      playDetail:false,
+      productTypeRateMap:{},
+      showResult:true
     };
   },
   computed: {
@@ -321,6 +326,7 @@ export default {
     this.initRoom();
     this.init();
     this.service(); 
+    this.getRateDetail();
   },
   mounted() {
     this.toDown = setInterval(() => {
@@ -439,6 +445,7 @@ export default {
      */
     // 点击选号
     handleBallClick(v) {
+      this.showResult = false;
       this.clearPick();
       this.clearPlan('all');
       this.$store.dispatch('bet/handleBallClick', v);
@@ -583,8 +590,7 @@ export default {
       }
     },
     //点击显示更多按钮
-    showMoreHelp() {
-      console.log(1);
+    showMoreHelp() { 
       this.moreHelpShow = !this.moreHelpShow;
     },
      // 获取客服地址
@@ -592,7 +598,22 @@ export default {
       let res = await this.$http('/queryCustomerServiceInfo');
       console.log(res.returnMap.customerServiceUrl);
       this.serviceLink = res.returnMap.customerServiceUrl;
-    }
+    },
+    //获取赔率说明
+    async getRateDetail() { 
+      let res = await this.$http('/queryGameIntroAndRate', {
+        body: {
+          gameType:this.$route.params.gameType,
+          roomRank:this.$route.params.roomRank
+        }
+      });
+      this.productTypeRateMap = res.returnMap; 
+
+    }, 
+    showPlayDetail() {
+      this.playDetail = !this.playDetail;
+       
+    },
   }
 };
 </script>
