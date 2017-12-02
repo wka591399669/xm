@@ -1,7 +1,7 @@
 <template>
   <div id="Home">
     <XHeader :left-options="{showBack: false}">购彩大厅
-      <span slot="right" v-if="isLogin">余额：{{userInfo.amount}}</span>
+      <!-- <span slot="right" v-if="isLogin">余额：{{userInfo.amount}}</span> -->
     </XHeader>
     <div class="banner">
       <swiper :options="swiperOption">
