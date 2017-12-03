@@ -5,11 +5,11 @@
         <img src="../../assets/img/user/setting.png" @click="$router.push('/setting')">
       </div> 
       <div class="userLogo" v-if="!isLogin">
-        <img src="../../assets/img/user/userLogo.jpg" alt="">
+        <img src="../../assets/img/user/userLogo.png" alt="">
         <router-link to="/login" tag="p">登录/注册</router-link>
       </div>
       <div class="userLogo is" v-else>
-        <img src="../../assets/img/user/userLogo.jpg" @click="$router.push('/info')" alt="">
+        <img src="../../assets/img/user/userLogo.png" @click="$router.push('/info')" alt="">
         <p>{{loginInfo.userName}}</p>
         <div class="account">
           <p>
