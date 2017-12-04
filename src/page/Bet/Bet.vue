@@ -127,8 +127,8 @@
       <XHeader @on-click-back="leavePlanAdmin" :left-options="{backText: '',preventGoBack:true}">
         投注
         <div slot="right">
-          <!-- <span v-if="!isJoin" @click="joinShow=true">发起合买</span>
-          <span v-else>已发起合买</span> -->
+          <span v-if="!isJoin" @click="joinShow=true">发起合买</span>
+          <span v-else  @click="joinShow=true">已发起合买</span>
         </div>
       </XHeader>
       <div class="pageTop">
@@ -166,7 +166,7 @@
       </div>
       <div class="show">
         <p>
-          <span>合计：{{trackList.length>0?allTrackIssueMoney:allMoney}}元</span>
+          <span>合计：{{trackList.length>0?allTrackMoney:allMoney}}元</span>
           <span>{{allIssueCount}}期{{allStake}}注</span>
         </p>
         <div :class="{'disabel':trackList.length>0}"  @click="queryTrackList" >计划倍投</div>
@@ -180,7 +180,26 @@
       </XHeader>
       <div class="joinMain">
         <div class="hd">
-          方案金额：<span>{{trackList.length>0?allTrackIssueMoney:allMoney}}</span>元
+          方案金额：<span>{{trackList.length>0?allTrackMoney:allMoney}}</span>元
+        </div>
+        <div class="joiniptbox">
+          <p>合买总份数</p>
+          <input type="number" v-model="joinData.totalNum">
+          <p>我要认购</p>
+          <input type="number" v-model="joinData.buyNum" @input="setJoinBuyNum">
+          <p>保底份数</p>
+          <input type="number" v-model="joinData.guaranteeNum" @input="setJoinguaranteeNum">
+          <p>合买方式</p>
+          <div>
+            <span :class="{'active':joinData.openLevel==0}" @click="joinData.openLevel=0">完全</span>
+            <span :class="{'active':joinData.openLevel==1}" @click="joinData.openLevel=1">截至</span>
+            <span :class="{'active':joinData.openLevel==2}" @click="joinData.openLevel=2">跟单</span>
+            <span :class="{'active':joinData.openLevel==3}" @click="joinData.openLevel=3">保密</span>
+          </div>
+        </div>
+        <div class="joinfoot">
+          <p>合计：￥{{trackList.length>0?allTrackMoney:allMoney}}元</p>
+          <p @click="leaveJoinAdmin">提交</p>
         </div>
       </div>
     </popup>
@@ -239,24 +258,27 @@ export default {
       showSet: false, // 显示注单设置
       planShow: false, // 显示方案管理
       joinShow: false, // 显示合买管理
-      trackShow: false, //显示追号
-      trackIssueIdList: [], //追号列表
-      allIssueCount: 1, //投注期数
       isWinStop: 1, //是否中奖撤单 1是0否
+
+      // 追号数据
+      allIssueCount: 1, //总追号期数
+      trackShow: false, //显示追号
       allTrackIssueCount: 0, //追号期数
       allTrackIssueMoney: 0, //追号总金额
+      trackIssueIdList: [], //追号列表
       trackList: '', //追号列表
+
       totalAllAmount: 0, //投注总额
       isJoin: false, //是否发起合买
       // 合买数据
       joinData: {
-        totalNum: '', // 总份数
-        openLevel: '', // 公开等级
-        amount: '', // 单份金额
-        isGuarantee: '', // 是否保底
-        guaranteeNum: '', // 保底份数
-        percentageRate: '', // 提成
-        buyNum: '' // 购买份数
+        totalNum: 10, // 总份数
+        openLevel: 0, // 公开等级
+        amount: 0, // 单份金额
+        isGuarantee: 0, // 是否保底
+        guaranteeNum: 0, // 保底份数
+        percentageRate: 0, // 提成
+        buyNum: 10 // 购买份数
       }
     };
   },
@@ -327,6 +349,13 @@ export default {
       return this.planBall.reduce((a, b) => {
         return a + b.stake;
       }, 0);
+    },
+    // 计算追号金额
+    allTrackMoney() {
+      return this.trackIssueIdList.reduce(
+        (a, b) => (b.isCheck ? a + this.allMoney * b.multiple : a),
+        0
+      );
     }
   },
   created() {
@@ -428,6 +457,17 @@ export default {
     },
     // 退出合买管理
     leaveJoinAdmin() {
+      this.isJoin = true;
+      if (!this.joinData.totalNum) {
+        this.joinData.totalNum = 0;
+      }
+      if (!this.joinData.guaranteeNum) {
+        this.joinData.guaranteeNum = 0;
+      }
+      if (!this.joinData.buyNum) {
+        this.joinData.buyNum = 0;
+      }
+
       document.body.style.overflow = 'auto';
       this.joinShow = false;
     },
@@ -451,7 +491,8 @@ export default {
     async toOrder() {
       var totalAllAmount = this.allMoney;
       if (this.trackList.length > 0) {
-        totalAllAmount = this.allTrackIssueMoney;
+        this.submitTrackList();
+        totalAllAmount = this.allTrackMoney;
       }
       let req = {
         batchOrder: service.batchOrderFormat(
@@ -546,6 +587,7 @@ export default {
     //生成追号列表
     submitTrackList() {
       var firstSub = '';
+      this.trackList = [];
       for (var i = 0; i < this.trackIssueIdList.length; i++) {
         if (this.trackIssueIdList[i].isCheck) {
           this.trackList =
@@ -566,6 +608,24 @@ export default {
         this.allIssueCount = this.allTrackIssueCount;
         this.operType = 2;
         this.leaveTrackAdmin();
+      }
+    },
+    // 合买
+    // set 认购
+    setJoinBuyNum() {
+      if (this.joinData.buyNum > this.joinData.totalNum) {
+        this.joinData.buyNum = this.joinData.totalNum;
+        this.joinData.guaranteeNum = 0;
+      }
+    },
+    // set 保底
+    setJoinguaranteeNum() {
+      if (
+        this.joinData.buyNum + this.joinData.guaranteeNum >
+        this.joinData.totalNum
+      ) {
+        this.joinData.guaranteeNum =
+          this.joinData.totalNum - this.joinData.buyNum;
       }
     }
   }

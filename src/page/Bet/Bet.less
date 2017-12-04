@@ -171,6 +171,7 @@
   }
   .joinPopup {
     overflow: hidden;
+    background-color: #292929;
     .vux-header {
       position: relative !important;
     }
@@ -182,9 +183,85 @@
         font-size: 0.3rem;
         padding: 0.3rem;
         box-sizing: border-box;
+        border-bottom: 1px solid rgba(108, 86, 63, 1);
         span {
           color: #ffe48c;
           margin-right: 0.1rem;
+        }
+      }
+      .joiniptbox {
+        padding: 0.3rem;
+        p {
+          font-size: 0.3rem;
+          color: #ccc;
+        }
+        input {
+          width: 100%;
+          background-color: rgba(51, 51, 51, 1);
+          border: none;
+          outline: none;
+          border-radius: 0.1rem;
+          color: #fff;
+          font-size: 0.3rem;
+          margin: 0.2rem 0 0.4rem;
+          height: 0.7rem;
+          line-height: 0.7rem;
+          text-indent: 0.2rem;
+        }
+        & > div {
+          height: 0.7rem;
+          display: flex;
+          border: 1px solid #ffe48c;
+          border-radius: 0.1rem;
+          margin: 0.2rem 0 0.4rem;
+          overflow: hidden;
+          span {
+            flex: 1;
+            background-color: #222;
+            height: 0.7rem;
+            line-height: 0.7rem;
+            font-size: 0.3rem;
+            color: #ffe48c;
+            text-align: center;
+            border-right: 1px solid #ffe48c;
+            &:nth-last-child(1) {
+              border: none;
+            }
+            &.active {
+              background: #ffe48c;
+              color: #333;
+            }
+          }
+        }
+      }
+      .joinfoot {
+        height: 0.98rem;
+        width: 100%;
+        z-index: 300;
+        background-color: #222;
+        position: fixed;
+        bottom: 0;
+        color: #bbbbbb;
+        border-top: 0.2px solid rgba(108, 86, 63, 1);
+        box-sizing: border-box;
+        display: flex;
+        p {
+          &:nth-child(1) {
+            color: #ffe48c;
+            font-size: 0.32rem;
+            line-height: 0.98rem;
+            text-align: right;
+            padding-right: 0.3rem;
+            flex: 1;
+          }
+          &:nth-child(2) {
+            background-color: #ffe48c;
+            font-size: 0.36rem;
+            color: #333;
+            text-align: center;
+            width: 2rem;
+            line-height: 0.98rem;
+          }
         }
       }
     }
@@ -1189,34 +1266,34 @@
   display: inherit;
   height: 50%;
   &:nth-of-type(1) {
-      margin-top: -.26rem;
+    margin-top: -0.26rem;
   }
   &:nth-of-type(2) {
-      color: #d5b77f;
+    color: #d5b77f;
   }
 }
 
 #Bet28 .pageTop .openResult {
   span:nth-of-type(2),
   span:nth-of-type(4) {
-      background: none;
+    background: none;
   }
   span:nth-last-of-type(1) {
-      background: none;
+    background: none;
+    display: inline-block;
+    width: 1.5rem;
+    em:nth-of-type(1) {
       display: inline-block;
-      width: 1.5rem;
-      em:nth-of-type(1) {
-          display: inline-block;
-          width: .36rem;
-          height: .36rem;
-          border-radius: 50%;
-      }
-      em:nth-of-type(2) {
-          display: inline-block;
-          width: 1rem;
-          min-width: 45px;
-          float: right;
-      } 
+      width: 0.36rem;
+      height: 0.36rem;
+      border-radius: 50%;
+    }
+    em:nth-of-type(2) {
+      display: inline-block;
+      width: 1rem;
+      min-width: 45px;
+      float: right;
+    }
   }
 }
 #BetKs {

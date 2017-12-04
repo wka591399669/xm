@@ -14,7 +14,7 @@
         </router-link>
       </flexbox-item>
       <flexbox-item>
-        <router-link to="/lotteryRes" @click.native="refresh()">
+        <router-link to="/lotteryRes">
           <span></span>
           <p>开奖</p>
         </router-link>
@@ -36,8 +36,8 @@ export default {
     Flexbox,
     FlexboxItem
   },
-  methods:{
-    refresh(){
+  methods: {
+    refresh() {
       window.location.reload();
     }
   }
