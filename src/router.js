@@ -42,6 +42,9 @@ const Login = r =>
 const Message = r =>
   require.ensure([], () => r(require('./page/Message/Message.vue')), 'Message');
 
+const Bulletin = r =>
+  require.ensure([], () => r(require('./page/Message/Bulletin.vue')), 'Bulletin');
+  
 const MessageCon = r =>
   require.ensure(
     [],
@@ -318,6 +321,14 @@ export default new Router({
       path: '/message',
       name: 'Message',
       component: Message,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/bulletin',
+      name: 'Bulletin',
+      component: Bulletin,
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }

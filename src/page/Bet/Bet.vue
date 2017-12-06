@@ -85,7 +85,7 @@
       </div>
       <div class="action"> 
         <div @click="handleAllPlan">
-          <em v-if="planBall.length">{{planBall.length}}</em>
+          <em v-if="planBall && planBall.length">{{planBall.length}}</em>
           <img src="../../assets/img/lottery/add.png" alt="">
           加入投注区
         </div>
@@ -199,7 +199,7 @@
         </div>
         <div class="joinfoot">
           <p>合计：￥{{trackList.length>0?allTrackMoney:allMoney}}元</p>
-          <p @click="leaveJoinAdmin">提交</p>
+          <p @click="selectJoinAdmin">提交</p>
         </div>
       </div>
     </popup>
@@ -275,10 +275,10 @@ export default {
         totalNum: 10, // 总份数
         openLevel: 0, // 公开等级
         amount: 0, // 单份金额
-        isGuarantee: 0, // 是否保底
-        guaranteeNum: 0, // 保底份数
+        isGuarantee: 1, // 是否保底
+        guaranteeNum: 9, // 保底份数
         percentageRate: 0, // 提成
-        buyNum: 10 // 购买份数
+        buyNum: 1 // 购买份数
       }
     };
   },
@@ -457,7 +457,11 @@ export default {
     },
     // 退出合买管理
     leaveJoinAdmin() {
-      this.isJoin = true;
+      
+      document.body.style.overflow = 'auto';
+      this.joinShow = false;
+    },
+    selectJoinAdmin() { 
       if (!this.joinData.totalNum) {
         this.joinData.totalNum = 0;
       }
@@ -467,7 +471,11 @@ export default {
       if (!this.joinData.buyNum) {
         this.joinData.buyNum = 0;
       }
-
+      console.log(this.joinData.totalNum);
+      if(this.joinData.totalNum>0 ){
+        this.operType = 3;
+        this.isJoin = true;
+      } 
       document.body.style.overflow = 'auto';
       this.joinShow = false;
     },
@@ -494,6 +502,10 @@ export default {
         this.submitTrackList();
         totalAllAmount = this.allTrackMoney;
       }
+      if(this.operType==3){
+          this.joinData.amount=(totalAllAmount/this.joinData.totalNum).toFixed(2);
+      }
+      
       let req = {
         batchOrder: service.batchOrderFormat(
           this.planBall,
@@ -606,7 +618,9 @@ export default {
         });
       } else {
         this.allIssueCount = this.allTrackIssueCount;
-        this.operType = 2;
+        if(this.operType == 1){
+          this.operType = 2;
+        }
         this.leaveTrackAdmin();
       }
     },
@@ -619,9 +633,9 @@ export default {
       }
     },
     // set 保底
-    setJoinguaranteeNum() {
+    setJoinguaranteeNum() { 
       if (
-        this.joinData.buyNum + this.joinData.guaranteeNum >
+        (parseInt(this.joinData.buyNum) + parseInt(this.joinData.guaranteeNum)) >
         this.joinData.totalNum
       ) {
         this.joinData.guaranteeNum =

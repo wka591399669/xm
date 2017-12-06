@@ -44,7 +44,11 @@
     <group>
       <!-- <cell title="积分明细" is-link link="/integral">
         <img slot="icon" src="../../assets/img/user/integral3.png">
-      </cell> -->
+      </cell> --> 
+      <cell title="个人消息" is-link link="/message">
+        <img slot="icon" src="../../assets/img/user/message2.png"> 
+         <span slot="value" style="color:red;">{{messageCount>0?messageCount:""}}</span> 
+      </cell>
       <cell title="投注记录" is-link link="/betRecord">
         <img slot="icon" src="../../assets/img/user/record2.png">
       </cell>
@@ -61,9 +65,6 @@
     <group>
       <cell title="优惠活动" is-link link="/activity">
         <img slot="icon" src="../../assets/img/user/safe.png">
-      </cell>
-      <cell title="消息公告" is-link link="/message">
-        <img slot="icon" src="../../assets/img/user/message2.png">
       </cell>
       <a target="_blank" :href="serviceLink">
         <cell title="联系客服" is-link>
@@ -90,7 +91,8 @@ export default {
         amount: 0.0, // 可用金额
         amountCanOut: 0.0, // 可提金额
         surplus: 0.0 // 当日盈亏
-      }
+      },
+      messageCount:0
     };
   },
   computed: {},
@@ -100,6 +102,7 @@ export default {
     });
     await this.getUserInfo();
     await this.service();
+    await this.getUserSystemMessageCount();
     this.$vux.loading.hide();
   },
   methods: {
@@ -119,6 +122,12 @@ export default {
     async service() {
       let res = await this.$http('/queryCustomerServiceInfo');
       this.serviceLink = res.returnMap.customerServiceUrl;
+    },
+    // 获取消息条数
+    async getUserSystemMessageCount() {
+      let res = await this.$http('/queryUserSystemMessageCount');
+      this.messageCount = res.totalCount;
+      console.log(this.messageCount);
     }
   }
 };

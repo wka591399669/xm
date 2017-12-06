@@ -875,7 +875,7 @@ export default {
   },
   // 机选
   randomBallArr(decType, playMethod, curSecond) {
-    console.log(decType);
+   // console.log(decType);
     let res = randomBall(decType, playMethod, curSecond);
     if (res instanceof Array) {
       return res;
@@ -887,7 +887,7 @@ export default {
   },
   // 计算注数
   countStake(type, arr, row, lhcTS) {
-    console.log(type, arr, row, lhcTS);
+   // console.log(type, arr, row, lhcTS);
     let req = [];
     for (let i = 0; i < row; i++) {
       req.push([]);
@@ -944,7 +944,7 @@ export default {
   },
   // 生成下单数据
   batchOrderFormat(plans, gameType) {
-    console.log(plans, gameType);
+  //  console.log(plans, gameType);
     let res = '';
     return plans
       .map(x => {
@@ -954,7 +954,7 @@ export default {
           .ballPos}`;
         if (this.betType(gameType) == 'xyrb') {
           i = `${x.ball[0].split(',')[0]}_${x.ball[0].split(',')[0]}_0`;
-          console.log(i);
+        //  console.log(i);
         }
         // @每个位置上的球号@
         i += `@${this.ballArrToSting(
@@ -983,7 +983,7 @@ export default {
   },
   // 生成下单数据的球号str
   ballArrToSting(arr, gameType, typeDetId) {
-    console.log(arr);
+ //   console.log(arr);
     // let sscHasD = ['R3ZXKD', 'R3HZ', 'R2ZXKD', 'R2HZ'];
     let res = [];
     arr.map(x => {
@@ -1062,14 +1062,14 @@ export default {
     // console.log(plans);
     return plans
       .map(x => {
-        console.log(x.playMethod, x);
-        console.log(x.playMethod.proType, x.ball[0].split(',')[2]);
+    //    console.log(x.playMethod, x);
+    //    console.log(x.playMethod.proType, x.ball[0].split(',')[2]);
         let ballPos = '';
         ballPos =
           lhcBallPos[x.playMethod.proType][x.ball[0].split(',')[2]].ballPos;
         let ball =
           lhcBallPos[x.playMethod.proType][x.ball[0].split(',')[2]].ball;
-        console.log(ball);
+     //   console.log(ball);
         if (!ball && ball != 0) {
           // 自选不中
           if (

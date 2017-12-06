@@ -31,9 +31,9 @@
         </router-link>
       </flexbox-item>
       <flexbox-item>
-        <router-link to="/message">
+        <router-link to="/bulletin">
           <img src="../../assets/img/message.png" alt="">
-          <p>消息公告</p>
+          <p>平台公告</p>
         </router-link>
       </flexbox-item>
       <flexbox-item>
