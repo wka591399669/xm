@@ -8,12 +8,15 @@ import MiniRefreshTools from 'minirefresh';
 import 'minirefresh/dist/debug/minirefresh.css';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 
+import DataTime from './util/dataTime';
+
 require('swiper/dist/css/swiper.css');
 require('./assets/style/animate.css');
 require('./assets/style/common.less');
 
 Vue.prototype.$http = Fetch;
 Vue.prototype.SETTING = SETTING;
+Vue.prototype.DataTime = DataTime;
 
 // 连接网易云
 let connectNim = () => {

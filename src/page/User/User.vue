@@ -61,6 +61,10 @@
       <cell title="我的回水" is-link link="/backWater">
         <img slot="icon" src="../../assets/img/user/backwater.png">
       </cell>
+      
+      <cell title="代理中心" is-link link="/teamInfo">
+        <img slot="icon" src="../../assets/img/user/mine_proxy.png">
+      </cell>
     </group>
     <group>
       <cell title="优惠活动" is-link link="/activity">

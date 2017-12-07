@@ -151,7 +151,36 @@ const MoneyPassword = r =>
     () => r(require('./page/BetRecord/BetRuleDes.vue')),
     'BetRuleDes'
   );
+  
+  const TeamInfo = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamInfo.vue')),
+    'TeamInfo'
+  );
+  
+  const TeamSurplus = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamSurplus.vue')),
+    'TeamSurplus'
+  );
+  const TeamCashFlow = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamCashFlow.vue')),
+    'TeamCashFlow'
+  );
+  const TeamUser = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamUser.vue')),
+    'TeamUser'
+  );
+  
 
+
+  
 Vue.use(Router);
 
 export default new Router({
@@ -396,6 +425,38 @@ export default new Router({
         verifyLogin(next);
       }
     },
+    {
+      path: '/teamInfo',
+      name: 'TeamInfo',
+      component: TeamInfo,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamSurplus',
+      name: 'TeamSurplus',
+      component: TeamSurplus,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    }, 
+    {
+      path: '/teamCashFlow',
+      name: 'TeamCashFlow',
+      component: TeamCashFlow,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },  
+    {
+      path: '/teamUser',
+      name: 'TeamUser',
+      component: TeamUser,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },   
     {
       path: '/*',
       name: 'NotFound',
