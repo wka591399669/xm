@@ -71,9 +71,9 @@ export default {
   },
   data() {
     return {
-     topMenu:[{'memuName':'团队信息',menuUrl:'/teamInfo'},{'memuName':'团队投注',menuUrl:'/teamInfo'},
+      topMenu:[{'memuName':'团队信息',menuUrl:'/teamInfo'},{'memuName':'团队投注',menuUrl:'/teamOrder'},
       {'memuName':'团队帐变',menuUrl:'/teamCashFlow'},{'memuName':'团队盈亏',menuUrl:'/teamSurplus'},
-      {'memuName':'用户管理',menuUrl:'/teamUser'},{'memuName':'注册用户',menuUrl:'/teamInfo'}],
+      {'memuName':'用户管理',menuUrl:'/teamUser'},{'memuName':'注册用户',menuUrl:'/teamReg'}],
       accType:[{'accTypeName':'全部',accTypeValue:''},{'accTypeName':'账号充值',accTypeValue:'ACC_IN'},
       {'accTypeName':'账号提现',accTypeValue:'ACC_OUT'},{'accTypeName':'投注扣款',accTypeValue:'ORDER'}],
       accTypeInde:0,
