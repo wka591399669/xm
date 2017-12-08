@@ -9,13 +9,13 @@
       </div>
     </XHeader>
     <div class="main">
-       <NotFound v-if="!list.length" noHeader='1'></NotFound>
+       <NotFound v-if="!(list != undefined && list.length>0)" noHeader='1'></NotFound>
        <ul v-else>
         <li class="title">
           <span>用户</span><span>订单号</span><span>中奖奖金</span><span>中奖状态</span>
         </li>
-        <li v-for="(it,i) in list" :key="i" class="body">
-          <span>{{it.userID}}</span><span>{{it.batchOrderId}}</span>
+        <li v-for="(it,i) in list" :key="i" class="body" @click="openOrderDetail(i)">
+          <span>{{it.userID}}</span><span>{{it.batchOrderID}}</span>
           <span>{{it.winAmount}}</span><span>{{it.stateName}}</span>
         </li>  
       </ul>
@@ -69,15 +69,51 @@
       <div class="gameTypeClass">
         <span>彩票种类</span>
         <ul>
-          <li v-if="gameTypeList.length>0" >
+          <li v-if="gameTypeList != undefined && gameTypeList.length >0" >
             <span  v-for="(it,i) in gameTypeList" :key="i"  @click="gameTypeInde=i" :class="{'select':i==gameTypeInde}">{{it.gameTypeName}}</span>
           </li>
         </ul>
       </div> 
-
       <div class="sub" @click="getTeamOrderInfo(0)">确定</div>
     </popup>
-     
+     <!-- 投注记录详情 -->
+    <popup class="orderDetailPopup" v-model="orderDetailShow" height="100%">
+      <XHeader @on-click-back="leaveOrderDetail" :left-options="{backText: '',preventGoBack:true}">
+        投注详情
+      </XHeader>
+      <div v-if="orderInde!=-1"> 
+        <ul>
+          <li>
+            <span>用户</span>
+            <span>{{list[orderInde].userID}}</span> 
+          </li> 
+          <li>
+            <span>订单号</span>
+            <span>{{list[orderInde].batchOrderID}}</span> 
+          </li> 
+          <li>
+            <span>时间</span>
+            <span>{{list[orderInde].orderTime}}</span> 
+          </li> 
+          <li>
+            <span>彩种/起始期数</span>
+            <span>{{list[orderInde].gameTypeName}}/{{list[orderInde].issue}}</span> 
+          </li> 
+          <li>
+            <span>总金额</span>
+            <span>{{list[orderInde].totalStake}}</span> 
+          </li> 
+          <li>
+            <span>中奖金额</span>
+            <span>{{list[orderInde].winAmount}}</span> 
+          </li> 
+          <li>
+            <span>中奖状态</span>
+            <span>{{list[orderInde].stateName}}</span> 
+          </li>  
+        </ul>
+      </div>
+    </popup>
   </div>
 </template>
 <script>
@@ -113,7 +149,9 @@ export default {
       gameTypeInde:0,
       show:false,
       queryShow:false,
+      orderDetailShow:false, 
       list: [], // info
+      orderInde:-1,
       startDate:this.DataTime.getDay(-1),
       endDate:this.DataTime.getDay(0),
       index:1,
@@ -122,10 +160,18 @@ export default {
       gameTypeList:[],
       totalCount: 0, // 总条数
       pageSize: 10, // 查询条数
-      startRow: 0 // 起始条数
-     
+      startRow: 0 // 起始条数 
     };
   },
+   computed: {
+    queryGameType() {
+      console.log(this.gameTypeList);
+      if(this.gameTypeList != undefined && this.gameTypeList.length>0){
+        return this.gameTypeList[this.gameTypeInde].gameType;
+      }
+      return '';
+    }
+   }, 
   async created() {
     this.$vux.loading.show({
       text: 'Loading'
@@ -150,7 +196,7 @@ export default {
           batchOrderId:this.queryBatchOrderId,
           startRow: this.startRow,
           pageSize: this.pageSize,
-          gameType:this.gameTypeList[this.gameTypeInde].gameType,
+          gameType:this.queryGameType,
           isWin:this.isWinType[this.winTypeInde].winTypeValue
         }
       });
@@ -166,8 +212,6 @@ export default {
             type: 'warn'
           });
       }
-     
-       
     },
     selectStateType(index){
       this.stateTypeInde=index;
@@ -175,8 +219,19 @@ export default {
     async getGameTypeList(){
       let res = await this.$http('/queryGameTypeListByParentId');
       this.gameTypeList=res.returnList;
+      console.log(this.gameTypeList);
       this.gameTypeList.unshift({"gameType":"","gameTypeName":"全部"}); 
-      await this.getTeamOrderInfo();  
+      this.getTeamOrderInfo();  
+    },
+     // 退出投注详情
+    leaveOrderDetail() {
+      document.body.style.overflow = 'auto';
+      this.orderDetailShow = false;
+    },
+    //打开投注详情
+    openOrderDetail(v){
+      this.orderInde=v;
+      this.orderDetailShow=true;
     }
   }
 };

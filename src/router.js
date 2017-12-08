@@ -155,38 +155,38 @@ const MoneyPassword = r =>
   const TeamInfo = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamInfo.vue')),
+    () => r(require('./page/Proxy/TeamInfo.vue')),
     'TeamInfo'
   );
   
   const TeamSurplus = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamSurplus.vue')),
+    () => r(require('./page/Proxy/TeamSurplus.vue')),
     'TeamSurplus'
   );
   const TeamCashFlow = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamCashFlow.vue')),
+    () => r(require('./page/Proxy/TeamCashFlow.vue')),
     'TeamCashFlow'
   );
   const TeamUser = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamUser.vue')),
+    () => r(require('./page/Proxy/TeamUser.vue')),
     'TeamUser'
   );
   const TeamReg = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamReg.vue')),
+    () => r(require('./page/Proxy/TeamReg.vue')),
     'TeamReg'
   );
   const TeamOrder = r =>
   require.ensure(
     [],
-    () => r(require('./page/proxy/TeamOrder.vue')),
+    () => r(require('./page/Proxy/TeamOrder.vue')),
     'TeamOrder'
   );
   
