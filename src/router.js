@@ -177,6 +177,20 @@ const MoneyPassword = r =>
     () => r(require('./page/proxy/TeamUser.vue')),
     'TeamUser'
   );
+  const TeamReg = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamReg.vue')),
+    'TeamReg'
+  );
+  const TeamOrder = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/proxy/TeamOrder.vue')),
+    'TeamOrder'
+  );
+  
+  
   
 
 
@@ -440,7 +454,7 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }
-    }, 
+    },
     {
       path: '/teamCashFlow',
       name: 'TeamCashFlow',
@@ -448,7 +462,7 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }
-    },  
+    },
     {
       path: '/teamUser',
       name: 'TeamUser',
@@ -456,7 +470,23 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }
-    },   
+    },
+    {
+      path: '/teamReg',
+      name: 'TeamReg',
+      component: TeamReg,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamOrder',
+      name: 'TeamOrder',
+      component: TeamOrder,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
     {
       path: '/*',
       name: 'NotFound',
