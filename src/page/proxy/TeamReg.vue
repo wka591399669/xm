@@ -19,7 +19,7 @@
       </div> 
      
     </div>
-    <div class="saveClass">
+    <div class="saveClass" @click="updateRegInfo">
        保存
     </div>
     
