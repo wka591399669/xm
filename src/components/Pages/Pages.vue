@@ -2,7 +2,7 @@
   <div id="Pages" v-if="totalPage > 1">
     <flexbox>
         <flexbox-item>
-          <x-button :disabled="nowPage < totalPage" @click.native="turnPage('prev')">上一页</x-button>
+          <x-button :disabled="nowPage <= 1" @click.native="turnPage('prev')">上一页</x-button>
         </flexbox-item>
         <flexbox-item>
           <x-button disabled>{{nowPage}}/{{totalPage}}</x-button>

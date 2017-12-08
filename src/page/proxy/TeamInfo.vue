@@ -90,8 +90,8 @@ export default {
      
       let res = await this.$http('/queryUserTeamInfo', {
         body: {
-          startDate: this.startDate.replace('-',''),
-          endDate: this.endDate.replace('-','')
+          startDate: this.startDate.replace(/-/g,''),
+          endDate: this.endDate.replace(/-/g,'')
         }
       });
       if(this.queryShow){

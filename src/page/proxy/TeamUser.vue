@@ -56,7 +56,9 @@
     <popup v-model="addUserShow" class="addUser" > 
       <div>新增用户</div>
       <ul> 
-        <li ><span>账号类型</span><span class="textBordClass select">会员</span></li>
+        <li ><span>账号类型</span>
+        <span class="textBordClass" :class="{'select':addUserInfo.userType=='90'}" @click="addUserInfo.userType='90'">会员</span>
+        <span class="textBordClass" :class="{'select':addUserInfo.userType=='80'}" @click="addUserInfo.userType='80'">代理</span></li>
         <li ><span>账号</span><span><input type="text" v-model="addUserInfo.lowerUserID" /></span></li>
         <li ><span>密码</span><span><input type="password" v-model="addUserInfo.userPassword" /></span></li>
         <li ><span>重复密码</span><span><input type="password" v-model="addUserInfo.userPasswordCom" /></span></li>
@@ -93,7 +95,7 @@ export default {
       {'memuName':'团队帐变',menuUrl:'/teamCashFlow'},{'memuName':'团队盈亏',menuUrl:'/teamSurplus'},
       {'memuName':'用户管理',menuUrl:'/teamUser'},{'memuName':'注册用户',menuUrl:'/teamReg'}],
       userStateType:[{'stateName':'全部',stateValue:''},{'stateName':'启动',stateValue:'0'},
-      {'stateName':'冻结',stateValue:'10'},{'stateName':'锁定',stateValue:'25'},{'stateName':'停用',stateValue:'50'}],
+      {'stateName':'冻结',stateValue:'10'},{'stateName':'锁定',stateValue:'25'},{'stateName':'停用',stateValue:'50'}], 
       userStateInde:0,
       show:false,
       queryShow:false,
