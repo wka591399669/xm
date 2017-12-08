@@ -62,7 +62,7 @@
         <img slot="icon" src="../../assets/img/user/backwater.png">
       </cell>
       
-      <cell title="代理中心" is-link link="/teamInfo">
+      <cell title="代理中心" is-link link="/teamInfo" v-if="loginInfo.userType==80">
         <img slot="icon" src="../../assets/img/user/mine_proxy.png">
       </cell>
     </group>
@@ -94,7 +94,8 @@ export default {
         userName: '', // 用户名
         amount: 0.0, // 可用金额
         amountCanOut: 0.0, // 可提金额
-        surplus: 0.0 // 当日盈亏
+        surplus: 0.0, // 当日盈亏
+        userType: 0 // 用户类型
       },
       messageCount:0
     };

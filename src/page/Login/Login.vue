@@ -114,6 +114,20 @@ export default {
     },
     // 注册
     async doRegister() {
+      if (this.register.username == null || this.register.username.length<6) {
+        this.$vux.toast.show({
+          text: '用户名不能为空且长度需大于6位数',
+          type: 'warn'
+        });
+        return;
+      }
+      if (this.register.password == null || this.register.password.length<6) {
+        this.$vux.toast.show({
+          text: '密码不能为空且长度需大于6位数',
+          type: 'warn'
+        });
+        return;
+      }
       if (this.register.password !== this.register.repassword) {
         this.$vux.toast.show({
           text: '两次输入的密码不一致',
