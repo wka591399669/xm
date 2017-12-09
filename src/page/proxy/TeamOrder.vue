@@ -1,6 +1,6 @@
 <template>
   <div id="TeamOrder">
-    <XHeader :left-options="{backText: ''}"> 
+    <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')"> 
      <div @click="show=!show">
          {{topMenu[index].memuName}}
       </div> 
@@ -219,7 +219,7 @@ export default {
     async getGameTypeList(){
       let res = await this.$http('/queryGameTypeListByParentId');
       this.gameTypeList=res.returnList;
-      console.log(this.gameTypeList);
+    
       this.gameTypeList.unshift({"gameType":"","gameTypeName":"全部"}); 
       this.getTeamOrderInfo();  
     },

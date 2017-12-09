@@ -1,6 +1,6 @@
 <template>
   <div id="TeamCashFlow">
-    <XHeader :left-options="{backText: ''}"> 
+    <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')"> 
      <div @click="show=!show">
          {{topMenu[index].memuName}}
       </div> 
@@ -14,8 +14,8 @@
         <li class="title">
           <span>账号</span><span>订单号</span><span>收入</span><span>支付</span>
         </li>
-        <li v-for="(it,i) in list" :key="i" class="body">
-          <span>{{it.userID}}</span><span>{{it.batchOrderId}}</span>
+        <li v-for="(it,i) in list" :key="i" class="body" @click="openCashFlowDetail(i)">
+          <span>{{it.userID}}</span><span>{{it.accountID}}</span>
           <span>{{it.accountIn}}</span><span>{{it.accountOut}}</span>
         </li>  
       </ul>
@@ -50,6 +50,48 @@
       <div class="sub" @click="getTeamCashFlowInfo(0)">确定</div>
     </popup>
      
+     <!-- 团队帐变详情 -->
+    <popup class="cashFlowDetailPopup" v-model="cashFlowDetailShow" height="100%">
+      <XHeader @on-click-back="leaveCashFlowDetail" :left-options="{backText: '',preventGoBack:true}">
+        帐变详情
+      </XHeader>
+      <div v-if="cashFlowInde!=-1"> 
+        <ul>
+          <li>
+            <span>帐变用户</span>
+            <span>{{list[cashFlowInde].userID}}</span> 
+          </li> 
+          <li>
+            <span>订单号</span>
+            <span>{{list[cashFlowInde].accountID}}</span> 
+          </li> 
+          <li>
+            <span>时间</span>
+            <span>{{list[cashFlowInde].operDate}}</span> 
+          </li> 
+          <li>
+            <span>彩种/起始期数</span>
+            <span>{{list[cashFlowInde].gameTypeName}}/{{list[cashFlowInde].issueID}}</span> 
+          </li> 
+          <li>
+            <span>类型</span>
+            <span>{{list[cashFlowInde].accountTypeName}}</span> 
+          </li> 
+          <li>
+            <span>收入</span>
+            <span>{{list[cashFlowInde].accountIn}}</span> 
+          </li> 
+          <li>
+            <span>支出</span>
+            <span>{{list[cashFlowInde].accountOut}}</span> 
+          </li>  
+          <li>
+            <span>余额</span>
+            <span>{{list[cashFlowInde].account}}</span> 
+          </li>  
+        </ul>
+      </div>
+    </popup>
   </div>
 </template>
 <script>
@@ -84,6 +126,10 @@ export default {
       endDate:this.DataTime.getDay(0),
       index:2,
       queryUserId:'',
+      
+      cashFlowDetailShow:false, 
+      cashFlowInde:-1,
+
       totalCount: 0, // 总条数
       pageSize: 10, // 查询条数
       startRow: 0 // 起始条数
@@ -123,6 +169,16 @@ export default {
     },
     selectAccType(index){
       this.accTypeInde=index;
+    },
+     // 退出帐变详情
+    leaveCashFlowDetail() {
+      document.body.style.overflow = 'auto';
+      this.cashFlowDetailShow = false;
+    },
+    //打开帐变详情
+    openCashFlowDetail(v){
+      this.cashFlowInde=v;
+      this.cashFlowDetailShow=true;
     }
   }
 };

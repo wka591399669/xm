@@ -1,6 +1,6 @@
 <template>
   <div id="TeamInfo">
-    <XHeader :left-options="{backText: ''}"> 
+    <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')"> 
      <div @click="show=!show">
          {{topMenu[index].memuName}}
       </div>

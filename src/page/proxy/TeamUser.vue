@@ -1,6 +1,14 @@
 <template>
   <div id="TeamUser">
-    <XHeader :left-options="{backText: ''}"> 
+   <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')" v-if="leaderId==''">  
+     <div @click="show=!show">
+         {{topMenu[index].memuName}}
+      </div> 
+      <div slot="right" @click="queryShow=!queryShow">
+       筛选
+      </div>
+    </XHeader>
+    <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="goLeader"  v-else>  
      <div @click="show=!show">
          {{topMenu[index].memuName}}
       </div> 
@@ -14,7 +22,7 @@
         <li class="title">
           <span>会员类型</span><span>账号</span><span>团队人数</span><span>可用余额</span>
         </li>
-        <li v-for="(it,i) in list" :key="i" class="body">
+        <li v-for="(it,i) in list" :key="i" class="body" @click="openUserDetail(i)" >
           <span>{{it.userTypeName}}</span><span>{{it.userId}}</span>
           <span>{{it.teamUserCount}}</span><span>{{it.account}}</span>
         </li>  
@@ -36,9 +44,9 @@
     <popup v-model="queryShow" class="query" >
       <div class="queryDate">
           <group title="时间">
-            <datetime v-model="startDate"  class="selectStartDatetime"></datetime>
+            <datetime v-model="startDate"  class="selectStartDatetime" @on-confirm="comfirmQueryDate"></datetime>
             <span class="queryMiddle">—</span>
-            <datetime v-model="endDate"   class="selectEndDatetime"></datetime>
+            <datetime v-model="endDate"   class="selectEndDatetime"  @on-confirm="comfirmQueryDate" ></datetime>
           </group>
       </div> 
       <div class="queryUser">下级账号<input type="text" v-model="queryUserId" /></div>
@@ -70,6 +78,43 @@
       <div><span @click="cannelCreateUser">取消</span><span @click="createLowerUser">确定</span></div>
     </popup>
      
+    <!-- 用户详情 -->
+    <popup class="userDetailPopup" v-model="userDetailShow" height="100%">
+      <XHeader @on-click-back="leaveUserDetail" :left-options="{backText: '',preventGoBack:true}">
+        帐变详情
+      </XHeader>
+      <div v-if="userInde!=-1"> 
+        <ul>
+          <li>
+            <span>账号</span>
+            <span>{{list[userInde].userId}}</span> 
+          </li> 
+          <li>
+            <span>返点</span>
+            <span>{{list[userInde].rakeOff}}</span> 
+          </li> 
+          <li>
+            <span>团队人数</span>
+            <span>{{list[userInde].teamUserCount}}</span> 
+          </li> 
+          <li>
+            <span>可用余额</span>
+            <span>{{list[userInde].account}}</span> 
+          </li> 
+          <li>
+            <span>团队余额</span>
+            <span>{{list[userInde].teamUserAccount}}</span> 
+          </li> 
+          <li>
+            <span>最后登陆</span>
+            <span>{{list[userInde].lastLoginDate}}</span> 
+          </li>  
+        </ul>
+      </div> 
+      <div class="queryLowerUserClass" v-if="userInde!=-1 && list[userInde].userType=='80'" @click="queryLowerUserInfo(`${list[userInde].userId}`)">
+        查看下级
+      </div>
+    </popup> 
   </div>
 </template>
 <script>
@@ -78,7 +123,7 @@ import Pages from '../../components/Pages/Pages';
 import { Popup, Range, XHeader,Datetime,Group, XButton } from 'vux';
  
 export default {
-  name: 'TeamSurplus',
+  name: 'Teamuser',
   components: {
     Popup,
     Range,
@@ -92,7 +137,7 @@ export default {
   data() {
     return {
       topMenu:[{'memuName':'团队信息',menuUrl:'/teamInfo'},{'memuName':'团队投注',menuUrl:'/teamOrder'},
-      {'memuName':'团队帐变',menuUrl:'/teamCashFlow'},{'memuName':'团队盈亏',menuUrl:'/teamSurplus'},
+      {'memuName':'团队帐变',menuUrl:'/teamCashFlow'},{'memuName':'团队盈亏',menuUrl:'/teamuser'},
       {'memuName':'用户管理',menuUrl:'/teamUser'},{'memuName':'注册用户',menuUrl:'/teamReg'}],
       userStateType:[{'stateName':'全部',stateValue:''},{'stateName':'启动',stateValue:'0'},
       {'stateName':'冻结',stateValue:'10'},{'stateName':'锁定',stateValue:'25'},{'stateName':'停用',stateValue:'50'}], 
@@ -103,8 +148,16 @@ export default {
       list: [], // info
       startDate:this.DataTime.getDay(-1),
       endDate:this.DataTime.getDay(0),
+      queryStartDate:'',
+      queryEndDate:'',
       index:4,
       queryUserId:'',
+      userLeaderId:'',
+      
+      userDetailShow:false, 
+      userInde:-1,
+      leaderId:'',
+      
       totalCount: 0, // 总条数
       pageSize: 10, // 查询条数
       startRow: 0 ,// 起始条数
@@ -132,10 +185,11 @@ export default {
       }
       let res = await this.$http('/queryLowerUserInfoForPage', {
         body: {
-          startDate: this.startDate.replace(/-/g,''),
-          endDate: this.endDate.replace(/-/g,''),
+          startDate: this.queryStartDate,
+          endDate: this.queryEndDate,
           queryUserId:this.queryUserId,
           userState:this.userStateType[this.userStateInde].stateValue,
+          leaderId:this.leaderId,
           startRow: this.startRow,
           pageSize: this.pageSize
         }
@@ -165,6 +219,11 @@ export default {
         userPasswordCom:'',
         rakeOff:'0.0'
       }
+    },
+    goLeader(){
+      this.leaderId=this.userLeaderId; 
+      this.userInde=-1; 
+      this.getTeamUserInfo(0); 
     },
    async createLowerUser(){ 
       if(this.addUserInfo.lowerUserID == null || this.addUserInfo.lowerUserID.length<=0){
@@ -227,6 +286,30 @@ export default {
       }
       
 
+    },
+     // 退出帐变详情
+    leaveUserDetail() {
+      document.body.style.overflow = 'auto';
+      this.userDetailShow = false;
+      this.leaderId='';
+    },
+    //打开帐变详情
+    openUserDetail(v){
+      this.userInde=v;
+      this.userDetailShow=true;
+    },
+    //查看下级
+    queryLowerUserInfo(lowerUserId){
+      this.userLeaderId=this.leaderId;
+      this.userDetailShow=false;
+      this.leaderId=lowerUserId;
+      this.userInde=-1; 
+      this.getTeamUserInfo(0);
+    },
+    //选择查询时间
+    comfirmQueryDate(){
+      this.queryStartDate=this.startDate.replace(/-/g,'');
+      this.queryEndDate=this.endDate.replace(/-/g,'');
     }
   }
 };

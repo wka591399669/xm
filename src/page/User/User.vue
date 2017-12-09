@@ -47,7 +47,7 @@
       </cell> --> 
       <cell title="个人消息" is-link link="/message">
         <img slot="icon" src="../../assets/img/user/message2.png"> 
-         <span slot="value" style="color:red;">{{messageCount>0?messageCount:""}}</span> 
+         <span  style="color:red;">{{messageCount>0?messageCount:""}}</span> 
       </cell>
       <cell title="投注记录" is-link link="/betRecord">
         <img slot="icon" src="../../assets/img/user/record2.png">
