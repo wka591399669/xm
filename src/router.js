@@ -189,6 +189,20 @@ const MoneyPassword = r =>
     () => r(require('./page/Proxy/TeamOrder.vue')),
     'TeamOrder'
   );
+  const Question = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Question/Question.vue')),
+    'Question'
+  );
+  const QuestionValidate = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Question/QuestionValidate.vue')),
+    'QuestionValidate'
+  );
+  
+  
   
   
   
@@ -486,6 +500,19 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }
+    },
+    {
+      path: '/question',
+      name: 'Question',
+      component: Question,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/questionValidate',
+      name: 'QuestionValidate',
+      component: QuestionValidate
     },
     {
       path: '/*',
