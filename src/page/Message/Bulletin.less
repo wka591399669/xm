@@ -1,0 +1,76 @@
+#Bulletin {
+  .vux-tab {
+    background-color: #292929;
+    border-top: 1px solid rgba(108, 86, 63, 1);
+    .vux-tab-item.vux-tab-selected {
+      color: #ffe48c;
+    }
+    .vux-tab-item {
+      background: none;
+    }
+    .vux-tab-bar-inner {
+      background-color: #ffe48c;
+      border-radius: 3px;
+    }
+  }
+  .list {
+    margin-top: 0.1rem;
+    li {
+      background-color: #292929;
+      height: 1.35rem;
+      padding: 0.3rem;
+      border-bottom: 1px solid rgba(108, 86, 63, 1);
+      box-sizing: border-box;
+      &:nth-last-child(1) {
+        border: 0;
+      }
+      p {
+        display: flex;
+        span {
+          flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      p:nth-child(1) {
+        color: #fff;
+        font-size: 0.32rem;
+        span:nth-child(2) {
+          text-align: right;
+        }
+      }
+      p:nth-child(2) {
+        color: #bbb;
+        font-size: 0.28rem;
+        span:nth-child(2) {
+          text-align: right;
+        }
+      }
+    }
+  }
+}
+#MessageCon {
+  background-color: #292929;
+  .title {
+    color: #fff;
+    padding: 0.3rem;
+    padding-bottom: 0.61rem;
+    position: relative;
+    font-size: 0.36rem;
+    border-bottom: 1px solid rgba(95, 87, 63, 1);
+    box-sizing: border-box;
+    span {
+      position: absolute;
+      bottom: 0;
+      font-size: 0.26rem;
+      height: 0.51rem;
+      color: #999;
+    }
+  }
+  .main {
+    padding: 0.3rem;
+    color: #fff;
+    font-size: 0.28rem;
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <div id="Bet28">
     <XHeader :left-options="{backText: ''}">
-      {{saleInfo.gameType}}
+      {{roomRankName[this.$route.params.roomRank-1]+roomInfo.roomName}}
       <div slot="right">
         <img src="../../assets/img/lottery/record.png" @click="$router.push('/betRecord')">
         <img src="../../assets/img/lottery/more.png"  @click="showMoreHelp">
@@ -61,7 +61,7 @@
         class="info"
         v-if="it.type == 0"
         >
-          <p>欢迎<span>{{it.name}}</span>进入房间</p>
+          <p>欢迎<span>{{it.userId}}</span>进入房间</p>
         </li>
         <li
         class="me"
@@ -70,7 +70,7 @@
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>{{it.name}}<span>{{it.time}}</span></p>
+            <p>{{it.userId}}<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
                 <span>第{{it.issue}}期</span>
@@ -86,7 +86,7 @@
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>{{it.name}}<span>{{it.time}}</span></p>
+            <p>{{it.userId}}<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
                 <span>第{{it.issue}}期</span>
@@ -95,6 +95,12 @@
               <p><img src="../../assets/img/yb.png" alt="">{{it.money}}元宝</p>
             </div>
           </div>
+        </li>
+         <li 
+        class="info"
+        v-if="it.type == 3"
+        >
+          <p><span>{{it.issue}}</span>期开奖结果<span>{{it.issueResult}}</span></p>
         </li>
       </ul>
     </div>
@@ -113,12 +119,12 @@
          <swiper-item>
           <div class="betmain" >
             <p>{{productTypeRateMap.rateList[1].productType}}</p>
-            <p v-if="showResult">中奖和值：{{tempBall.dxdsSum[0]}}</p>
-            <p v-for="(it,i) in productTypeRateMap.rateList[1].itemList" :key="i" v-if="tempBall.ball.indexOf(`PCDXDS,${i},${it.item}`) >= 0">中奖和值：{{tempBall.dxdsSum[i]}}</p>
+            <p>中奖和值：{{dxdsSum[dxdsIndex]}}</p>
+            
             <ul>
               <li v-for="(it,i) in productTypeRateMap.rateList[1].itemList" :key="i"
               :class="{'check':tempBall.ball.indexOf(`PCDXDS,${i},${it.item}`) >= 0}"
-              @click="handleBallClick(`PCDXDS,${i},${it.item}`)" >
+              @click="handleBallClick('PCDXDS',i,it.item,i)" >
                 <em>{{it.item}}</em>
                 <em>{{parseInt(it.rate)}}</em>
               </li>
@@ -128,13 +134,13 @@
         <swiper-item>
           <div class="betmain">
             <p>{{productTypeRateMap.rateList[2].productType}}</p>
-            <p v-if="showResult">中奖号码：[0]</p>
+            <p>中奖号码：[{{cszIndex}}]</p>
             <p v-for="(it,i) in productTypeRateMap.rateList[2].itemList" :key="i" v-if="tempBall.ball.indexOf(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`) >= 0">中奖号码：[{{i}}]</p>
             <ul>
               <li 
               v-for="(it,i) in productTypeRateMap.rateList[2].itemList" :key="i"
               :class="{'check':tempBall.ball.indexOf(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`) >= 0}"
-              @click="handleBallClick(`CSZ,${it.item.slice(2,4)},${parseInt(it.rate)}`)"
+              @click="handleBallClick('CSZ',it.item.slice(2,4),parseInt(it.rate),i)"
               >
               <em>{{it.item.slice(2,4)}}</em>
               <em>{{parseInt(it.rate)}}</em>
@@ -145,13 +151,13 @@
         <swiper-item>
           <div class="betmain">
             <p>{{productTypeRateMap.rateList[0].productType}}</p>
-            <p v-if="showResult">中奖和值：{{tempBall.tsSum[0]}}</p>
-            <p v-for="(it,i) in productTypeRateMap.rateList[0].itemList" :key="i" v-if="tempBall.ball.indexOf(`TS,${parseInt(it.rate)},${it.item}`) >= 0">中奖和值：{{tempBall.tsSum[i]}}</p>
+            <p>中奖和值：[{{tsSum[tsIndex][0]}}]</p>
+            <p v-for="(it,i) in productTypeRateMap.rateList[0].itemList" :key="i" v-if="tempBall.ball.indexOf(`TS,${parseInt(it.rate)},${it.item}`) >= 0">中奖和值：[{{tsSum[i][0]}}]</p>
             <ul>
               <li 
               v-for="(it,i) in productTypeRateMap.rateList[0].itemList" :key="i"
               :class="{'check':tempBall.ball.indexOf(`TS,${parseInt(it.rate)},${it.item}`) >= 0}"
-              @click="handleBallClick(`TS,${parseInt(it.rate)},${it.item}`)"
+              @click="handleBallClick('TS',parseInt(it.rate),it.item,i)"
               >
               <em>{{it.item}}</em>
               <em>{{parseInt(it.rate)}}</em>
@@ -252,8 +258,29 @@ export default {
       gameTypeDecLink:SETTING.apiHost + '/gameType/' + this.$route.params.gameType+'.html',
       moreHelpShow: false,
       playDetail:false,
-      productTypeRateMap:{},
-      showResult:true
+      productTypeRateMap:{}, 
+      dxdsIndex:0, 
+      tsIndex:0,
+      cszIndex:0,
+      dxdsSum: [ 
+        [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27],
+        [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26],
+        [15, 17, 19, 21, 23, 25, 27],
+        [1, 3, 5, 7, 9, 11, 13],
+        [14, 16, 18, 20, 22, 24, 26],
+        [0, 2, 4, 6, 8, 10, 12],
+        [22, 23, 24, 25, 26, 27],
+        [0, 1, 2, 3, 4, 5]
+      ],
+      tsSum: [
+        ['3, 6, 9, 12, 15, 18, 21, 24'],
+        ['1, 4, 7, 10, 16, 19, 22, 25'],
+        ['2, 5, 8, 11, 17, 20, 23, 26'],
+        ['三个数字一致即为中奖']
+      ],
+      roomRankName:['回水厅','保本厅','高赔率厅']
     };
   },
   computed: {
@@ -323,6 +350,7 @@ export default {
     }
   },
   created() {
+    
     this.initRoom();
     this.init();
     this.service(); 
@@ -344,16 +372,16 @@ export default {
     clearInterval(this.toDown);
   },
   methods: {
-    async initRoom() {
+    initRoom() {
       if (!Object.keys(this.roomInfo).length) {
         this.$router.go(-1);
       }
-      console.log(nim);
+    //  console.log(nim);
       // 获取聊天室地址
       nim.getChatroomAddress({
         chatroomId: this.roomInfo.thirdRoomId,
         done: (err, obj) => {
-          console.log(obj);
+      //    console.log(obj);
           // 连接聊天室
           let room = Chatroom.getInstance({
             appKey: SETTING.wyKey,
@@ -362,20 +390,20 @@ export default {
             chatroomId: this.roomInfo.thirdRoomId,
             chatroomAddresses: obj.address,
             onconnect: () => {
-              console.log('进入房间成功');
+      //        console.log('进入房间成功');
               // 获取历史
-              console.log(room);
+       //       console.log(room);
               room.getHistoryMsgs({
                 timetag: Date.parse(new Date()),
                 limit: 10,
                 done: (err, his) => {
-                  console.log(his);
+                 // console.log(his);
                   his.msgs.map(x => this.sendMsg(x));
                 }
               });
             },
             onmsgs: msg => {
-              console.log(msg);
+             //console.log(msg);
               msg.map(x => this.sendMsg(x));
             }
           });
@@ -399,23 +427,33 @@ export default {
       let money;
       let issue;
       let plan;
-      if (msg.type == 'notification' && msg.attach.type == 'memberEnter') {
-        type = 0;
-      } else if (
-        msg.type == 'tip' &&
-        msg.tip == '投注记录' &&
+      let userId;
+      let issueResult;
+      console.log(msg);
+      if (
+        planDes.type == 'BET_SCUSS' && 
         msg.fromNick == window.localStorage.getItem('userId')
       ) {
         type = 1;
         money = planDes.playMoney;
         issue = planDes.issueID;
         plan = planDes.betStyle;
-      } else if (msg.type == 'tip' && msg.tip == '投注记录') {
+        userId=planDes.userId;
+      } else if (planDes.type == 'BET_SCUSS' ) {
         type = 2;
         money = planDes.playMoney;
         issue = planDes.issueID;
         plan = planDes.betStyle;
-        console.log(plan);
+        userId=planDes.userId;
+      //  console.log(plan);
+      } else if (planDes.userId == 'admin' ) {
+        type = 3;
+        issueResult = planDes.issueResult;
+        issue = planDes.issueId; 
+      //  console.log(plan);
+      }  else {
+        type = 0;
+        userId =msg.fromNick; 
       }
 
       let m = {
@@ -423,33 +461,43 @@ export default {
         money,
         issue,
         plan,
-        name,
-        time
+        userId,
+        time,
+        issueResult
       };
+      
       this.talk.push(m);
       this.talk.length > 40 && this.talk.shift();
     },
     /**
      * init
      */
-    async init() {
+    init() {
       this.$vux.loading.show({
         text: 'Loading'
       });
-      await this.$store.dispatch('bet/setBet', this.$route.params.gameType);
-      await this.$store.dispatch('bet/init');
+      this.$store.dispatch('bet/setBet', this.$route.params.gameType);
+      this.$store.dispatch('bet/init');
       this.$vux.loading.hide();
     },
     /**
      * play
      */
     // 点击选号
-    handleBallClick(v) {
-      this.showResult = false;
+    handleBallClick(p,b,r,ind) {
+      var v= p+","+b+","+r; 
+      if("PCDXDS"==p){
+        this.dxdsIndex=ind;
+      }
+      if("TS"==p){
+        this.tsIndex=ind;
+      } 
+      if("CSZ"==p){
+        this.cszIndex=ind;
+      } 
       this.clearPick();
       this.clearPlan('all');
-      this.$store.dispatch('bet/handleBallClick', v);
-      console.log(this.tempBall.ball);
+      this.$store.dispatch('bet/handleBallClick', v); 
     },
     // 拖动修改赔率
     handleRateDrag(v) {
@@ -561,7 +609,7 @@ export default {
         roomId: this.$route.params.roomId,
         rakeOff: 0
       };
-      console.log(req);
+      
       let res = await this.$http('/addOrder', {
         body: req
       });
@@ -570,7 +618,7 @@ export default {
           text: '下单成功',
           type: 'success'
         });
-        console.log(this.planBall);
+         
         this.talk.push({
           type: 1,
           name: window.localStorage.getItem('userId'),
@@ -596,7 +644,7 @@ export default {
      // 获取客服地址
     async service() {
       let res = await this.$http('/queryCustomerServiceInfo');
-      console.log(res.returnMap.customerServiceUrl);
+      
       this.serviceLink = res.returnMap.customerServiceUrl;
     },
     //获取赔率说明

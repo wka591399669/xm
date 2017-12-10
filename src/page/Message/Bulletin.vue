@@ -1,14 +1,15 @@
 <template>
-  <div id="Message">
-    <XHeader :left-options="{backText: ''}">消息</XHeader>
+  <div id="Bulletin">
+    <XHeader :left-options="{backText: ''}">公告</XHeader>
     <!-- <tab :line-width="3" custom-bar-width="0.8rem">
       <tab-item @on-item-click="onTabClick(0)" :selected="tab==0">消息</tab-item> 
       <tab-item @on-item-click="onTabClick(1)" :selected="tab==1">公告</tab-item>
     </tab> -->
     <NotFound v-if="!list.length" noHeader='1'></NotFound>
-    <ul v-else class="list"> 
-      <!-- 消息 -->
-      <router-link tag="li" :to="`/messageCon/message/${it.id}`" v-for="(it,i) in list" :key="i">
+    <ul v-else class="list">
+       
+      <!-- 公告 -->
+      <router-link tag="li" :to="`/messageCon/bulletin/${it.bulletinId}`" v-for="(it,i) in list" :key="i">
         <p>
           <span v-if="it.messageTitle" v-html="it.messageTitle"></span>
           <span v-if="it.title" v-html="it.title"></span>
@@ -19,7 +20,7 @@
           <span></span>
           <span v-if="it.state">{{it.state== 1 ? '已读' : '未读'}}</span>
         </p>
-      </router-link> 
+      </router-link>
     </ul>
     <Pages @change="getData" :startRow="startRow" :pageSize="pageSize" :totalCount="totalCount"></Pages>
 
@@ -30,7 +31,7 @@ import NotFound from '../NotFound/NotFound';
 import Pages from '../../components/Pages/Pages';
 import { XHeader, Tab, TabItem } from 'vux';
 export default {
-  name: 'Message',
+  name: 'Bulletin',
   components: {
     XHeader,
     Tab,
@@ -43,7 +44,7 @@ export default {
   },
   data() {
     return {
-      tab: 0,
+      tab: 1,
       list: [], // info
       totalCount: 0, // 总条数
       pageSize: 10, // 查询条数
@@ -64,8 +65,8 @@ export default {
       } else {
         this.startRow = 0;
       }
-      
-      let res = await this.$http('/querySystemMessageList', {
+       
+      let res = await this.$http('/getBulletin', {
         body: {
           startRow: this.startRow,
           pageSize: this.pageSize
@@ -80,7 +81,7 @@ export default {
 };
 </script>
 <style lang="less">
-@import url('./Message.less');
+@import url('./Bulletin.less');
 </style>
 
 

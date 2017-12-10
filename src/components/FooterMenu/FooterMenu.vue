@@ -22,7 +22,7 @@
       <flexbox-item>
         <router-link to="/user">
           <span></span>
-          <p>我的</p>
+          <p>个人中心</p>
         </router-link>
       </flexbox-item>
     </flexbox>

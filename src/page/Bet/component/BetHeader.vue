@@ -128,13 +128,13 @@ export default {
     },
     //点击显示更多按钮
     showMoreHelp() {
-      console.log(1);
+      
       this.moreHelpShow = !this.moreHelpShow;
     },
     // 获取客服地址
     async service() {
       let res = await this.$http('/queryCustomerServiceInfo');
-      console.log(res.returnMap.customerServiceUrl);
+      
       this.serviceLink = res.returnMap.customerServiceUrl;
     }
   },

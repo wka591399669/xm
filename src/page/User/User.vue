@@ -44,7 +44,11 @@
     <group>
       <!-- <cell title="积分明细" is-link link="/integral">
         <img slot="icon" src="../../assets/img/user/integral3.png">
-      </cell> -->
+      </cell> --> 
+      <cell title="个人消息" is-link link="/message">
+        <img slot="icon" src="../../assets/img/user/message2.png"> 
+         <span  style="color:red;">{{messageCount>0?messageCount:""}}</span> 
+      </cell>
       <cell title="投注记录" is-link link="/betRecord">
         <img slot="icon" src="../../assets/img/user/record2.png">
       </cell>
@@ -57,13 +61,14 @@
       <cell title="我的回水" is-link link="/backWater">
         <img slot="icon" src="../../assets/img/user/backwater.png">
       </cell>
+      
+      <cell title="代理中心" is-link link="/teamInfo" v-if="loginInfo.userType==80">
+        <img slot="icon" src="../../assets/img/user/mine_proxy.png">
+      </cell>
     </group>
     <group>
       <cell title="优惠活动" is-link link="/activity">
         <img slot="icon" src="../../assets/img/user/safe.png">
-      </cell>
-      <cell title="消息公告" is-link link="/message">
-        <img slot="icon" src="../../assets/img/user/message2.png">
       </cell>
       <a target="_blank" :href="serviceLink">
         <cell title="联系客服" is-link>
@@ -89,8 +94,10 @@ export default {
         userName: '', // 用户名
         amount: 0.0, // 可用金额
         amountCanOut: 0.0, // 可提金额
-        surplus: 0.0 // 当日盈亏
-      }
+        surplus: 0.0, // 当日盈亏
+        userType: 0 // 用户类型
+      },
+      messageCount:0
     };
   },
   computed: {},
@@ -100,6 +107,7 @@ export default {
     });
     await this.getUserInfo();
     await this.service();
+    await this.getUserSystemMessageCount();
     this.$vux.loading.hide();
   },
   methods: {
@@ -119,6 +127,12 @@ export default {
     async service() {
       let res = await this.$http('/queryCustomerServiceInfo');
       this.serviceLink = res.returnMap.customerServiceUrl;
+    },
+    // 获取消息条数
+    async getUserSystemMessageCount() {
+      let res = await this.$http('/queryUserSystemMessageCount');
+      this.messageCount = res.totalCount;
+      console.log(this.messageCount);
     }
   }
 };

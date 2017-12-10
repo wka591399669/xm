@@ -50,26 +50,7 @@ export default {
      * play
      */
     // 当前选号
-    tempBall: {
-      dxdsSum: [
-        /*  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,13,14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27], */
-        [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
-        [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-        [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27],
-        [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26],
-        [15, 17, 19, 21, 23, 25, 27],
-        [1, 3, 5, 7, 9, 11, 13],
-        [14, 16, 18, 20, 22, 24, 26],
-        [0, 2, 4, 6, 8, 10, 12],
-        [22, 23, 24, 25, 26, 27],
-        [0, 1, 2, 3, 4, 5]
-      ],
-      tsSum: [
-        [3, 6, 9, 12, 15, 18, 21, 24],
-        [1, 4, 7, 10, 16, 19, 22, 25],
-        [2, 5, 8, 11, 17, 20, 23, 26],
-        ['三个数字一致即为中奖']
-      ],
+    tempBall: { 
       ball: [], // 选号
       moneyType: 1, // 1元 0.1角 0.01分
       planMoney: 2 // 方案金额
@@ -144,10 +125,8 @@ export default {
         maxBall--;
         minBall--;
       }
-      console.log('ttt1:' + state.tempBall.ball);
-
       for (var x = startBall; x <= endBall; x++) {
-        console.log('ttt2:' + i + ',' + x);
+      
         var index = n.indexOf(i + ',' + x);
         if (index !== -1) {
           n.splice(n.indexOf(i + ',' + x), 1);
@@ -178,10 +157,10 @@ export default {
           state.tempBall.ball.push(i + ',' + x);
         }
       }
-      console.log('ttt4:' + state.tempBall.ball);
+      
     },
     'bet/handleBallClick'(state, v) {
-      console.log('ball:' + state.tempBall.ball);
+    //  console.log('ball:' + state.tempBall.ball);
       if (state.tempBall.ball.indexOf(v) >= 0) {
         let n = state.tempBall.ball;
         n.splice(state.tempBall.ball.indexOf(v), 1);
@@ -223,8 +202,7 @@ export default {
     'bet/changeAllPlanMoney'(state, money) {
       state.planBall.map(x => {
         x.planMoney = Number(money);
-      });
-      console.log(state.planBall);
+      }); 
     }
   },
   actions: {
@@ -392,7 +370,7 @@ export default {
      */
     // 切换玩法
     async 'bet/headerCheck'(context, type) {
-      console.log(type);
+ //     console.log(type);
       await context.dispatch('bet/clearPick');
       await context.commit('bet/curMethod', type);
       await context.dispatch('bet/getGameLost');
@@ -401,7 +379,7 @@ export default {
     },
     // 切换一二级玩法
     async 'bet/headerCheckSecond'(context, { first, second }) {
-      console.log(first, second);
+ //     console.log(first, second);
       await context.dispatch('bet/clearPick');
       await context.commit('bet/curMethod', first);
       await context.commit('bet/curSecond', second);
@@ -438,12 +416,12 @@ export default {
         context.state.playMethods[context.state.curMethod],
         context.state.curSecond
       );
-      console.log(res);
+  //    console.log(res);
       context.state.tempBall.ball = res;
     },
     // 添加到投注区
     async 'bet/addPlan'(context, plan) {
-      console.log(plan);
+  //    console.log(plan);
       context.state.planBall.unshift(plan);
     }
   },

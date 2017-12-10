@@ -42,6 +42,9 @@ const Login = r =>
 const Message = r =>
   require.ensure([], () => r(require('./page/Message/Message.vue')), 'Message');
 
+const Bulletin = r =>
+  require.ensure([], () => r(require('./page/Message/Bulletin.vue')), 'Bulletin');
+  
 const MessageCon = r =>
   require.ensure(
     [],
@@ -148,7 +151,64 @@ const MoneyPassword = r =>
     () => r(require('./page/BetRecord/BetRuleDes.vue')),
     'BetRuleDes'
   );
+  
+  const TeamInfo = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamInfo.vue')),
+    'TeamInfo'
+  );
+  
+  const TeamSurplus = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamSurplus.vue')),
+    'TeamSurplus'
+  );
+  const TeamCashFlow = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamCashFlow.vue')),
+    'TeamCashFlow'
+  );
+  const TeamUser = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamUser.vue')),
+    'TeamUser'
+  );
+  const TeamReg = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamReg.vue')),
+    'TeamReg'
+  );
+  const TeamOrder = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Proxy/TeamOrder.vue')),
+    'TeamOrder'
+  );
+  const Question = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Question/Question.vue')),
+    'Question'
+  );
+  const QuestionValidate = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Question/QuestionValidate.vue')),
+    'QuestionValidate'
+  );
+  
+  
+  
+  
+  
 
+
+  
 Vue.use(Router);
 
 export default new Router({
@@ -323,6 +383,14 @@ export default new Router({
       }
     },
     {
+      path: '/bulletin',
+      name: 'Bulletin',
+      component: Bulletin,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
       path: '/messageCon/:type/:id',
       name: 'MessageCon',
       component: MessageCon,
@@ -384,6 +452,67 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         verifyLogin(next);
       }
+    },
+    {
+      path: '/teamInfo',
+      name: 'TeamInfo',
+      component: TeamInfo,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamSurplus',
+      name: 'TeamSurplus',
+      component: TeamSurplus,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamCashFlow',
+      name: 'TeamCashFlow',
+      component: TeamCashFlow,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamUser',
+      name: 'TeamUser',
+      component: TeamUser,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamReg',
+      name: 'TeamReg',
+      component: TeamReg,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/teamOrder',
+      name: 'TeamOrder',
+      component: TeamOrder,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/question',
+      name: 'Question',
+      component: Question,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
+      path: '/questionValidate',
+      name: 'QuestionValidate',
+      component: QuestionValidate
     },
     {
       path: '/*',
