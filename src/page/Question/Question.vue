@@ -2,11 +2,11 @@
   <div id="Question">
     <XHeader :left-options="{backText: ''}">设置密保</XHeader>
     <Group class="questionClass" labelWidth="1.65rem">
-      <selector ref="question1Ref" title="问题一：" v-model="question1" :options="questionList" :value-map="['questionId', 'questionContent']" ></selector>
+      <popup-picker title="问题一" :data="questionList" v-model="question1" placeholder="请选择问题一" value-text-align="left" show-name></popup-picker>
       <x-input type="text" v-model="answer1" title="答案" placeholder="请输入您的答案"></x-input>
-      <selector ref="question2Ref" title="问题二：" v-model="question2" :options="questionList" :value-map="['questionId', 'questionContent']" ></selector>
+      <popup-picker title="问题二" :data="questionList" v-model="question2" placeholder="请选择问题二" value-text-align="left" show-name></popup-picker>
       <x-input type="text" v-model="answer2" title="答案" placeholder="请输入您的答案"></x-input>
-      <selector ref="question3Ref" title="问题三：" v-model="question3" :options="questionList" :value-map="['questionId', 'questionContent']" ></selector>
+      <popup-picker title="问题三" :data="questionList" v-model="question3" placeholder="请选择问题三" value-text-align="left" show-name></popup-picker>
       <x-input type="text" v-model="answer3" title="答案" placeholder="请输入您的答案"></x-input>
     </Group>
     <div class="btn">
@@ -15,41 +15,56 @@
   </div>
 </template>
 <script>
-import { XHeader,Selector, Group, XInput, XButton } from 'vux';
+import { XHeader, Group, XInput, XButton, PopupPicker } from 'vux';
 export default {
   name: 'Question',
   components: {
     XHeader,
     Group,
     XInput,
-    Selector,
-    XButton
+    XButton,
+    PopupPicker
   },
   data() {
     return {
-      questionList:[],
-      question1:'',
-      question2:'',
-      question3:'',
-      answer1:'',
-      answer2:'',
-      answer3:''
+      questionList: [],
+      question1: [],
+      question2: [],
+      question3: [],
+      answer1: '',
+      answer2: '',
+      answer3: ''
     };
   },
- async created() { 
+  async created() {
     await this.getData();
- 
   },
   methods: {
-    async getData(){
+    async getData() {
       let res = await this.$http('/queryQuestionList');
-      this.questionList=res.returnList;
-      this.question1=this.questionList[0].questionId;
-      this.question2=this.questionList[0].questionId;
-      this.question3=this.questionList[0].questionId;
-      
+      res.returnList.map(x => {
+        x.name = x.questionContent;
+        x.value = x.questionId;
+      });
+      this.questionList = [res.returnList];
+      // this.questionList = res.returnList;
+      // this.question1 = this.questionList[0].questionId;
+      // this.question2 = this.questionList[0].questionId;
+      // this.question3 = this.questionList[0].questionId;
     },
     async sub() {
+      if (
+        !this.question1.length ||
+        !this.question2.length ||
+        !this.question3.length
+      ) {
+        this.$vux.toast.show({
+          type: 'text',
+          text: '请正确填写信息',
+          time: 1500
+        });
+        return;
+      }
       if (!this.answer1 || !this.answer2 || !this.answer3) {
         this.$vux.toast.show({
           type: 'text',
@@ -58,10 +73,15 @@ export default {
         });
         return;
       }
-       
+
       let res = await this.$http('/addQuestionAndAnswerForUser', {
         body: {
-          questionIdList: this.question1+','+this.question2+','+this.question3,
+          questionIdList:
+            this.question1[0] +
+            ',' +
+            this.question2[0] +
+            ',' +
+            this.question3[0],
           answer1: this.answer1,
           answer2: this.answer2,
           answer3: this.answer3
