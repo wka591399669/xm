@@ -154,7 +154,7 @@ export default {
         body: {
           startDate: this.startDate.replace(/-/g,''),
           endDate: this.endDate.replace(/-/g,''),
-          queryUserId:this.queryUserId,
+          lowerUserID:this.queryUserId,
           accountType:this.accType[this.accTypeInde].accTypeValue,
           startRow: this.startRow,
           pageSize: this.pageSize
