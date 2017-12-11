@@ -90,6 +90,7 @@ export default {
         maxRakeOff: 0 // 最大返利
       };
       state.rateBean = Object.assign({}, rateBean, res);
+      state.rateBean.rake=state.rateBean.rakeOff; 
     },
     'bet/time'(state, res) {
       state.time = res;
