@@ -14,8 +14,9 @@
         <x-input type="password" v-model="login.password" title="密码" name="mobile" placeholder="请输入密码"></x-input>
       </Group>
       <div class="btn">
-        <x-button @click.native="doLogin">登录</x-button>
+        <x-button @click.native="doLogin">登录</x-button> 
       </div>
+      <div class="upPassword" @click="$router.push('/questionValidate')" >忘记密码</div>
 
     </div>
     <!-- 注册 -->
