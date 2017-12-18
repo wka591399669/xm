@@ -60,7 +60,7 @@
         <li class="info" v-if="it.type == 0">
           <p>欢迎<span>{{it.userId.slice(0,2)}}***</span>进入房间</p>
         </li>
-        <li class="me" v-if="it.type == 1" @click="followBet=true">
+        <li class="me" v-if="it.type == 1">
           <div class="avatar">
             <img src="../../assets/img/avatar.png" alt="">
           </div>
@@ -75,7 +75,7 @@
             </div>
           </div>
         </li>
-        <li v-if="it.type == 2"  @click="followBet=true">
+        <li v-if="it.type == 2"  @click="openFollowOrder(it)">
           <div class="avatar">
             <img src="../../assets/img/avatar.png" alt="">
           </div>
@@ -90,24 +90,21 @@
             </div>
           </div>
         </li>
-         <li 
-        class="info" v-if="it.type == 3">
+        <li class="info" v-if="it.type == 3">
           <p><span>{{it.issue}}</span>期开奖结果<span>{{it.issueResult}}</span></p>
         </li>
-    </ul>
-    <ul class="talk">
-        <li class="info" v-if="showTime.join(',').replace(/,/g,'')=='0000600'">
-            <p><span>{{saleGameInfo.issueID}}已封盘</span>，下注结果以系统开奖为准，如有异议，请及时联系客服</p>
+        <li class="info" v-if="it.type == 4">
+          <p><span>{{saleGameInfo.issueID}}已封盘</span>，下注结果以系统开奖为准，如有异议，请及时联系客服</p>
         </li>
-        <li class="info" v-if="showTime.join(',').replace(/,/g,'')!='0000000'">
-             <p><span>【{{saleInfo.issueID}}】</span>单注<span>{{roomInfo.minOrderAmount}}元</span>起<span>{{roomInfo.maxOrderAmount}}</span>封顶，总注<span>{{roomInfo.issueOrderAmount}}</span>封顶</p>
-            <p><span>☆☆现在开始可以下注☆☆</span></p>
-        </li>
-        <li class="info" v-if="showTime[1]=='00'&&showTime[2]>='10'">
+        <li class="info" v-if="it.type == 5">
           <p>离开奖时间还有不到一分钟</p>
           <p>请及时投注</p>
-        </li>
-    </ul>
+        </li> 
+        <li class="info" v-if="it.type == 6"> 
+            <p><span>【{{saleInfo.issueID}}】</span>单注<span>{{roomInfo.minOrderAmount}}元</span>起<span>{{roomInfo.maxOrderAmount}}</span>封顶，总注<span>{{roomInfo.issueOrderAmount}}</span>封顶</p>
+            <p><span>☆☆现在开始可以下注☆☆</span></p>
+        </li> 
+    </ul> 
     </div>
     <div class="pageFooter" @click="showBet=true">
       <img src="../../assets/img/chat.png" alt="">
@@ -226,18 +223,18 @@
       
     </popup>
 <!--28跟投 -->
-<!--     <div v-transfer-dom>
+  <div v-transfer-dom>
       <x-dialog v-model="followBet" class="dialog-demo">
         <div class="img-box">
            <h5>确定跟投吗？</h5>
-           <p><span>玩家</span><span>{{it.name.slice(0,2)}}***</span></p>
-           <p><span>期数</span><span>{{it.issue}}</span></p>
-           <p><span>类别</span><span>{{it.plan}}</span></p>
-           <p><span>金额</span><span>{{it.money}}</span></p>
-           <p><span @click="followBet=false">取消</span><span @click="toOrder()">确定</span></p>
+           <p><span>玩家</span><span>{{followOrder.userId}}</span></p>
+           <p><span>期数</span><span>{{followOrder.issue}}</span></p>
+           <p><span>类别</span><span>{{followOrder.plan}}</span></p>
+           <p><span>金额</span><span>{{followOrder.money}}</span></p>
+           <p><span @click="followBet=false">取消</span><span @click="toFollowOrder()">确定</span></p>
         </div>
       </x-dialog>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -306,7 +303,10 @@ export default {
       roomRankName:['回水厅','保本厅','高赔率厅'],
       saleGameInfo:{},
       betMoneyLimit:[],
-      hisResult:[]
+      hisResult:[],
+      showIssueOpen:false,
+      followBet:false,
+      followOrder:{batchOrder:'',issue:'',money:'',plan:'',userId:''}
     };
   },
   computed: {
@@ -331,7 +331,20 @@ export default {
     saleInfo() {
       return this.$store.state.bet.saleInfo;
     },
-    time() {
+    time() { 
+      if(this.showIssueOpen){
+        this.sendIssueSMS(6); 
+        this.showIssueOpen=false;
+      }
+      if(this.$store.state.bet.time==1){
+        this.sendIssueSMS(4);
+        if(!this.showIssueOpen){
+          this.showIssueOpen=true;
+        } 
+      } 
+      if(this.$store.state.bet.time==60){
+        this.sendIssueSMS(5);
+      }
       return this.$store.state.bet.time;
     },
     isStop() {
@@ -455,7 +468,7 @@ export default {
       let plan;
       let userId;
       let issueResult;
-      console.log(msg);
+      let batchOrder;
       if (
         planDes.type == 'BET_SCUSS' && 
         msg.fromNick == window.localStorage.getItem('userId')
@@ -466,18 +479,20 @@ export default {
         plan = planDes.betStyle;
         userId=planDes.userId;
       } else if (planDes.type == 'BET_SCUSS' ) {
+        
         type = 2;
         money = planDes.playMoney;
         issue = planDes.issueID;
         plan = planDes.betStyle;
         userId=planDes.userId;
-      //  console.log(plan);
-      } else if (planDes.userId == 'admin' ) {
+        batchOrder=planDes.batchOrder;
+      //  console.log(plan); 
+      }else if (planDes.userId == 'admin' || planDes.type=='admin' ) {
         type = 3;
         issueResult = planDes.issueResult;
         issue = planDes.issueId; 
       //  console.log(plan);
-      }  else {
+      }else { 
         type = 0;
         userId =msg.fromNick; 
       }
@@ -489,11 +504,78 @@ export default {
         plan,
         userId,
         time,
+        issueResult,
+        batchOrder
+      };
+      
+      this.talk.push(m);
+      this.talk.length > 40 && this.talk.shift();
+    },
+    sendIssueSMS(type){ 
+      let money;
+      let issue=this.saleInfo.issueID;
+      let plan;
+      let userId;
+      let issueResult;
+      let time ;
+       let m = {
+        type,
+        money,
+        issue,
+        plan,
+        userId,
+        time,
         issueResult
       };
       
       this.talk.push(m);
       this.talk.length > 40 && this.talk.shift();
+    },
+    async openFollowOrder(v){
+      this.followBet=true;
+      this.followOrder=v;
+      console.log(v); 
+    },
+    async toFollowOrder(){  
+      let req = {
+        batchOrder: this.followOrder.batchOrder,
+        operType: 1,
+        issueId: this.followOrder.issue,
+        gameType: this.$route.params.gameType,
+        stake: 1,
+        totalAmount: this.followOrder.money,
+        roomId: this.$route.params.roomId,
+        rakeOff: 0
+      };
+      
+      let res = await this.$http('/addOrder', {
+        body: req
+      });
+      if (res.returnCode == '0000') {
+        this.$vux.toast.show({
+          text: '下单成功',
+          type: 'success'
+        }); 
+        this.talk.push({
+          type: 1,
+          name: window.localStorage.getItem('userId'),
+          time: new Date().getHours() + ':' + new Date().getMinutes(),
+          issue: this.followOrder.issue,
+          money: this.followOrder.money,
+          plan: this.followOrder.plan
+        });
+        this.leavePlanAdmin();
+        this.clearPlan('all');
+        this.showBet = false;
+      } else {
+        this.$vux.toast.show({
+          text: res.returnMessage,
+          type: 'warn'
+        });
+      } 
+      this.followBet=false;
+      this.followOrder={batchOrder:'',issue:'',money:'',plan:'',userId:''};
+
     },
     /**
      * init
@@ -689,8 +771,7 @@ export default {
         body: {
           gameType:this.$route.params.gameType
         }
-      });
-      alert(123);
+      }); 
       this.hisResult = res.returnList; 
     },
     //获取在售彩种信息
