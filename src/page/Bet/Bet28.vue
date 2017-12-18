@@ -57,20 +57,15 @@
     </div>
     <div class="main">
       <ul class="talk" v-for="(it,i) in talk" :key="i">
-        <li 
-        class="info"
-        v-if="it.type == 0"
-        >
-          <p>欢迎<span>{{it.userId}}</span>进入房间</p>
+        <li class="info" v-if="it.type == 0">
+          <p>欢迎<span>{{it.userId.slice(0,2)}}***</span>进入房间</p>
         </li>
-        <li
-        class="me"
-        v-if="it.type == 1">
+        <li class="me" v-if="it.type == 1" @click="followBet=true">
           <div class="avatar">
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>{{it.userId}}<span>{{it.time}}</span></p>
+            <p>{{it.name.slice(0,2)}}***<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
                 <span>第{{it.issue}}期</span>
@@ -80,13 +75,12 @@
             </div>
           </div>
         </li>
-        <li
-        v-if="it.type == 2">
+        <li v-if="it.type == 2"  @click="followBet=true">
           <div class="avatar">
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>{{it.userId}}<span>{{it.time}}</span></p>
+            <p>{{it.slice(0,2)}}***<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
                 <span>第{{it.issue}}期</span>
@@ -97,12 +91,23 @@
           </div>
         </li>
          <li 
-        class="info"
-        v-if="it.type == 3"
-        >
+        class="info" v-if="it.type == 3">
           <p><span>{{it.issue}}</span>期开奖结果<span>{{it.issueResult}}</span></p>
         </li>
-      </ul>
+    </ul>
+    <ul class="talk">
+        <li class="info" v-if="showTime.join(',').replace(/,/g,'')=='0000600'">
+            <p><span>{{saleGameInfo.issueID}}已封盘</span>，下注结果以系统开奖为准，如有异议，请及时联系客服</p>
+        </li>
+        <li class="info" v-if="showTime.join(',').replace(/,/g,'')!='0000000'">
+             <p><span>【{{saleInfo.issueID}}】</span>单注<span>{{roomInfo.minOrderAmount}}元</span>起<span>{{roomInfo.maxOrderAmount}}</span>封顶，总注<span>{{roomInfo.issueOrderAmount}}</span>封顶</p>
+            <p><span>☆☆现在开始可以下注☆☆</span></p>
+        </li>
+        <li class="info" v-if="showTime[1]=='00'&&showTime[2]>='10'">
+          <p>离开奖时间还有不到一分钟</p>
+          <p>请及时投注</p>
+        </li>
+    </ul>
     </div>
     <div class="pageFooter" @click="showBet=true">
       <img src="../../assets/img/chat.png" alt="">
@@ -126,7 +131,7 @@
               :class="{'check':tempBall.ball.indexOf(`PCDXDS,${i},${it.item}`) >= 0}"
               @click="handleBallClick('PCDXDS',i,it.item,i)" >
                 <em>{{it.item}}</em>
-                <em>{{parseInt(it.rate)}}</em>
+                <em>{{parseFloat(it.rate)}}</em>
               </li>
             </ul>
           </div> 
@@ -143,7 +148,7 @@
               @click="handleBallClick('CSZ',it.item.slice(2,4),parseInt(it.rate),i)"
               >
               <em>{{it.item.slice(2,4)}}</em>
-              <em>{{parseInt(it.rate)}}</em>
+              <em>{{parseFloat(it.rate)}}</em>
               </li>
             </ul>
           </div>
@@ -160,7 +165,7 @@
               @click="handleBallClick('TS',parseInt(it.rate),it.item,i)"
               >
               <em>{{it.item}}</em>
-              <em>{{parseInt(it.rate)}}</em>
+              <em>{{parseFloat(it.rate)}}</em>
               </li>
             </ul>
           </div>          
@@ -220,15 +225,31 @@
         <div style="color:#fff;padding:.2rem .8rem;" v-html="productTypeRateMap.content"></div>
       
     </popup>
+<!--28跟投 -->
+<!--     <div v-transfer-dom>
+      <x-dialog v-model="followBet" class="dialog-demo">
+        <div class="img-box">
+           <h5>确定跟投吗？</h5>
+           <p><span>玩家</span><span>{{it.name.slice(0,2)}}***</span></p>
+           <p><span>期数</span><span>{{it.issue}}</span></p>
+           <p><span>类别</span><span>{{it.plan}}</span></p>
+           <p><span>金额</span><span>{{it.money}}</span></p>
+           <p><span @click="followBet=false">取消</span><span @click="toOrder()">确定</span></p>
+        </div>
+      </x-dialog>
+    </div> -->
   </div>
 </template>
 <script>
-import { Popup, Range, XHeader, Swiper, SwiperItem, XInput, Group,XTable } from 'vux';
+import { XDialog,TransferDomDirective as TransferDom,Popup, Range, XHeader, Swiper, SwiperItem, XInput, Group,XTable,Toast } from 'vux';
 import BetHeader from './component/BetHeader';
 import service from './Bet.service';
 import playMethod from './playMethodDoc.json';
 export default {
   name: 'Bet28',
+   directives: {
+    TransferDom
+  },
   components: {
     BetHeader,
     Popup,
@@ -238,7 +259,9 @@ export default {
     SwiperItem,
     XInput,
     Group,
-    XTable
+    XTable,
+    Toast,
+    XDialog
   },
   beforeDestroy() {
     this.$store.dispatch('bet/timeDownEnd');
@@ -280,7 +303,10 @@ export default {
         ['2, 5, 8, 11, 17, 20, 23, 26'],
         ['三个数字一致即为中奖']
       ],
-      roomRankName:['回水厅','保本厅','高赔率厅']
+      roomRankName:['回水厅','保本厅','高赔率厅'],
+      saleGameInfo:{},
+      betMoneyLimit:[],
+      hisResult:[]
     };
   },
   computed: {
@@ -350,11 +376,11 @@ export default {
     }
   },
   created() {
-    
     this.initRoom();
     this.init();
     this.service(); 
     this.getRateDetail();
+    this.getSaleGameInfo();
   },
   mounted() {
     this.toDown = setInterval(() => {
@@ -656,12 +682,38 @@ export default {
         }
       });
       this.productTypeRateMap = res.returnMap; 
-
     }, 
+     //获取在售彩种信息
+    async getHisResult() { 
+      let res = await this.$http('/queryGameTypeResultByGameType', {
+        body: {
+          gameType:this.$route.params.gameType
+        }
+      });
+      alert(123);
+      this.hisResult = res.returnList; 
+    },
+    //获取在售彩种信息
+    async getSaleGameInfo() { 
+      let res = await this.$http('/querySaleGameInfo', {
+        body: {
+          gameType:this.$route.params.gameType
+        }
+      });
+      this.saleGameInfo = res.returnMap; 
+    },
+/*   //获取彩种当期可投注最大，最小及单注金额
+    async getBetMoneyLimit() { 
+      let res = await this.$http('/queryRoomRankInfo', {
+        body: {
+          gameType:this.$route.params.gameType
+        }
+      });
+      this.betMoneyLimit = res.returnList; 
+    }, */ 
     showPlayDetail() {
       this.playDetail = !this.playDetail;
-       
-    },
+    }
   }
 };
 </script>

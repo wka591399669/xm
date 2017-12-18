@@ -4,7 +4,8 @@
     <group>
       <cell title="修改登录密码" is-link link="/password"></cell>
       <cell title="修改提现密码" is-link link="/moneyPassword"></cell>
-      <cell title="设置密保问题" is-link link="/question"></cell>
+      <!-- <cell title="设置提现密码" is-link link="/setMoneyPassword"></cell> -->
+      <!-- <cell title="设置密保问题" is-link link="/question"></cell> -->
     </group>
     <group>
       <cell title="帮助中心" is-link link="/help"></cell>

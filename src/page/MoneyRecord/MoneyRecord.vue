@@ -54,10 +54,7 @@ export default {
       this.$vux.loading.hide();
     },
     showTime(v) {
-      return `${v.substr(0, 4)}-${v.substr(4, 2)}-${v.substr(6, 2)} ${v.substr(
-        8,
-        2
-      )}:${v.substr(10, 2)}:${v.substr(12, 2)}`;
+      return `${v.substr(0, 4)}-${v.substr(4, 2)}-${v.substr(6, 2)} ${v.substr(8,2)}:${v.substr(10, 2)}:${v.substr(12, 2)}`;
     }
   }
 };

@@ -3,6 +3,7 @@
     <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')"> 
      <div @click="show=!show">
          {{topMenu[index].memuName}}
+         <img src="../../assets/img/lottery/down.png" alt=""/>
       </div> 
       <div slot="right" @click="queryShow=!queryShow">
        筛选
@@ -25,7 +26,8 @@
     <popup v-model="show" class="menu" position="top" >
       <ul> 
         <router-link :to="`${it.menuUrl}`" tag="li" v-for="(it,i) in topMenu" :key="i">
-          <li>{{topMenu[i].memuName}}</li>
+          {{topMenu[i].memuName}}
+          <img src="../../assets/img/next.png" v-if="topMenu[index].memuName==topMenu[i].memuName" alt=""/>
         </router-link> 
       </ul> 
     </popup>

@@ -232,6 +232,10 @@
         </p>
       </div>
     </popup>
+    <div class="showNotice" v-if="showTime[1]=='00'&&showTime[2]>='57'">
+      <p>离开奖时间还有不到一分钟</p>
+      <p>请及时投注</p>
+    </div>
   </div>
 </template>
 <script>
@@ -279,7 +283,9 @@ export default {
         guaranteeNum: 9, // 保底份数
         percentageRate: 0, // 提成
         buyNum: 1 // 购买份数
-      }
+      },
+      //填补球号不正确
+      sliceS:['','','','','','']
     };
   },
   computed: {
@@ -457,7 +463,6 @@ export default {
     },
     // 退出合买管理
     leaveJoinAdmin() {
-      
       document.body.style.overflow = 'auto';
       this.joinShow = false;
     },
@@ -493,7 +498,7 @@ export default {
         }
         res[x.split(',')[0]].push(x.split(',')[1]);
       });
-      return res.map(x => x.join('')).join(',');
+        return res.map(x => x.join('')).join(',');
     },
     // 下单
     async toOrder() {

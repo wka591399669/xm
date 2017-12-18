@@ -10,7 +10,7 @@
         <XCircle :percent="info.schedule" :trail-width="4" trail-color="#111" :stroke-width="4" stroke-color="#ffed95">
           <span>{{info.schedule}}%</span>
         </XCircle>
-        <span>{{info.guaranteeRate}}}%保底</span>
+        <span>{{info.guaranteeRate}}%保底</span>
       </div>
       <div>
         <img src="../../assets/img/openA.png" alt="">

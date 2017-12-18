@@ -1,93 +1,112 @@
 #TeamInfo {
-  color: #fff;
-  
-  .menu {
-    top: 46px;
-    ul {
-      overflow: hidden;
-      background-color: rgba(51, 51, 51, 1);
-      margin-bottom: -1px;
-      li {
-        float: left;
-        width: 90%;
-        line-height: 1.05rem;
-        height: 1.05rem;
-        color: #eee;
-        text-align: left;
-        box-sizing: border-box;
-        padding-left: 0.38rem;
-        border-bottom: rgba(108, 86, 63, 1) 1px solid;
-         
-      }
-    }
-  } 
-  .main {
-    top: 46px;
-    ul {
-      overflow: hidden;
-      background-color: rgba(51, 51, 51, 1);
-      margin-bottom: -1px;
-      li {
-        float: left;
-        width: 50%;
-        line-height: 1.05rem;
-        height: 1.05rem;
-        color: #eee;
-        text-align: center;
-        box-sizing: border-box; 
-        border-bottom: rgba(108, 86, 63, 1) 1px solid;
-        border-right: rgba(108, 86, 63, 1) 1px solid;
-        &:nth-child(2n) {
-          border-right: 0;
+    color: #fff;
+    font-size: .24rem;
+    .vux-header-title>div {
+        img {
+            position: absolute;
+            top: 15px;
+            width: .3rem;
+            margin-left: .1rem;
         }
-        & > span {
-          color: red;
+    }
+    .menu {
+        font-size: .28rem;
+        top: 46px;
+        ul {
+            overflow: hidden;
+            background-color: rgba(51, 51, 51, 1);
+            margin-bottom: -1px;
+            li {
+                float: left;
+                width: 90%;
+                margin-left:5%;
+                line-height: 1.05rem;
+                height: 1.05rem;
+                color: #eee;
+                text-align: left;
+                box-sizing: border-box;
+                padding-left: 0.38rem;
+                border-bottom: rgba(108, 86, 63, 1) 1px solid;
+                img {
+                    float: right;
+                    margin-right: .1rem;
+                    width: .22rem;
+                    margin-top: 20px;
+                }
+            }
         }
-      }
     }
-  }
-  .query {
-    top: 46px;
-    width: 80%;
-    margin-left: 20%;
-    height: 100%;
-    background-color: rgba(51, 51, 51, 1);
-    .queryDate {
-      overflow: hidden;
-      height: 20%;
-     
-      margin-bottom: -1px;
-      border-top: rgba(108, 86, 63, 1) 1px solid; 
-      .selectStartDatetime {
-        width: 40%;
-        float: left;
-        font-size: 0.32rem;
-        padding: 2px 3px;
-
-      }
-      .selectEndDatetime {
-        width: 40%;
-        float: right;
-        font-size: 0.32rem;
-        padding: 2px 3px;
-
-      }
-      .queryMiddle {
-        width:15%;
-        float: left;
-        text-align: center;
-      }
+    .main {
+        top: 46px;
+        ul {
+            overflow: hidden;
+            background-color: rgba(51, 51, 51, 1);
+            margin-bottom: -1px;
+            li {
+                float: left;
+                width: 50%;
+                line-height: 1.05rem;
+                height: 1.05rem;
+                color: #eee;
+                text-align: center;
+                box-sizing: border-box;
+                border-bottom: rgba(108, 86, 63, 1) 1px solid;
+                border-right: rgba(108, 86, 63, 1) 1px solid;
+                &:nth-child(2n) {
+                    border-right: 0;
+                }
+                &>span {
+                    color: red;
+                }
+            }
+        }
     }
-    .sub {
-      overflow: hidden; 
-      text-align: center;
-      background-color: #ffe48c;
-      color: #333;
-      margin-bottom: -1px; 
-      height: 0.7rem;
-      line-height: 0.7rem;
-      border-top: rgba(108, 86, 63, 1) 1px solid; 
+    .query {
+        top: 46px;
+        width: 80%;
+        margin-left: 20%;
+        height: 100%;
+        background-color: rgba(51, 51, 51, 1);
+        .queryDate {
+            overflow: hidden;
+            height: 1.8rem;
+            margin-bottom: -1px;
+            border-top: rgba(108, 86, 63, 1) 1px solid;
+            .selectStartDatetime {
+                width: 40%;
+                float: left;
+                font-size: 0.32rem;
+                padding: 2px 3px;
+            }
+            .selectEndDatetime {
+                width: 40%;
+                float: right;
+                font-size: 0.32rem;
+                padding: 2px 3px;
+            }
+            .queryMiddle {
+                width: 15%;
+                float: left;
+                line-height:1rem;
+                text-align: center;
+            }
+            .weui-cells {
+                height: .9rem;
+                line-height: .9rem;
+                margin-bottom: .2rem;
+            }
+        }
+        .sub {
+            overflow: hidden;
+            text-align: center;
+            background-color: #ffe48c;
+            color: #333;
+            margin-bottom: -1px;
+            height: 0.7rem;
+            line-height: 0.7rem;
+            border-top: rgba(108, 86, 63, 1) 1px solid;
+            font-size: .32rem;
+            margin-top: .2rem;
+        }
     }
-     
-  }
 }

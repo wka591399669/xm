@@ -52,24 +52,27 @@
       <cell title="投注记录" is-link link="/betRecord">
         <img slot="icon" src="../../assets/img/user/record2.png">
       </cell>
-      <!-- <cell title="合买记录" is-link link="/joinRecord">
+      <cell title="合买记录" is-link link="/JoinRcord">
         <img slot="icon" src="../../assets/img/user/join.png">
-      </cell> -->
+      </cell>
       <cell title="资金明细" is-link link="/moneyRecord">
         <img slot="icon" src="../../assets/img/user/money.png">
       </cell>
       <cell title="我的回水" is-link link="/backWater">
         <img slot="icon" src="../../assets/img/user/backwater.png">
       </cell>
-      
-      <cell title="代理中心" is-link link="/teamInfo" v-if="loginInfo.userType==80">
+      <cell title="代理中心" is-link link="/teamInfo" v-if="loginInfo.userType==80"> <!-- v-if="loginInfo.userType==80" -->
         <img slot="icon" src="../../assets/img/user/mine_proxy.png">
       </cell>
-    </group>
-    <group>
+      <cell title="密保管理" is-link link="/question">
+      <img slot="icon" src="../../assets/img/user/security.png">
+      </cell>
       <cell title="优惠活动" is-link link="/activity">
         <img slot="icon" src="../../assets/img/user/safe.png">
       </cell>
+<!--       <cell title="走势图" is-link link="/RunChart">
+        <img slot="icon" src="../../assets/img/user/safe.png">
+      </cell> -->
       <a target="_blank" :href="serviceLink">
         <cell title="联系客服" is-link>
           <img slot="icon" src="../../assets/img/user/service2.png">
@@ -120,7 +123,7 @@ export default {
             token: window.localStorage.getItem('token')
           }
         });
-        this.loginInfo = Object.assign(this.loginInfo, res.returnMap);
+        this.loginInfo = Object.assign({}, res.returnMap);
       }
     },
     // 获取客服地址

@@ -2,6 +2,7 @@
 import Fetch from '../../util/fetch';
 import service from './Bet.service';
 import playMethod from './playMethodDoc.json';
+/* import { setInterval } from 'timers'; */
 
 let timeDown = null; // 倒计时
 
@@ -19,6 +20,7 @@ export default {
       gameType: '', // 彩种名称
       gameDes: '', // 彩种描述
       issueID: '', // 当前期号
+      lastIssueID:'',//上期期号
       issueNum: 0, // 总期号
       GMTcurTime: 0, // 当前时间
       GMTcloseTime: 0 // 封盘时间
@@ -259,12 +261,14 @@ export default {
           }
         } else {
           context.state.isStop.checkNum = 0;
-          let newTime = context.state.time - 1;
+          let newTime = context.state.time - 1; 
+          if (context.state.saleInfo.lastIssueID != context.state.saleInfo.lastIssueID && newTime % 30 == 0) {
+            context.dispatch('bet/getHis');
+          }
           context.commit('bet/time', newTime);
         }
       }, 1000);
     },
-
     // 结束倒计时
     async 'bet/timeDownEnd'(context) {
       clearInterval(timeDown);

@@ -6,10 +6,26 @@
     <div class="banner">
       <swiper :options="swiperOption">
       <swiper-slide v-for="(it,i) in banner" :key="i">
-        <a v-if="it.url" :href="bannerHref(it.url)" target="_blank">
-          <img :src="it.imageUrl">  
-        </a>
-        <img v-else :src="it.imageUrl">     
+        <div v-if="it.name=='H5'">
+          <a v-if="it.url" :href="bannerHref(it.url)" target="_blank">
+            <img :src="it.imageUrl">  
+          </a>
+          <img v-else :src="it.imageUrl"> 
+        </div> 
+        <div v-else>
+          <div v-if="it.name=='gameType'">
+            <router-link v-if="it.url" :to="betRouter(it.url)" tag="a">
+              <img :src="it.imageUrl">  
+            </router-link>
+            <img v-else :src="it.imageUrl"> 
+          </div>
+          <div v-else>
+            <a v-if="it.url" @click="$router.push('/ActivityCon/'+it.url)">
+              <img :src="it.imageUrl">  
+            </a>
+            <img v-else :src="it.imageUrl"> 
+          </div>
+        </div>    
       </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
@@ -20,7 +36,6 @@
         <marquee v-html="bulletin">
         </marquee> 
       </div>
-       
     </div>
      
     <flexbox class="quickMenu">
@@ -108,7 +123,8 @@ export default {
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
-        autoplay: 2500
+        autoplay: 2500,
+      /*   mousewheelControl : true */
       },
       banner: [],
       hotGame: [],

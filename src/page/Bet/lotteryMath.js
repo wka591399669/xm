@@ -1289,6 +1289,8 @@
           var len = PK10Ball.length;
           var fu = ',';
           for (var i = 0; i < 5; i++) {
+
+            console.log(str);
             if (i == 4) {
               fu = '';
             }

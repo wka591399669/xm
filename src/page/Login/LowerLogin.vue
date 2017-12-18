@@ -2,25 +2,11 @@
   <div id="Login">
     <div class="header">
       <img src="../../assets/img/user/close3.png" @click="$router.go(-1)">
-      <div>
-        <span :class="{'active':type === 1}" @click="check(1)">登录</span>
-        <span :class="{'active':type === 2}" @click="check(2)">注册</span>
+      <div class="register">
+        <span>注册</span>
       </div>
     </div>
-      <!-- 登录 -->
-      <div class="main" v-if="type===1">
-        <Group labelWidth="1.55rem">
-          <x-input v-model="login.username" title="用户名" name="mobile" placeholder="请输入您的用户名"></x-input>
-          <x-input type="password" v-model="login.password" title="密码" name="mobile" placeholder="请输入密码"></x-input>
-        </Group>
-        <div class="btn">
-          <x-button @click.native="doLogin">登录</x-button> 
-        </div>
-        <div class="upPassword" @click="$router.push('/questionValidate')" >忘记密码</div>
-
-      </div>
-      <!-- 注册 -->
-      <div class="main" v-if="type===2">
+    <div class="main">
         <div>
           <Group labelWidth="1.55rem">
             <x-input v-model="register.username" title="用户名" name="mobile" placeholder="请输入您的用户名"></x-input>
@@ -34,8 +20,8 @@
             <x-button @click.native="doRegister">注册</x-button>        
           </div>
         </div>
-      </div>
     </div>
+  </div>
 </template>
 <script>
 import axios from 'axios';
@@ -43,7 +29,7 @@ import $ from 'jquery';
 import { Group, XInput, XButton } from 'vux';
 const uuidv4 = require('uuid/v4');
 export default {
-  name: 'Login',
+  name: 'LowerLogin',
   components: {
     Group,
     XInput,
@@ -153,20 +139,11 @@ export default {
         });
         window.localStorage.setItem('token', res.returnMap.token);
         window.localStorage.setItem('userId', this.register.username);
-        window.localStorage.setItem(
-          'thirdToken',
-          res.returnMap.userInfo.thirdToken
-        );
-        window.localStorage.setItem(
-          'thirdAccId',
-          res.returnMap.userInfo.thirdAccId
-        );
-        window.localStorage.setItem(
-          'thirdUserName',
-          res.returnMap.userInfo.thirdUserName
-        );
+        window.localStorage.setItem('thirdToken',res.returnMap.userInfo.thirdToken);
+        window.localStorage.setItem('thirdAccId', res.returnMap.userInfo.thirdAccId);
+        window.localStorage.setItem('thirdUserName',res.returnMap.userInfo.thirdUserName);
         this.connectNim();
-        this.$router.go(-1);
+        this.$router.push("/user"); 
       } else {
         this.$vux.toast.show({
           text: res.returnMessage,

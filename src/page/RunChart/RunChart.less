@@ -1,0 +1,52 @@
+#RunChart {
+    color: #fff;
+    .runTitle {
+        li {
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-around;
+            text-align: center;
+            height: 1rem;
+            line-height: .6rem;
+            span {
+                flex: 1;
+                height: .6rem;
+                margin: .2rem .15rem;
+                font-size: .32rem;
+                background: rgb(46, 37, 37);
+                border-radius: .2rem;
+                &.select {
+                    background: rgb(116, 91, 12);
+                    border-radius: .2rem;
+                }
+            }
+        }
+    }
+    .runTable {
+        li {
+            display: flex;
+            display: -webkit-flex;
+            text-align: center;
+            line-height: .8rem;
+            font-size: .28rem;
+            &:nth-of-type(2n-1) {
+                background: rgba(88, 78, 73, 0.555);
+            }
+            &:nth-of-type(2n) {
+                background: rgba(36, 33, 31, 0.555);
+            }
+            &:nth-of-type(1) {
+                border-top: 1px solid rgb(156, 123, 30);
+                background: rgba(116, 50, 19, 0.555);
+            }
+            span {
+                flex: 1;
+                border-bottom: 1px solid rgb(156, 123, 30);
+                border-right: 1px solid rgb(156, 123, 30);
+            }
+            span:nth-of-type(1) {
+                flex: 3;
+            }
+        }
+    }
+}

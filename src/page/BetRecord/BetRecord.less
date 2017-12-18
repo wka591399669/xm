@@ -1,54 +1,58 @@
 #BetRecord {
-  background-color: #222;
-  & > p {
-    font-size: 0.3rem;
-    color: #bbb;
-    line-height: 0.88rem;
-    text-indent: 0.3rem;
-    span {
-      color: #ffe48c;
-      margin: 0 0.1rem;
-    }
-  }
-  & > ul {
-    color: #bbbbbb;
-    background-color: #292929;
-    li {
-      display: flex;
-      border-bottom: 1px solid rgba(108, 86, 63, 1);
-      font-size: 0.3rem;
-      padding: 0.35rem 0.3rem;
-      box-sizing: border-box;
-      &:nth-last-child(1) {
-        border: none;
-      }
-      p {
-        flex: 1;
+    background-color: #222;
+    &>p {
+        font-size: 0.3rem;
+        color: #bbb;
+        line-height: 0.88rem;
+        text-indent: 0.3rem;
         span {
-          display: block;
-          &.red {
-            color: #ff6969 !important;
-          }
-        }
-        &:nth-child(1) {
-          text-align: left;
-          span:nth-child(1) {
-            color: #fff;
-          }
-        }
-        &:nth-child(2) {
-          text-align: center;
-          span:nth-child(2) {
             color: #ffe48c;
-          }
+            margin: 0 0.1rem;
         }
-        &:nth-child(3) {
-          text-align: right;
-          span:nth-child(2) {
-            color: #fff;
-          }
-        }
-      }
     }
-  }
+    &>ul {
+        color: #bbbbbb;
+        background-color: #292929;
+        li {
+            display: flex;
+            border-bottom: 1px solid rgba(108, 86, 63, 1);
+            font-size: 0.3rem;
+            padding: 0.35rem 0.3rem;
+            box-sizing: border-box;
+            &:nth-last-child(1) {
+                border: none;
+            }
+            p {
+                flex: 1;
+                span {
+                    display: block;
+                    &.red {
+                        color: #ff6969 !important;
+                    }
+                }
+                &:nth-child(1) {
+                    text-align: left;
+                    span:nth-child(1) {
+                        color: #fff;
+                    }
+                    span:nth-child(2) {
+                        color: #ddd;
+                        font-size:.26rem;
+                    }
+                }
+                &:nth-child(2) {
+                    text-align: center;
+                    span:nth-child(2) {
+                        color: #ffe48c;
+                    }
+                }
+                &:nth-child(3) {
+                    text-align: right;
+                    span:nth-child(2) {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
 }

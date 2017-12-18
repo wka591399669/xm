@@ -1,20 +1,20 @@
 <template>
-  <div id="MoneyPassword">
-    <XHeader :left-options="{backText: ''}">修改提现密码</XHeader>
+  <div id="SetMoneyPassWord">
+    <XHeader :left-options="{backText: ''}">设置提现密码</XHeader>
     <Group labelWidth="2.3rem">
-      <x-input type="password" v-model="old" title="旧的提现密码" placeholder="默认密码就是登录密码"></x-input>
+      <!-- <x-input type="password" v-model="old" title="旧的提现密码" placeholder="默认密码就是登录密码"></x-input> -->
       <x-input :max="6" type="number" v-model="password" title="提现密码" placeholder="请输入六位数字"></x-input>
       <x-input :max="6" type="number" v-model="repassword" title="确认提现密码" placeholder="再次输入六位数字"></x-input>
     </Group>
     <div class="btn">
-      <x-button @click.native="sub">确认修改</x-button>
+      <x-button @click.native="sub">确认设置</x-button>
     </div>
   </div>
 </template>
 <script>
 import { XHeader, Group, XInput, XButton } from 'vux';
 export default {
-  name: 'MoneyPassword',
+  name: 'SetMoneyPassWord',
   components: {
     XHeader,
     Group,
@@ -23,22 +23,17 @@ export default {
   },
   data() {
     return {
-      old:'',
       password: '',
       repassword: ''
     };
   },
   methods: {
     async sub() {
-      if(this.old==null){
-        this.$router.push("/SetMoneyPassWord");
-      }
       if (
         !this.password ||
         !this.repassword ||
-        this.password.length!=6 ||
-        this.password.length != 6 ||
-        this.repassword.length != 6
+        this.password.length != 4 ||
+        this.repassword.length != 4
       ) {
         this.$vux.toast.show({
           type: 'text',
@@ -55,9 +50,8 @@ export default {
         });
         return;
       }
-      let res = await this.$http('/updateAccountPassword', {
+      let res = await this.$http('/updateWithdrawPassword', {
         body: {
-          oldAccountPassword:this.old,
           newAccountPassword: this.password
         }
       });

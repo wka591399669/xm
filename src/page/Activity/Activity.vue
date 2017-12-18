@@ -38,7 +38,7 @@ export default {
   methods: {
     async getList() {
       let res = await this.$http('/queryTaskList');
-      console.log(res);
+      /* console.log(res); */
       this.list = res.returnList;
     }
   }

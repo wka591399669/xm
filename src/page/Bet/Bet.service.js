@@ -875,7 +875,9 @@ export default {
   },
   // 机选
   randomBallArr(decType, playMethod, curSecond) {
-   // console.log(decType);
+/*     console.log(decType);
+    console.dir(playMethod);
+    console.log(curSecond); */
     let res = randomBall(decType, playMethod, curSecond);
     if (res instanceof Array) {
       return res;
@@ -1022,6 +1024,7 @@ export default {
       if (typeDetId == 'K3STHTX' || typeDetId == 'K3SLHTX') {
         ball = '0';
       }
+
       if (
         typeDetId == 'K3STHDX' ||
         typeDetId == 'K3SBTH' ||
@@ -1052,8 +1055,15 @@ export default {
     // 28
     if (this.betType(gameType) == 'xyrb') {
       return arr[0].split(',')[1];
-    }
-    return res.map(x => x.join(seq)).join(',');
+    } 
+    var orderBatchorStr = res.map(x => x.join(seq)).join(',');
+      
+    if (gameType == 'PK10' && (typeDetId == 'DWDQ5' || typeDetId == 'DWDH5')) {
+      for (var j = res.length; j < 5; j++) {
+        orderBatchorStr = orderBatchorStr + ',';
+      }
+    } 
+    return orderBatchorStr;
   },
 
   // 生成六合彩下单数据

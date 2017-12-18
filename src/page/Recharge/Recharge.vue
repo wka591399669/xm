@@ -51,6 +51,7 @@
         <p>充值金额：<span>￥{{money}}</span></p>
         <p>扫描二维码完成支付</p>
       </div>
+      <div class="keepToPhone">长按二维码图片更多功能</div>
       <div class="ERcodeInfo">
         <p>温馨提示</p>
         <p>1、使用另一台手机的微信APP，扫描上方二维码；或截图并传送至电脑，打开微信APP后扫描付款;</p>

@@ -29,6 +29,8 @@ const HelpCon = r =>
   require.ensure([], () => r(require('./page/Help/HelpCon.vue')), 'HelpCon');
 const Join = r =>
   require.ensure([], () => r(require('./page/Join/Join.vue')), 'Join');
+  const JoinRcord = r =>
+  require.ensure([], () => r(require('./page/Join/JoinRcord.vue')), 'JoinRcord');
 const Recharge = r =>
   require.ensure(
     [],
@@ -145,6 +147,12 @@ const MoneyPassword = r =>
     () => r(require('./page/Password/MoneyPassword.vue')),
     'MoneyPassword'
   );
+const SetMoneyPassword = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Password/SetMoneyPassword.vue')),
+    'SetMoneyPassword'
+  );
   const BetRuleDes = r =>
   require.ensure(
     [],
@@ -201,6 +209,18 @@ const MoneyPassword = r =>
     () => r(require('./page/Question/QuestionValidate.vue')),
     'QuestionValidate'
   );
+const RunChart = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/RunChart/RunChart.vue')),
+    'RunChart'
+  );
+const LowerLogin = r =>
+  require.ensure(
+    [],
+    () => r(require('./page/Login/LowerLogin.vue')),
+    'LowerLogin'
+  );
   
   
   
@@ -231,6 +251,11 @@ export default new Router({
       path: '/join',
       name: 'Join',
       component: Join
+    },
+    {
+      path: '/JoinRcord/',
+      name: 'JoinRcord',
+      component: JoinRcord
     },
     {
       path: '/moneyRecord',
@@ -438,6 +463,14 @@ export default new Router({
       }
     },
     {
+      path: '/setMoneyPassword',
+      name: 'SetMoneyPassword',
+      component:SetMoneyPassword,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },
+    {
       path: '/info',
       name: 'Info',
       component: Info,
@@ -513,6 +546,16 @@ export default new Router({
       path: '/questionValidate',
       name: 'QuestionValidate',
       component: QuestionValidate
+    },
+    {
+      path: '/runChart',
+      name: 'RunChart',
+      component: RunChart
+    },
+    {
+      path: '/lowerLogin/:name',
+      name: 'LowerLogin',
+      component: LowerLogin
     },
     {
       path: '/*',

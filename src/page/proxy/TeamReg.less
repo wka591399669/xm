@@ -1,82 +1,98 @@
 #TeamReg {
-  color: #fff;  
-  background-color: rgba(51, 51, 51, 1);
-  height: 100%; 
-  .menu {
-    top: 46px;
-    ul {
-      overflow: hidden;
-      background-color: rgba(51, 51, 51, 1);
-      margin-bottom: -1px;
-      li {
+    color: #fff;
+    .vux-header-title>div {
+        img {
+            position: absolute;
+            top: 15px;
+            width: .3rem;
+            margin-left: .1rem;
+        }
+    }
+    background-color: rgba(51, 51, 51, 1);
+    height: 100%;
+    .menu {
+        font-size: .28rem;
+        top: 46px;
+        ul {
+            overflow: hidden;
+            background-color: rgba(51, 51, 51, 1);
+            margin-bottom: -1px;
+            li {
+                float: left;
+                width: 90%;
+                margin-left:5%;
+                line-height: 1.05rem;
+                height: 1.05rem;
+                color: #eee;
+                text-align: left;
+                box-sizing: border-box;
+                padding-left: 0.38rem;
+                border-bottom: rgba(108, 86, 63, 1) 1px solid;
+                img {
+                    float: right;
+                    margin-right: .1rem;
+                    width: .22rem;
+                    margin-top: 20px;
+                }
+            }
+        }
+    }
+    .regUrlClass {
+        font-size: .28rem;
+        width: 95%;
         float: left;
-        width: 90%;
-        line-height: 1.05rem;
-        height: 1.05rem;
-        color: #eee;
-        text-align: left;
-        box-sizing: border-box;
-        padding-left: 0.38rem;
-        border-bottom: rgba(108, 86, 63, 1) 1px solid;
-         
-      }
+        margin: 0.3rem 0.2rem;
+        textarea {
+            width: 100%;
+            margin-top: 0.2rem;
+            background-color: rgb(80, 78, 76);
+            color: #999;
+        }
     }
-  } 
-  .regUrlClass {
-    width: 95%;
-    float: left;
-    margin: 0.3rem 0.2rem;
-    textarea {
-      width: 100%; 
-      margin-top: 0.2rem;
-      background-color: rgb(80, 78, 76);
+    .regRakeOffClass {
+        font-size: .28rem;
+        width: 95%;
+        float: left;
+        margin: 0.3rem 0.2rem;
+        &>div:nth-child(2) {
+            background-color: #fff;
+            margin-top: 5px;
+            &>div {
+                text-align: center;
+                width: 30%;
+                margin: 0.2rem 0.05rem;
+                float: left;
+                border: 1px solid #ffe48c;
+                border-radius: 5px;
+                padding: 4px 0;
+            }
+        }
+        .select {
+            color: #333;
+            background-color: #ffe48c;
+        }
     }
-  }
-  .regRakeOffClass {
-    width: 95%;
-    float: left;
-    margin: 0.3rem 0.2rem;
-    & > div:nth-child(2)  {
-      background-color: #fff;
-       & > div { 
-          text-align: center;
-          width: 30%; 
-          margin: 0.2rem 0.05rem;
-          float: left;
-          border: 1px solid #ffe48c;
-          border-radius:5px; 
-       } 
+    .saveClass {
+        width: 94%;
+        float: left;
+        height: 0.75rem;
+        line-height: 0.75rem;
+        margin: 0.3rem 0.2rem;
+        color: #333;
+        background-color: #ffe48c;
+        border: 1px solid #ffe48c;
+        border-radius: 5px;
+        text-align: center;
+        font-size: .3rem;
     }
-    .select{
-      color: #333;
-      background-color: #ffe48c;
+    .main {
+        font-size: .24rem;
+        &>div {
+            margin: 0.3rem 0.2rem;
+            color: rgb(143, 139, 139);
+        }
+        &>div:nth-child(1) {
+            color: #fff;
+        }
     }
-  } 
-  .saveClass {
-    width: 94%;
-    float: left;
-    height: 0.75rem;
-    line-height: 0.75rem;
-    margin: 0.3rem 0.2rem;
-    color: #333; 
-    background-color: #ffe48c;
-    border: 1px solid #ffe48c;
-    border-radius:5px; 
-    text-align: center;
-    
-  }
-
-  .main {
-    
-    
-    & > div {
-      margin: 0.3rem 0.2rem;
-      color: rgb(143, 139, 139); 
-    }
-
-    & > div:nth-child(1)  { 
-      color: #fff;  
-    }
-  }
-   
 }

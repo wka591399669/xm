@@ -190,6 +190,10 @@
         </p>
       </div>
     </popup>
+    <div class="showNotice" v-if="showTime[1]=='00'&&showTime[2]>='57'">
+      <p>离开奖时间还有不到一分钟</p>
+      <p>请及时投注</p>
+    </div>
   </div>
 </template>
 <script>

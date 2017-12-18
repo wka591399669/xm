@@ -10,28 +10,28 @@
         <img src="../../../assets/img/lottery/record.png" @click="$router.push('/betRecord')">
         <img src="../../../assets/img/lottery/more.png" @click="showMoreHelp">
       </div>
-    </XHeader>
-    <popup v-model="show" class="menu" position="top">
-      <ul>
-        <li v-for="(it,i) in method" :key="i" @click="check(it.typeDetId)">
-          {{it.fname}}-{{it.name}}
-        </li>
-      </ul>
-    </popup>
-    <popup v-model="moreHelpShow" class="moreHelp" position="top" >
-      <ul>
-        <a target="_blank" :href="serviceLink">
-          <li>
-              联系客服
+      </XHeader>
+      <popup v-model="show" class="menu" position="top">
+        <ul>
+          <li v-for="(it,i) in method" :key="i" @click="check(it.typeDetId)">
+            {{it.fname}}-{{it.name}}
           </li>
-        </a>
-        <a target="_blank" :href="gameTypeDecLink">
-          <li>
-            玩法介绍
-          </li>
-        </a>
-      </ul>
-    </popup>
+        </ul>
+      </popup>
+      <popup v-model="moreHelpShow" class="moreHelp" position="top" >
+        <ul>
+          <a target="_blank" :href="serviceLink">
+            <li>
+                联系客服
+            </li>
+          </a>
+          <a target="_blank" :href="gameTypeDecLink">
+            <li>
+              玩法介绍
+            </li>
+          </a>
+        </ul>
+      </popup>
     </div>
     <div v-else class="lhc">
       <XHeader :left-options="{backText: ''}">
@@ -56,6 +56,7 @@
           </li>
         </ul>
       </popup>
+      
       <popup v-model="moreHelpShow" class="moreHelp" position="top" >
       <ul>
         <a :href="serviceLink">

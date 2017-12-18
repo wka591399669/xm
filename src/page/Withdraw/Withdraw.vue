@@ -143,9 +143,16 @@ export default {
       let res = await this.$http('/queryAccOutCondition');
       console.log(res);
       // 没修改提现密码
-      if (!res.returnMap.isPassword) {
+      if (res.returnMap.isPassword==0) {
         this.$vux.toast.show({
-          text: '请先修改提现密码'
+          text: '提现密码不能为空,请先设置提现密码'
+        });
+        this.$router.push('/setMoneyPassword');
+        return;
+      }
+      if (res.returnMap.isPasswordEquals==1) {
+        this.$vux.toast.show({
+          text: '登录密码不能和提现密码一样,请先修改提现密码'
         });
         this.$router.push('/moneyPassword');
         return;
@@ -206,6 +213,9 @@ export default {
           text: '请完善信息',
           type: 'warn'
         });
+        if(this.money==null){
+            this.$router.push("");
+        }
         return;
       }
       let res = await this.$http('/userAccOut', {

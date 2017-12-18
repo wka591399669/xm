@@ -2,7 +2,9 @@
   <div id="TeamUser">
    <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="$router.push('/user')" v-if="leaderId==''">  
      <div @click="show=!show">
-         {{topMenu[index].memuName}}
+       {{topMenu[index].memuName}}
+       <img src="../../assets/img/lottery/down.png" alt=""/><!-- 
+       <img v-else src="../../assets/img/lottery/up.png" alt=""/> -->
       </div> 
       <div slot="right" @click="queryShow=!queryShow">
        筛选
@@ -11,6 +13,7 @@
     <XHeader :left-options="{backText: '',preventGoBack:true}" @on-click-back="goLeader"  v-else>  
      <div @click="show=!show">
          {{topMenu[index].memuName}}
+         <img src="../../assets/img/lottery/down.png" alt=""/>
       </div> 
       <div slot="right" @click="queryShow=!queryShow">
        筛选
@@ -35,20 +38,21 @@
 
     <popup v-model="show" class="menu" position="top" >
       <ul> 
-        <router-link :to="`${it.menuUrl}`" tag="li" v-for="(it,i) in topMenu" :key="i">
-          <li>{{topMenu[i].memuName}}</li>
+        <router-link :to="`${it.menuUrl}`" tag="li" v-for="(it,i) in topMenu"  :key="i">
+          {{topMenu[i].memuName}}
+          <img src="../../assets/img/next.png" v-if="topMenu[index].memuName==topMenu[i].memuName" alt=""/>
         </router-link> 
       </ul> 
     </popup>
     
     <popup v-model="queryShow" class="query" >
-      <div class="queryDate">
+<!--       <div class="queryDate">
           <group title="时间">
             <datetime v-model="startDate"  class="selectStartDatetime" @on-confirm="comfirmQueryDate"></datetime>
             <span class="queryMiddle">—</span>
             <datetime v-model="endDate"   class="selectEndDatetime"  @on-confirm="comfirmQueryDate" ></datetime>
           </group>
-      </div> 
+      </div>  -->
       <div class="queryUser">下级账号<input type="text" v-model="queryUserId" /></div>
       <div class="userStateClass">
         <span>状态</span>
