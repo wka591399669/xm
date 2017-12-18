@@ -80,7 +80,7 @@
             <img src="../../assets/img/avatar.png" alt="">
           </div>
           <div class="con">
-            <p>{{it.slice(0,2)}}***<span>{{it.time}}</span></p>
+            <p>{{it.userId.slice(0,2)}}***<span>{{it.time}}</span></p>
             <div class="plan">
               <p>
                 <span>第{{it.issue}}期</span>
