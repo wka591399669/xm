@@ -11,7 +11,8 @@
           <span>奖励金额</span>
         </li>
         <li v-for="(it,i) in info.childTaskList[0].taskDecDetail" :key="i">
-          <span>达到{{it[0]}}</span>
+          <span v-if="i==(info.childTaskList[0].taskDecDetail.length-1)">{{it[0]}}以上</span>   
+          <span v-else >{{it[0]}}-{{it[1]-1}}</span>
           <span>{{it[2]}}%</span>
         </li>
       </ul>

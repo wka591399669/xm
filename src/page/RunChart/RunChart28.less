@@ -1,0 +1,38 @@
+#RunChart28 {
+    color: #fff; 
+    .runTable {
+        li {
+            display: flex; 
+            text-align: center; 
+            line-height: .8rem;
+            font-size: .28rem; 
+            &:nth-of-type(2n-1) {
+                background: #292929;
+            }
+            &:nth-of-type(2n) {
+                background: rgba(36, 33, 31, 0.555);
+            }
+            &:nth-of-type(1) {
+                border-top: 1px solid rgb(156, 123, 30);
+                background: #5b4037;
+            }
+            span {
+                flex: 1;
+                border-bottom: 1px solid rgb(156, 123, 30);
+                border-right: 1px solid rgb(156, 123, 30);
+            } 
+            .issueClass {
+              flex: 0 0 15% !important;
+            }
+            .resultCodeClass{
+                color: red;
+            }
+            .resultCodeDXClass{
+                background-color: blue;
+            }
+            .resultCodeQTClass{
+                background-color: red;
+            }
+        }
+    } 
+}

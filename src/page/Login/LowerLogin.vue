@@ -55,11 +55,15 @@ export default {
   },
   created() {
     this.authUUID = uuidv4();
+    this.loginOut();
   },
   methods: {
     check(n) {
       this.type = n;
       this.clearAll();
+    }, 
+    loginOut() {
+      window.localStorage.clear(); 
     },
     // 登录
     async doLogin() {
@@ -122,6 +126,7 @@ export default {
         });
         return;
       }
+      console.log(this.register.username);
       let res = await this.$http('/userReg', {
         body: {
           userId: this.register.username,

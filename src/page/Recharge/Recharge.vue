@@ -189,8 +189,15 @@ export default {
     },
     // 第三方选择方式
     async handleThird(it) {
-      this.third = Object.assign({}, it);
-      this.showThirdType = true;
+      if(this.money>0){ 
+        this.third = Object.assign({}, it);
+        this.showThirdType = true;
+      }else{
+        this.$vux.toast.show({
+          text: "请输入充值金额",
+          type: 'warn'
+        });
+      }
     },
     // 生成订单获取二维码
     async createAccountIn() {

@@ -209,18 +209,26 @@ const SetMoneyPassword = r =>
     () => r(require('./page/Question/QuestionValidate.vue')),
     'QuestionValidate'
   );
-const RunChart = r =>
-  require.ensure(
-    [],
-    () => r(require('./page/RunChart/RunChart.vue')),
-    'RunChart'
-  );
-const LowerLogin = r =>
-  require.ensure(
-    [],
-    () => r(require('./page/Login/LowerLogin.vue')),
-    'LowerLogin'
-  );
+  const RunChart = r =>
+    require.ensure(
+      [],
+      () => r(require('./page/RunChart/RunChart.vue')),
+      'RunChart'
+    );
+  const RunChart28 = r =>
+    require.ensure(
+      [],
+      () => r(require('./page/RunChart/RunChart28.vue')),
+      'RunChart28'
+    );
+  const LowerLogin = r =>
+    require.ensure(
+      [],
+      () => r(require('./page/Login/LowerLogin.vue')),
+      'LowerLogin'
+    ); 
+
+  
   
   
   
@@ -548,15 +556,20 @@ export default new Router({
       component: QuestionValidate
     },
     {
-      path: '/runChart',
+      path: '/runChart/:gameType/:issueId',
       name: 'RunChart',
       component: RunChart
+    },
+    {
+      path: '/runChart28/:gameType/:issueId',
+      name: 'RunChart28',
+      component: RunChart28
     },
     {
       path: '/lowerLogin/:name',
       name: 'LowerLogin',
       component: LowerLogin
-    },
+    }, 
     {
       path: '/*',
       name: 'NotFound',

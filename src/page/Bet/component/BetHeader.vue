@@ -30,6 +30,11 @@
               玩法介绍
             </li>
           </a>
+          <a v-if="',HKLHC,SSQ,'.indexOf(','+gameType+',')<0" target="_blank"  @click="$router.push(`/runChart/${gameType}/${$store.state.bet.saleInfo.issueID}`)">
+            <li>
+              走势图
+            </li>
+          </a> 
         </ul>
       </popup>
     </div>
@@ -68,7 +73,7 @@
           <li>
             玩法介绍
           </li>
-        </a>
+        </a> 
       </ul>
     </popup>
     </div>
@@ -92,7 +97,7 @@ export default {
     }
   },
   async created() {
-    await this.service();
+    await this.service(); 
   },
   data() {
     return {

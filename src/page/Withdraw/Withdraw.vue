@@ -30,7 +30,10 @@
       </div>
     </div>
     <span class="btn" @click="toWithdraw">申请提现</span>
-
+    <div v-html="withdrawInfo.warmPromptContent">
+      {{withdrawInfo.warmPromptContent}}
+    </div> 
+ 
     <!-- 用户银行卡列表 -->
     <popup class="bankPopup" v-model="showUserBank" height="100%">
       <XHeader @on-click-back="showUserBank=false" :left-options="{backText: '',preventGoBack:true}">选择银行卡</XHeader>
@@ -108,6 +111,7 @@ export default {
   },
   data() {
     return {
+      warmPromptContent:'',
       money: '',
       password: '',
       withdrawInfo: {}, // 提现信息

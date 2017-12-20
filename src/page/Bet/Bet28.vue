@@ -193,6 +193,11 @@
             玩法介绍
           </li>
         </a>
+        <a  target="_blank"  @click="$router.push(`/runChart28/${$route.params.gameType}/${$store.state.bet.saleInfo.issueID}`)">
+            <li>
+              走势图
+            </li>
+          </a> 
       </ul>
     </popup>
     <!-- 赔率说明 -->
