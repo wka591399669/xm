@@ -5,11 +5,12 @@
         <img src="../../assets/img/user/setting.png" @click="$router.push('/setting')">
       </div> 
       <div class="userLogo" v-if="!isLogin">
-        <img src="../../assets/img/user/userLogo.png" alt="">
-        <router-link to="/login" tag="p">登录/注册</router-link>
+        <img src="../../assets/img/default_avatar.png" alt="">
+        <router-link to="/login" tag="p">未登录</router-link>
+        <!-- <router-link to="/login" tag="p">登录/注册</router-link> -->
       </div>
       <div class="userLogo is" v-else>
-        <img src="../../assets/img/user/userLogo.png" @click="$router.push('/info')" alt="">
+        <img src="../../assets/img/default_avatar.png" @click="$router.push('/info')" alt="">
         <p>{{loginInfo.userName}}</p>
         <div class="account">
           <p>
@@ -70,9 +71,9 @@
       <cell title="优惠活动" is-link link="/activity">
         <img slot="icon" src="../../assets/img/user/safe.png">
       </cell>
-<!--       <cell title="走势图" is-link link="/RunChart">
+      <cell title="分享" is-link link="/share">
         <img slot="icon" src="../../assets/img/user/safe.png">
-      </cell> -->
+      </cell>
       <a target="_blank" :href="serviceLink">
         <cell title="联系客服" is-link>
           <img slot="icon" src="../../assets/img/user/service2.png">

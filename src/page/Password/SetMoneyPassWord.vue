@@ -32,8 +32,8 @@ export default {
       if (
         !this.password ||
         !this.repassword ||
-        this.password.length != 4 ||
-        this.repassword.length != 4
+        this.password.length != 6 ||
+        this.repassword.length != 6
       ) {
         this.$vux.toast.show({
           type: 'text',

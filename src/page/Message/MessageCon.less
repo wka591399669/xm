@@ -1,1 +1,61 @@
-
+#MessageCon {
+    background-color: #292929;
+    height: 100%;
+    .title {
+        color: #fff;
+        padding: 0.3rem;
+        padding-bottom: 0.61rem;
+        position: relative;
+        font-size: 0.36rem;
+        border-bottom: 1px solid rgba(95, 87, 63, 1);
+        box-sizing: border-box;
+       
+        font[color="black"] {
+            color: #fff!important;
+        }
+        font[color="blue"] {
+            color: rgb(255, 255, 0)!important;
+        }
+        &> p{
+            text-align: center;
+        }
+        &> div{
+            width: 100%;
+            float: left;
+            &> :nth-child(1) { 
+                width: 40%;
+                float: left;
+                bottom: 0;
+                font-size: 0.26rem;
+                height: 0.51rem;
+                line-height: 0.51rem;
+                color: #999;
+            }
+            &> :nth-child(2) { 
+                width: 40%;
+                float: right;
+                text-align: right;
+                bottom: 0;
+                font-size: 0.26rem;
+                height: 0.51rem;
+                line-height: 0.51rem;
+                color: #999;
+            }
+        }
+        .comeIn {
+            float: right;
+            width: 20%;
+        }
+    }
+    .main {
+        padding: 0.3rem;
+        color: #fff;
+        font-size: 0.28rem;
+        font[color="black"] {
+            color: #fff!important;
+        }
+        font[color="blue"] {
+            color: rgb(255, 255, 0)!important;
+        }
+    }
+}

@@ -13,9 +13,13 @@
     <div class="main">
       <ul>
         <li>余额：<span>{{teamInfo.teamAccount}}元</span></li>
-        <li>盈亏：<span>{{teamInfo.teamSurplusAmount}}元</span></li>
+        <li @click="showSurplusDetail=!showSurplusDetail" >盈亏：<span>{{teamInfo.teamSurplusAmount}}元</span><img src="../../assets/img/down.png" :class="{'rotate':showSurplusDetail}" ></li>
+        <li v-if="showSurplusDetail">28盈亏：<span>{{teamInfo.team28SurplusAmount}}元</span></li>
+        <li v-if="showSurplusDetail">彩票盈亏：<span>{{teamInfo.teamOtherSurplusAmount}}元</span></li>
         <li>返点：<span>{{teamInfo.teamRakeOff}}元</span></li>
-        <li>下单：<span>{{teamInfo.teamOrderAccount}}元</span></li>
+        <li @click="showOrderDetail=!showOrderDetail" >下单：<span>{{teamInfo.teamOrderAccount}}元</span><img src="../../assets/img/down.png" :class="{'rotate':showOrderDetail}" ></li>
+        <li v-if="showOrderDetail" >28投注：<span>{{teamInfo.teamOrder28Account}}元</span></li>
+        <li v-if="showOrderDetail" >彩票投注：<span>{{teamInfo.teamOrderOtherAccount}}元</span></li>
         <li>充值：<span>{{teamInfo.teamInAmount}}元</span></li>
         <li>提现：<span>{{teamInfo.teamOutAmount}}元</span></li>
         <li>佣金：<span>{{teamInfo.rewardAgent}}元</span></li>
@@ -67,6 +71,8 @@ export default {
       startDate:this.DataTime.getDay(-1),
       endDate:this.DataTime.getDay(0),
       index:0,
+      showOrderDetail:false,
+      showSurplusDetail:false,
       teamInfo:{
         teamAccount:0,
         teamSurplusAmount:0,
@@ -75,7 +81,11 @@ export default {
         teamInAmount:0,
         teamOutAmount:0,
         rewardAgent:0,
-        teamWinAccount:0
+        teamWinAccount:0,
+        teamOrderOtherAccount:0,
+        teamOrder28Account:0,
+        team28SurplusAmount:0,
+        teamOtherSurplusAmount:0
       }
      
     };

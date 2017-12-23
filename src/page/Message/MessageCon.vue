@@ -4,15 +4,22 @@
     <div v-if="$route.params.type=='message'">
       <div class="title">
         <p v-html="info.messageTitle"></p>
-        <span v-if="info.createTime">{{info.createTime.substr(0,4) + '-'+info.createTime.substr(4,2) + '-'+info.createTime.substr(6,2)}}</span>
+        <div>
+          <span v-if="info.createTime">{{info.createTime.substr(0,4) + '-'+info.createTime.substr(4,2) + '-'+info.createTime.substr(6,2)}}</span>
+          <span   >来源：消息</span>
+        </div>
+        
       </div>
       <div class="main" v-html="info.message">
       </div>
     </div>
     <div v-else>
       <div class="title">
-        <p v-html="info.title"></p>
-        <span v-if="info.createDate">{{info.createDate.substr(0,4) + '-'+info.createDate.substr(4,2) + '-'+info.createDate.substr(6,2)}}</span>
+        <p v-html="info.title" ></p>
+        <div>
+          <span v-if="info.createDate">{{info.createDate.substr(0,4) + '-'+info.createDate.substr(4,2) + '-'+info.createDate.substr(6,2)}}</span>
+          <span   >来源：公告</span>
+        </div> 
       </div>
       <div class="main" v-html="info.content">
       </div>
@@ -59,5 +66,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('./Message.less');
+@import url('./MessageCon.less');
 </style>

@@ -227,7 +227,13 @@ const SetMoneyPassword = r =>
       () => r(require('./page/Login/LowerLogin.vue')),
       'LowerLogin'
     ); 
-
+  const Share = r =>
+    require.ensure(
+      [],
+      () => r(require('./page/Share/Share.vue')),
+      'Share'
+    ); 
+    
   
   
   
@@ -569,7 +575,15 @@ export default new Router({
       path: '/lowerLogin/:name',
       name: 'LowerLogin',
       component: LowerLogin
-    }, 
+    },
+    {
+      path: '/share',
+      name: 'Share',
+      component: Share,
+      beforeEnter: (to, from, next) => {
+        verifyLogin(next);
+      }
+    },  
     {
       path: '/*',
       name: 'NotFound',

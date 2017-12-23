@@ -4,7 +4,7 @@
       <img src="../../assets/img/user/close3.png" @click="$router.go(-1)">
       <div>
         <span :class="{'active':type === 1}" @click="check(1)">登录</span>
-        <span :class="{'active':type === 2}" @click="check(2)">注册</span>
+        <!-- <span :class="{'active':type === 2}" @click="check(2)">注册</span> -->
       </div>
     </div>
       <!-- 登录 -->
